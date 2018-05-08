@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "538065719385",
+    "firebase_url": "https://nea-kriti.firebaseio.com",
+    "project_id": "nea-kriti",
+    "storage_bucket": "nea-kriti.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:538065719385:android:9b97741f6d629968",
+        "android_client_info": {
+          "package_name": "com.ioannisa.rssreadernk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "538065719385-r5797tdh533q8elflugu0cchbab3s93p.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "538065719385-t0j0ogc5qgqhae86bv47dbq1blvuf32q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3FHi3uQbJ6haq0wQuGijwduG0CJDTUCA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-76225746-1"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
