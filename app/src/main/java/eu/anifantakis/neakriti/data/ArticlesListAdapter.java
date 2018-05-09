@@ -70,6 +70,8 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
             super(itemView);
             binding = DataBindingUtil.bind(itemView);
             context = itemView.getContext();
+
+            itemView.setOnClickListener(this);
         }
 
         /**
