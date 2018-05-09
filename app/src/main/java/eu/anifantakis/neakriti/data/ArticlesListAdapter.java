@@ -9,11 +9,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import eu.anifantakis.neakriti.R;
-import eu.anifantakis.neakriti.data.model.Articles;
+import eu.anifantakis.neakriti.data.model.Article;
+import eu.anifantakis.neakriti.data.model.ArticlesCollection;
 import eu.anifantakis.neakriti.databinding.ArticleListContentBinding;
 
 public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapter.ArticleViewHolder> {
-    private Articles collection;
+    private ArticlesCollection collection;
+    final private ArticleItemClickListener mOnClickListener;
+
+    public interface ArticleItemClickListener {
+        void onArticleItemClick(int clickedItemIndex);
+    }
+
+    public ArticlesListAdapter(ArticleItemClickListener mOnClickListener) {
+        this.mOnClickListener = mOnClickListener;
+    }
+
+
 
     @NonNull
     @Override
@@ -34,7 +46,23 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
         return collection.getCollectionSize();
     }
 
-    public class ArticleViewHolder extends RecyclerView.ViewHolder {
+    public void clearCollection(){
+        if (collection!=null) {
+            collection.clear();
+            notifyDataSetChanged();
+        }
+    }
+
+    public void setCollection(ArticlesCollection collection){
+        this.collection = collection;
+        notifyDataSetChanged();
+    }
+
+    public Article getArticleAtIndex(int index){
+        return collection.getArticle(index);
+    }
+
+    public class ArticleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ArticleListContentBinding binding;
         private Context context;
 
@@ -51,6 +79,12 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
          */
         void setTitle(String title) {
             binding.content.setText(title);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int clickedPosition = getAdapterPosition();
+            mOnClickListener.onArticleItemClick(clickedPosition);
         }
     }
 }

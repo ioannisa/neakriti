@@ -21,7 +21,7 @@
             tools:context=".ArticleListActivity">
 
             <!--
-            This layout is a two-pane layout for the Articles
+            This layout is a two-pane layout for the ArticlesCollection
             master/detail flow.
 
             -->
