@@ -58,9 +58,9 @@ public class ArticleListActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_article_list);
-        setContentView(R.layout.activity_article_list);
+        //setContentView(R.layout.activity_article_list);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar); // binding.masterView.toolbar;
+        Toolbar toolbar = binding.masterView.toolbar; //(Toolbar) findViewById(R.id.toolbar); // binding.masterView.toolbar;
         setSupportActionBar(toolbar);
         //toolbar.setTitle(getTitle());
 
@@ -75,7 +75,9 @@ public class ArticleListActivity extends AppCompatActivity implements
             }
         });
 
-        if (findViewById(R.id.article_detail_container) != null) {
+
+        //if (findViewById(R.id.article_detail_container) != null) {
+        if (binding.masterView.articles.articleDetailContainer != null){
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
             // If this view is present, then the
@@ -83,31 +85,29 @@ public class ArticleListActivity extends AppCompatActivity implements
             mTwoPane = true;
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (mTwoPane){
+            Log.d("TWO PANE", "TRUE");
+        }
+
+        else{
+            Log.d("TWO PANE", "FALSE");
+        }
+
+        DrawerLayout drawer = binding.drawerLayout;// (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = binding.navView;// (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-        //View appBarMainView = findViewById(R.id.master_view);
-        //View articleListView = appBarMainView.findViewById(R.id.article_list);
-        mSwipeRefreshLayout = findViewById(R.id.main_layout_swipe);
-        if (mSwipeRefreshLayout==null){
-            Log.d("SWIPE LAYOUT IS", "NULL");
-        }
-        else{
-            Log.d("SWIPE LAYOUT IS", "NOT NULL");
-        }
-
-
+        mSwipeRefreshLayout = binding.masterView.articles.mainLayoutSwipe; //findViewById(R.id.main_layout_swipe);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
 
 
         // SETUP RECYCLER VIEW
-        mRecyclerView = findViewById(R.id.article_list); //binding.masterView.articles.articleList;//
+        mRecyclerView = binding.masterView.articles.articleList; //findViewById(R.id.article_list); //binding.masterView.articles.articleList;//
         //assert mRecyclerView != null;
 
         if (mRecyclerView==null){
@@ -124,11 +124,13 @@ public class ArticleListActivity extends AppCompatActivity implements
         mArticlesListAdapter = new ArticlesListAdapter(this);
         mRecyclerView.setAdapter(mArticlesListAdapter);
 
-        loadFeed("127", 25);
+        feedSrvid = "127";
+        feedItems = 25;
+        loadFeed(feedSrvid, feedItems);
     }
 
     private void loadFeed(String srvid, int items){
-        //mSwipeRefreshLayout.setRefreshing(true);
+        mSwipeRefreshLayout.setRefreshing(true);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(AppUtils.BASE_URL)
@@ -149,14 +151,14 @@ public class ArticleListActivity extends AppCompatActivity implements
                 ArticlesCollection collection = new ArticlesCollection(response.body().getChannel().getItemList());
                 mArticlesListAdapter.setCollection(collection);
 
-                //mSwipeRefreshLayout.setRefreshing(false);
+                mSwipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<RssFeed> call, Throwable t) {
                 Log.e("RETROFIT", "RETROFIT FAIL " + t.getMessage());
                 mArticlesListAdapter.clearCollection();
-                //mSwipeRefreshLayout.setRefreshing(false);
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -194,7 +196,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = binding.drawerLayout;// (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -224,17 +226,23 @@ public class ArticleListActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    private static String feedSrvid = "";
+    private static int feedItems = 0;
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            loadFeed("127", 25);
+            feedSrvid = "127";
+            feedItems = 25;
         } else if (id == R.id.nav_gallery) {
-            loadFeed("159", 25);
+            feedSrvid = "159";
+            feedItems = 25;
         } else if (id == R.id.nav_slideshow) {
-            loadFeed("225", 40);
+            feedSrvid = "225";
+            feedItems = 25;
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
@@ -243,13 +251,15 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        loadFeed(feedSrvid, feedItems);
+
+        DrawerLayout drawer = binding.drawerLayout;// (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     @Override
     public void onRefresh() {
-        Log.d("FRAGMENT", "REFRESHING");
+        loadFeed(feedSrvid, feedItems);
     }
 }
