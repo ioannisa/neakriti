@@ -25,6 +25,7 @@ import org.simpleframework.xml.core.Persister;
 
 import eu.anifantakis.neakriti.data.ArticlesListAdapter;
 import eu.anifantakis.neakriti.data.RequestInterface;
+import eu.anifantakis.neakriti.data.model.Article;
 import eu.anifantakis.neakriti.data.model.ArticlesCollection;
 import eu.anifantakis.neakriti.data.model.RssFeed;
 import eu.anifantakis.neakriti.databinding.ActivityArticleListBinding;
@@ -38,7 +39,9 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 
 public class ArticleListActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener, ArticlesListAdapter.ArticleItemClickListener{
+        NavigationView.OnNavigationItemSelectedListener,
+        ArticlesListAdapter.ArticleItemClickListener,
+        SwipeRefreshLayout.OnRefreshListener {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -61,7 +64,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
         //toolbar.setTitle(getTitle());
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.main_layout_swipe);
+
 
         FloatingActionButton fab = binding.masterView.fab;
         fab.setOnClickListener(new View.OnClickListener() {
@@ -89,9 +92,30 @@ public class ArticleListActivity extends AppCompatActivity implements
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+        //View appBarMainView = findViewById(R.id.master_view);
+        //View articleListView = appBarMainView.findViewById(R.id.article_list);
+        mSwipeRefreshLayout = findViewById(R.id.main_layout_swipe);
+        if (mSwipeRefreshLayout==null){
+            Log.d("SWIPE LAYOUT IS", "NULL");
+        }
+        else{
+            Log.d("SWIPE LAYOUT IS", "NOT NULL");
+        }
+
+
+
+
         // SETUP RECYCLER VIEW
         mRecyclerView = findViewById(R.id.article_list); //binding.masterView.articles.articleList;//
         //assert mRecyclerView != null;
+
+        if (mRecyclerView==null){
+            Log.d("RECYCLER VIEW IS", "NULL");
+        }
+        else{
+            Log.d("RECYCLER IS", "NOT NULL");
+        }
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -99,6 +123,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         mRecyclerView.setHasFixedSize(true);
         mArticlesListAdapter = new ArticlesListAdapter(this);
         mRecyclerView.setAdapter(mArticlesListAdapter);
+
         loadFeed("127", 25);
     }
 
@@ -145,10 +170,11 @@ public class ArticleListActivity extends AppCompatActivity implements
         Log.d("RV ACTION", "ITEM CLICK");
 
         String title = mArticlesListAdapter.getArticleAtIndex(clickedItemIndex).getTitle();
+        Article article = mArticlesListAdapter.getArticleAtIndex(clickedItemIndex);
 
         if (mTwoPane) {
             Bundle arguments = new Bundle();
-            arguments.putString(ArticleDetailFragment.ARG_ITEM_ID, title);
+            arguments.putParcelable(AppUtils.EXTRAS_ARTICLE, article);
             ArticleDetailFragment fragment = new ArticleDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
@@ -156,11 +182,9 @@ public class ArticleListActivity extends AppCompatActivity implements
                     .commit();
         } else {
             Intent intent = new Intent(this, ArticleDetailActivity.class);
-            intent.putExtra(ArticleDetailFragment.ARG_ITEM_ID, title);
-
+            intent.putExtra(AppUtils.EXTRAS_ARTICLE, article);
             startActivity(intent);
         }
-
     }
 
 
@@ -206,11 +230,11 @@ public class ArticleListActivity extends AppCompatActivity implements
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-
+            loadFeed("127", 25);
         } else if (id == R.id.nav_gallery) {
-
+            loadFeed("159", 25);
         } else if (id == R.id.nav_slideshow) {
-
+            loadFeed("225", 40);
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
@@ -222,5 +246,10 @@ public class ArticleListActivity extends AppCompatActivity implements
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onRefresh() {
+        Log.d("FRAGMENT", "REFRESHING");
     }
 }

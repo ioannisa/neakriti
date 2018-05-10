@@ -17,4 +17,12 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="article_title_on_poster">
+        <item name="android:layout_gravity">bottom|center_horizontal</item>
+        <item name="android:gravity">bottom|center</item>
+        <item name="android:background">#66000000</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
 </resources>

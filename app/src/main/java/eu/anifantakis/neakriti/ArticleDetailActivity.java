@@ -10,6 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import eu.anifantakis.neakriti.data.model.Article;
+import eu.anifantakis.neakriti.utils.AppUtils;
 
 /**
  * An activity representing a single Article detail screen. This
@@ -18,6 +22,8 @@ import android.view.MenuItem;
  * in a {@link ArticleListActivity}.
  */
 public class ArticleDetailActivity extends AppCompatActivity {
+
+    private Article mArticle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +47,12 @@ public class ArticleDetailActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        mArticle = getIntent().getParcelableExtra(AppUtils.EXTRAS_ARTICLE);
+
+        //View includedTab1  = findViewById(R.id.included_tab1);
+        //TextView headerText1  = (TextView) includedTab1.findViewById(R.id.article_detail_text);
+        //headerText1.setText(mArticle.getTitle());
+
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
         // (e.g. when rotating the screen from portrait to landscape).
@@ -54,8 +66,13 @@ public class ArticleDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(ArticleDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(ArticleDetailFragment.ARG_ITEM_ID));
+
+
+            //arguments.putString(ArticleDetailFragment.ARG_ITEM_ID,
+            //        getIntent().getStringExtra(ArticleDetailFragment.ARG_ITEM_ID));
+
+            arguments.putParcelable(AppUtils.EXTRAS_ARTICLE, mArticle);
+
             ArticleDetailFragment fragment = new ArticleDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
