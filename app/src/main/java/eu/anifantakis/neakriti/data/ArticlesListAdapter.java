@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
@@ -33,7 +34,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
     final private ArticleItemClickListener mOnClickListener;
 
     public interface ArticleItemClickListener {
-        void onArticleItemClick(int clickedItemIndex);
+        void onArticleItemClick(int clickedItemIndex, ImageView sharedImage);
     }
 
     public ArticlesListAdapter(ArticleItemClickListener mOnClickListener) {
@@ -194,7 +195,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
         @Override
         public void onClick(View view) {
             int clickedPosition = getAdapterPosition();
-            mOnClickListener.onArticleItemClick(clickedPosition);
+            mOnClickListener.onArticleItemClick(clickedPosition, binding.rowIvArticleThumb);
         }
     }
 }

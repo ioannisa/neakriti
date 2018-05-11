@@ -1,11 +1,12 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -21,6 +22,14 @@
         <item name="android:layout_gravity">bottom|center_horizontal</item>
         <item name="android:gravity">bottom|center</item>
         <item name="android:background">#66000000</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="movie_title_on_detail_poster">
+        <item name="android:layout_gravity">bottom|center_horizontal</item>
+        <item name="android:gravity">bottom|center</item>
+        <item name="android:background">@drawable/photo_background_protection_reversed</item>
         <item name="android:padding">8dp</item>
         <item name="android:textColor">@android:color/white</item>
     </style>

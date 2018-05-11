@@ -1,5 +1,6 @@
 package eu.anifantakis.neakriti;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -52,6 +53,7 @@ public class ArticleDetailFragment extends Fragment {
 
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

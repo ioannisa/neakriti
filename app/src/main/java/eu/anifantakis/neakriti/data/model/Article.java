@@ -53,8 +53,10 @@ public class Article implements Parcelable {
             // TODO Use a converter to store date representation from the date string
         }
 
-        imgThumb = imgThumbObj.getUrl();
-        imgLarge = imgLargeObj.getUrl();
+        if (imgThumbObj!=null) {
+            imgThumb = imgThumbObj.getUrl();
+            imgLarge = imgLargeObj.getUrl();
+        }
     }
 
     public Article(){}

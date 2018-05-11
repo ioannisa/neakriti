@@ -6,11 +6,16 @@ import android.content.AsyncTaskLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -23,6 +28,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import org.simpleframework.xml.convert.AnnotationStrategy;
 import org.simpleframework.xml.core.Persister;
@@ -142,7 +148,7 @@ public class ArticleListActivity extends AppCompatActivity implements
      * @param clickedItemIndex
      */
     @Override
-    public void onArticleItemClick(int clickedItemIndex) {
+    public void onArticleItemClick(int clickedItemIndex, ImageView sharedImage) {
         Log.d("RV ACTION", "ITEM CLICK");
 
         String title = mArticlesListAdapter.getArticleAtIndex(clickedItemIndex).getTitle();
@@ -159,7 +165,25 @@ public class ArticleListActivity extends AppCompatActivity implements
         } else {
             Intent intent = new Intent(this, ArticleDetailActivity.class);
             intent.putExtra(AppUtils.EXTRAS_ARTICLE, article);
-            startActivity(intent);
+
+            Bitmap bm=((BitmapDrawable)sharedImage.getDrawable()).getBitmap();
+            intent.putExtra("low_res_bitmap", bm);
+
+            // bundle for the transition effect
+            Bundle bundle = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                bundle = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(
+                                this,
+                                sharedImage,
+                                sharedImage.getTransitionName()
+                        ).toBundle();
+
+                startActivity(intent, bundle);
+            }
+            else{
+                startActivity(intent);
+            }
         }
     }
 
@@ -313,5 +337,9 @@ public class ArticleListActivity extends AppCompatActivity implements
         super.onSaveInstanceState(outState);
 
         outState.putParcelable("xx", cachedCollection);
+    }
+
+    public void actionUpClicked(View view) {
+        super.onBackPressed();
     }
 }
