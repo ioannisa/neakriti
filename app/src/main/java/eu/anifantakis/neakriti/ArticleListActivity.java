@@ -53,6 +53,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     private ArticlesListAdapter mArticlesListAdapter;
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private Retrofit retrofit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +98,13 @@ public class ArticleListActivity extends AppCompatActivity implements
         mSwipeRefreshLayout = binding.masterView.articles.mainLayoutSwipe; //findViewById(R.id.main_layout_swipe);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
+        // SETUP RETROFIT
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(AppUtils.BASE_URL)
+                .client(new OkHttpClient())
+                .addConverterFactory(SimpleXmlConverterFactory.createNonStrict(new Persister(new AnnotationStrategy())))
+                .build();
 
         // SETUP RECYCLER VIEW
         mRecyclerView = binding.masterView.articles.articleList; //findViewById(R.id.article_list); //binding.masterView.articles.articleList;//
@@ -116,12 +124,6 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     private void loadFeed(String srvid, int items){
         mSwipeRefreshLayout.setRefreshing(true);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(AppUtils.BASE_URL)
-                .client(new OkHttpClient())
-                .addConverterFactory(SimpleXmlConverterFactory.createNonStrict(new Persister(new AnnotationStrategy())))
-                .build();
 
         RequestInterface request = retrofit.create(RequestInterface.class);
         Call<RssFeed> call = request.getFeedByCategory(srvid, items);

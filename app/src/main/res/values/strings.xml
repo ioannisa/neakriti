@@ -9,5 +9,6 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="transition_photo" translatable="false">transition_photo</string>
+    <string name="transition_photo" translatable="false">Article Thumbnail</string>
+    <string name="row.thumb_description"></string>
 </resources>
