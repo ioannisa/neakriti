@@ -85,14 +85,6 @@ public class ArticleListActivity extends AppCompatActivity implements
             mTwoPane = true;
         }
 
-        if (mTwoPane){
-            Log.d("TWO PANE", "TRUE");
-        }
-
-        else{
-            Log.d("TWO PANE", "FALSE");
-        }
-
         DrawerLayout drawer = binding.drawerLayout;// (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -109,13 +101,6 @@ public class ArticleListActivity extends AppCompatActivity implements
         // SETUP RECYCLER VIEW
         mRecyclerView = binding.masterView.articles.articleList; //findViewById(R.id.article_list); //binding.masterView.articles.articleList;//
         //assert mRecyclerView != null;
-
-        if (mRecyclerView==null){
-            Log.d("RECYCLER VIEW IS", "NULL");
-        }
-        else{
-            Log.d("RECYCLER IS", "NOT NULL");
-        }
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);

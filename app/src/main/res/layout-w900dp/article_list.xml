@@ -1,35 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/main_layout_swipe"
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".ArticleListActivity">
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:baselineAligned="false"
+        android:divider="?android:attr/dividerHorizontal"
+        android:orientation="horizontal"
+        android:showDividers="middle">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
+        <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/main_layout_swipe"
+            android:layout_width="@dimen/item_width"
             android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:baselineAligned="false"
-            android:divider="?android:attr/dividerHorizontal"
-            android:orientation="horizontal"
-            android:showDividers="middle">
-
-            <!--
-            This layout is a two-pane layout for the ArticlesCollection
-            master/detail flow.
-
-            -->
+            android:orientation="vertical"
+            tools:context=".ArticleListActivity">
 
             <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/article_list"
                 android:name="eu.anifantakis.playground1.ArticleListFragment"
-                android:layout_width="@dimen/item_width"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
@@ -37,13 +32,15 @@
                 tools:context="eu.anifantakis.neakriti.ArticleListActivity"
                 tools:listitem="@layout/article_list_content" />
 
-            <FrameLayout
-                android:id="@+id/article_detail_container"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="3" />
+        </android.support.v4.widget.SwipeRefreshLayout>
 
-        </LinearLayout>
+        <FrameLayout
+            android:id="@+id/article_detail_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3" />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </LinearLayout>
+
+
 </layout>
