@@ -8,12 +8,10 @@ import org.simpleframework.xml.Root;
 public class RssFeed {
 
     @Attribute
-    private
-    String version;
+    private String version;
 
     @Element
-    private
-    RssChannel channel;
+    private RssChannel channel;
 
     public RssChannel getChannel() {
         return channel;

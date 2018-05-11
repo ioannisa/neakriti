@@ -126,8 +126,10 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ArticleViewHolder holder, int position) {
-        holder.setTitle(collection.getArticle(position).getTitle());
-        holder.setImage(collection.getArticle(position).getImgThumb());
+        Article article = collection.getArticle(position);
+
+        holder.setTitle(article.getTitle());
+        holder.setImage(article.getImgThumb());
     }
 
     @Override

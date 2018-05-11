@@ -39,23 +39,12 @@ public class Article implements Parcelable {
 
     private List<String> enclosures;
 
-
-
-    // sample: <img_thumb url="https://s1.neakriti.gr/images/360x254/files/Image/201704/doc_20170427_1784929_bretania.jpg" length="10000" type="image/jpeg"/>
-    @Root(name = "img_thumb")
-    public class ImgThumb{
-        @Attribute(name = "url")
-        public String imgThumb;
-    }
+    @Element(name = "img_thumb", required = false)
+    private RssImgThumb imgThumbObj;
     private String imgThumb;
 
-
-    // sample: <img_large url="https://s1.neakriti.gr/images/1542x770/files/Image/201704/doc_20170427_1784929_bretania.jpg" length="10000" type="image/jpeg"/>
-    @Root(name = "img_large")
-    public class ImgLarge{
-        @Attribute(name = "url")
-        public String imgLarge;
-    }
+    @Element(name = "img_large", required = false)
+    private RssImgThumb imgLargeObj;
     private String imgLarge;
 
     @Commit
@@ -64,9 +53,8 @@ public class Article implements Parcelable {
             // TODO Use a converter to store date representation from the date string
         }
 
-        // if I can get imgThumb populated correctly here in my @Commit section, the app will show it
-        // comment out the bellow line to see that working - thing is I don't know how to populate it yet... :(
-        //imgThumb = "https://s1.neakriti.gr/images/360x254/files/Image/201704/doc_20170427_1784929_bretania.jpg";
+        imgThumb = imgThumbObj.getUrl();
+        imgLarge = imgLargeObj.getUrl();
     }
 
     public Article(){}
