@@ -51,8 +51,11 @@ public class Article implements Parcelable {
 
 
     // sample: <img_large url="https://s1.neakriti.gr/images/1542x770/files/Image/201704/doc_20170427_1784929_bretania.jpg" length="10000" type="image/jpeg"/>
-    @Element(name = "img_large", required = false)
-    @Attribute(name = "url")
+    @Root(name = "img_large")
+    public class ImgLarge{
+        @Attribute(name = "url")
+        public String imgLarge;
+    }
     private String imgLarge;
 
     @Commit
