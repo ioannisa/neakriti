@@ -1,6 +1,10 @@
 package eu.anifantakis.neakriti;
 
+import android.annotation.SuppressLint;
+import android.app.LoaderManager;
+import android.content.AsyncTaskLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,6 +27,9 @@ import android.view.View;
 import org.simpleframework.xml.convert.AnnotationStrategy;
 import org.simpleframework.xml.core.Persister;
 
+import java.io.IOException;
+import java.util.List;
+
 import eu.anifantakis.neakriti.data.ArticlesListAdapter;
 import eu.anifantakis.neakriti.data.RequestInterface;
 import eu.anifantakis.neakriti.data.model.Article;
@@ -41,6 +48,7 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 public class ArticleListActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         ArticlesListAdapter.ArticleItemClickListener,
+        LoaderManager.LoaderCallbacks<ArticlesCollection>,
         SwipeRefreshLayout.OnRefreshListener {
 
     /**
@@ -54,6 +62,11 @@ public class ArticleListActivity extends AppCompatActivity implements
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private Retrofit retrofit;
+    private static ArticlesCollection cachedCollection = null;
+
+    private static final int ARTICLES_FEED_LOADER = 0;
+    private static final String LOADER_SRVID = "LOADER_SRVID";
+    private static final String LOADER_ITEMS_COUNT = "LOADER_ITEMS_COUNT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +78,9 @@ public class ArticleListActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
         //toolbar.setTitle(getTitle());
 
-
+        if (savedInstanceState!=null){
+            cachedCollection = savedInstanceState.getParcelable("xx");
+        }
 
         FloatingActionButton fab = binding.masterView.fab;
         fab.setOnClickListener(new View.OnClickListener() {
@@ -119,35 +134,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         feedSrvid = "127";
         feedItems = 25;
-        loadFeed(feedSrvid, feedItems);
-    }
-
-    private void loadFeed(String srvid, int items){
-        mSwipeRefreshLayout.setRefreshing(true);
-
-        RequestInterface request = retrofit.create(RequestInterface.class);
-        Call<RssFeed> call = request.getFeedByCategory(srvid, items);
-
-        Log.d("RETROFIT", "RETROFIT CALL");
-        call.enqueue(new Callback<RssFeed>() {
-            @Override
-            public void onResponse(Call<RssFeed> call, Response<RssFeed> response) {
-                Log.d("RETROFIT", "RETROFIT SUCCESS");
-                Log.d("RESPONSE ITEMS", Integer.toString(response.body().getChannel().getItemList().size()));
-
-                ArticlesCollection collection = new ArticlesCollection(response.body().getChannel().getItemList());
-                mArticlesListAdapter.setCollection(collection);
-
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-
-            @Override
-            public void onFailure(Call<RssFeed> call, Throwable t) {
-                Log.e("RETROFIT", "RETROFIT FAIL " + t.getMessage());
-                mArticlesListAdapter.clearCollection();
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        });
+        makeArticlesLoaderQuery(feedSrvid, feedItems);
     }
 
     /**
@@ -177,6 +164,75 @@ public class ArticleListActivity extends AppCompatActivity implements
     }
 
 
+    private void makeArticlesLoaderQuery(String srvid, int items){
+
+        Bundle bundle = new Bundle();
+        bundle.putString(LOADER_SRVID, srvid);
+        bundle.putInt(LOADER_ITEMS_COUNT, items);
+
+        Loader<RssFeed> loader = getLoaderManager().getLoader(ARTICLES_FEED_LOADER);
+        if (loader == null) {
+            getLoaderManager().initLoader(ARTICLES_FEED_LOADER, bundle, this);
+        } else {
+            getLoaderManager().restartLoader(ARTICLES_FEED_LOADER, bundle, this);
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    @Override
+    public Loader<ArticlesCollection> onCreateLoader(int i, final Bundle bundle) {
+        Log.d("LOADING", "ON CREATE LOADER");
+        return new AsyncTaskLoader<ArticlesCollection>(this) {
+            @Override
+            public ArticlesCollection loadInBackground() {
+                RssFeed feed = null;
+                try {
+                    RequestInterface request = retrofit.create(RequestInterface.class);
+                    Call<RssFeed> call = request.getFeedByCategory(bundle.getString(LOADER_SRVID), bundle.getInt(LOADER_ITEMS_COUNT));
+                    // make a synchronous retrofit call in our async task loader
+                    feed = call.execute().body();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+                return new ArticlesCollection(feed.getChannel().getItemList());
+            }
+
+
+            @Override
+            protected void onStartLoading() {
+                if (cachedCollection == null) {
+                    Log.d("LOADER", "FETCHING NEW DATA");
+                    mSwipeRefreshLayout.setRefreshing(true);
+                    forceLoad();
+                } else {
+                    Log.d("LOADER", "SHOWING CACHED DATA");
+                    deliverResult(cachedCollection);
+                }
+            }
+
+            @Override
+            public void deliverResult(ArticlesCollection data) {
+                cachedCollection = data;
+                mArticlesListAdapter.setCollection(data);
+                super.deliverResult(data);
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader<ArticlesCollection> loader, ArticlesCollection articlesCollection) {
+        Log.d("LOADING", "LOAD FINISHED");
+
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<ArticlesCollection> loader) {
+
+    }
 
 
     //============================ APP DRAWER =====================================
@@ -220,6 +276,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        cachedCollection = null;
 
         if (id == R.id.nav_camera) {
             feedSrvid = "127";
@@ -238,7 +295,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         }
 
-        loadFeed(feedSrvid, feedItems);
+        makeArticlesLoaderQuery(feedSrvid, feedItems);
 
         DrawerLayout drawer = binding.drawerLayout;// (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -247,6 +304,14 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     @Override
     public void onRefresh() {
-        loadFeed(feedSrvid, feedItems);
+        cachedCollection = null;
+        makeArticlesLoaderQuery(feedSrvid, feedItems);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable("xx", cachedCollection);
     }
 }

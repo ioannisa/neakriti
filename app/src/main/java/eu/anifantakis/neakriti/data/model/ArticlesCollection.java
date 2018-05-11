@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ArticlesCollection {
+public class ArticlesCollection implements Parcelable {
     public static final int LISTY_TYPE_CATEGORY = 0;
     public static final int LISTY_TYPE_TAG = 1;
     public static final int LISTY_TYPE_ZONE = 2;
@@ -29,6 +29,38 @@ public class ArticlesCollection {
     public ArticlesCollection(List<Article> articlesList) {
         articleList = articlesList;
     }
+
+    protected ArticlesCollection(Parcel in) {
+        listName = in.readString();
+        listType = in.readInt();
+        listId = in.readInt();
+        articleList = in.createTypedArrayList(Article.CREATOR);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(listName);
+        dest.writeInt(listType);
+        dest.writeInt(listId);
+        dest.writeTypedList(articleList);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<ArticlesCollection> CREATOR = new Creator<ArticlesCollection>() {
+        @Override
+        public ArticlesCollection createFromParcel(Parcel in) {
+            return new ArticlesCollection(in);
+        }
+
+        @Override
+        public ArticlesCollection[] newArray(int size) {
+            return new ArticlesCollection[size];
+        }
+    };
 
     public int addArticle(Article article) {
         articleList.add(article);
