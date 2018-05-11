@@ -6,7 +6,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="8dp">
+        android:paddingTop="8dp">
 
         <ImageView
             android:id="@+id/row_iv_article_thumb"

@@ -1,6 +1,5 @@
 package eu.anifantakis.neakriti;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -47,13 +46,13 @@ public class ArticleDetailFragment extends Fragment {
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
-                appBarLayout.setTitle(mArticle.getTitle());
+                //appBarLayout.setTitle(mArticle.getTitle());
+                appBarLayout.setTitle(mArticle.getGroupName());
             }
         }
 
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

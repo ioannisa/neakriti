@@ -1,25 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:elevation="4dp"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp">
+
+            <TextView
+                android:id="@+id/detail_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="ARTICLE TITILE HERE" />
+
+            <TextView
+                android:id="@+id/detail_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ARTICLE DATE TIME HERE" />
+
+
+        </LinearLayout>
+
 
         <WebView
             android:id="@+id/article_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="16dp"
             android:scrollbarStyle="insideOverlay"
-            android:visibility="visible"/>
+            android:visibility="visible" />
 
 
-            <TextView
-                android:id="@+id/article_detail_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbarStyle="insideOverlay"
-                android:visibility="gone"/>
+        <TextView
+            android:id="@+id/article_detail_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbarStyle="insideOverlay"
+            android:visibility="gone" />
 
     </LinearLayout>
 

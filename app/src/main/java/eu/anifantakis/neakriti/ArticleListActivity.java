@@ -140,6 +140,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         feedSrvid = "127";
         feedItems = 25;
+        feedName = "Αρχική";
         makeArticlesLoaderQuery(feedSrvid, feedItems);
     }
 
@@ -164,10 +165,11 @@ public class ArticleListActivity extends AppCompatActivity implements
                     .commit();
         } else {
             Intent intent = new Intent(this, ArticleDetailActivity.class);
+            article.setGroupName(feedName);
             intent.putExtra(AppUtils.EXTRAS_ARTICLE, article);
 
             Bitmap bm=((BitmapDrawable)sharedImage.getDrawable()).getBitmap();
-            intent.putExtra("low_res_bitmap", bm);
+            intent.putExtra(AppUtils.EXTRAS_LOW_RES_BITMAP, bm);
 
             // bundle for the transition effect
             Bundle bundle = null;
@@ -293,6 +295,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    private static String feedName = "";
     private static String feedSrvid = "";
     private static int feedItems = 0;
 
@@ -305,12 +308,15 @@ public class ArticleListActivity extends AppCompatActivity implements
         if (id == R.id.nav_camera) {
             feedSrvid = "127";
             feedItems = 25;
+            feedName = "Αρχική";
         } else if (id == R.id.nav_gallery) {
             feedSrvid = "159";
             feedItems = 25;
+            feedName = "Οικονομία";
         } else if (id == R.id.nav_slideshow) {
             feedSrvid = "225";
             feedItems = 25;
+            feedName = "Αθλητισμός";
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {

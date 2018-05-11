@@ -105,7 +105,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_menu_send"
+            android:src="@drawable/round_layers_white_48"
             app:elevation="6dp"
             app:fabSize="normal"
             app:pressedTranslationZ="12dp" />

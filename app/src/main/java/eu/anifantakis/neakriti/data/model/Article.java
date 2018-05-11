@@ -47,6 +47,8 @@ public class Article implements Parcelable {
     private RssImgThumb imgLargeObj;
     private String imgLarge;
 
+    private String groupName;
+
     @Commit
     private void parseDates(){
         if (pubDateStr != null){
@@ -141,6 +143,14 @@ public class Article implements Parcelable {
         this.imgLarge = imgLarge;
     }
 
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
     protected Article(Parcel in) {
         guid = in.readInt();
         link = in.readString();
@@ -159,6 +169,7 @@ public class Article implements Parcelable {
         enclosures = in.createStringArrayList();
         imgThumb = in.readString();
         imgLarge = in.readString();
+        groupName = in.readString();
     }
 
     @Override
@@ -173,6 +184,7 @@ public class Article implements Parcelable {
         dest.writeStringList(enclosures);
         dest.writeString(imgThumb);
         dest.writeString(imgLarge);
+        dest.writeString(groupName);
     }
 
     @Override

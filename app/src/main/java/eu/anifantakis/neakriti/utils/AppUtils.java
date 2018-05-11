@@ -8,4 +8,5 @@ public final class AppUtils {
     public static final String XML_LOC = "/webServices/MobileFeedAndroid_v2.aspx";
 
     public static final String EXTRAS_ARTICLE = "ARTICLE";
+    public static final String EXTRAS_LOW_RES_BITMAP = "low_res_bitmap";
 }
