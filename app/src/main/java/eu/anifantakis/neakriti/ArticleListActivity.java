@@ -134,7 +134,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        mRecyclerView.setHasFixedSize(true);
+        //mRecyclerView.setHasFixedSize(true);
         mArticlesListAdapter = new ArticlesListAdapter(this);
         mRecyclerView.setAdapter(mArticlesListAdapter);
 

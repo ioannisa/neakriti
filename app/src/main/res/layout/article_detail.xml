@@ -13,9 +13,11 @@
             android:layout_height="wrap_content"
             android:elevation="4dp"
             android:orientation="vertical"
+            android:background="@color/blue_gray_100"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingTop="16dp">
+            android:paddingRight="16dp">
 
             <TextView
                 android:id="@+id/detail_title"
@@ -23,6 +25,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:layout_marginBottom="8dp"
                 android:text="ARTICLE TITILE HERE" />
 
             <TextView
@@ -34,12 +37,24 @@
 
         </LinearLayout>
 
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:ignore="WebViewLayout">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
 
         <WebView
             android:id="@+id/article_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:scrollbarStyle="insideOverlay"
             android:visibility="visible" />
 
@@ -50,6 +65,10 @@
             android:layout_height="wrap_content"
             android:scrollbarStyle="insideOverlay"
             android:visibility="gone" />
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
 
     </LinearLayout>
 

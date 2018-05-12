@@ -21,6 +21,7 @@ import eu.anifantakis.neakriti.R;
 import eu.anifantakis.neakriti.data.model.Article;
 import eu.anifantakis.neakriti.data.model.ArticlesCollection;
 import eu.anifantakis.neakriti.databinding.ArticleListContentBinding;
+import eu.anifantakis.neakriti.utils.AppUtils;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -131,6 +132,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
 
         holder.setTitle(article.getTitle());
         holder.setImage(article.getImgThumb());
+        holder.setDateStr(article.getPubDateStr());
     }
 
     @Override
@@ -190,6 +192,10 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
                         .load(image)
                         .into(binding.rowIvArticleThumb);
             }
+        }
+
+        void setDateStr(String dateStr){
+            binding.listDate.setText(AppUtils.pubDateFormat(dateStr));
         }
 
         @Override

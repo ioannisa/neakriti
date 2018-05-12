@@ -7,11 +7,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import eu.anifantakis.neakriti.data.model.Article;
 import eu.anifantakis.neakriti.utils.AppUtils;
@@ -36,6 +40,7 @@ public class ArticleDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         if (getArguments().containsKey(AppUtils.EXTRAS_ARTICLE)) {
             // Load the dummy content specified by the fragment
@@ -46,8 +51,12 @@ public class ArticleDetailFragment extends Fragment {
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
+                // using a theme with NoActionBar we would set title like that
                 //appBarLayout.setTitle(mArticle.getTitle());
-                appBarLayout.setTitle(mArticle.getGroupName());
+                //appBarLayout.setTitle(mArticle.getGroupName());
+
+                // using a theme with ActionBar we set the activity's toolbar name like that
+                getActivity().setTitle(mArticle.getGroupName());
             }
         }
 
@@ -58,7 +67,13 @@ public class ArticleDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.article_detail, container, false);
 
-        mWebView = (WebView) rootView.findViewById(R.id.article_detail);
+        TextView detailTitle = (TextView) rootView.findViewById(R.id.detail_title);
+        detailTitle.setText(mArticle.getTitle());
+
+        TextView detailDate = (TextView) rootView.findViewById(R.id.detail_date);
+        detailDate.setText(AppUtils.pubDateFormat(mArticle.getPubDateStr()));
+
+                mWebView = (WebView) rootView.findViewById(R.id.article_detail);
         WebSettings webSettings;
         webSettings = mWebView.getSettings();
 
@@ -70,20 +85,12 @@ public class ArticleDetailFragment extends Fragment {
         mWebView.getSettings().setAllowFileAccess(true);
         webSettings.setAppCacheEnabled(true);
 
-
         // Show the dummy content as text in a TextView.
         if (mArticle != null) {
-
-
-
-
             Log.d("LOADING WEB VIEW", "ARTICLE IS NOT NULL");
 
             String theStory = "";
             theStory =  mArticle.getDescription();
-
-
-
 
             theStory = theStory.replace("=\"//www.", "=\"https://www.");
             theStory = theStory.replace("src=\"//", "src=\"https://");
@@ -107,5 +114,10 @@ public class ArticleDetailFragment extends Fragment {
         }
 
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.detail_menu, menu);
     }
 }

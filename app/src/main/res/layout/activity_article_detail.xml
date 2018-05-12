@@ -19,7 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:contentScrim="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
                 <FrameLayout
                     android:id="@+id/detail_framelayout_title"
@@ -85,7 +85,9 @@
                         android:layout_height="match_parent">
 
 
-                        <android.support.v4.widget.NestedScrollView
+
+
+                        <FrameLayout
                             android:id="@+id/article_detail_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -94,7 +96,10 @@
 
 
                     </FrameLayout>
+
                 </LinearLayout>
+
+
             </TabHost>
 
         </LinearLayout>
@@ -107,7 +112,10 @@
             android:layout_margin="16dp"
             android:src="@drawable/round_layers_white_48"
             app:elevation="6dp"
+            android:background="@color/colorPrimaryDark"
             app:fabSize="normal"
-            app:pressedTranslationZ="12dp" />
+            app:pressedTranslationZ="12dp"/>
+
+
     </android.support.design.widget.CoordinatorLayout>
 </layout>

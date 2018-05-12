@@ -37,7 +37,8 @@
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_marginTop="0dp">
 
         <include android:id="@+id/articles" layout="@layout/article_list" />
     </FrameLayout>

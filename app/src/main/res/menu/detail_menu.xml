@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/nav_tts"
+        android:icon="@drawable/baseline_headset_24px"
+        android:title="Text to Speech"
+        android:orderInCategory="1"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/nav_share_article"
+        android:icon="@drawable/baseline_share_24px"
+        android:title="Text to Speech"
+        android:orderInCategory="2"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/nav_more"
+        android:icon="@drawable/baseline_share_24px"
+        android:title="Change Font Size"
+        android:orderInCategory="3"
+        app:showAsAction="never"
+        />
+</menu>

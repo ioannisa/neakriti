@@ -12,6 +12,8 @@ import org.simpleframework.xml.core.Commit;
 import java.util.Date;
 import java.util.List;
 
+import eu.anifantakis.neakriti.utils.AppUtils;
+
 @Root(name = "item", strict = false)
 public class Article implements Parcelable {
 
@@ -53,6 +55,8 @@ public class Article implements Parcelable {
     private void parseDates(){
         if (pubDateStr != null){
             // TODO Use a converter to store date representation from the date string
+            pubDate = AppUtils.feedDate(pubDateStr);
+            updated = AppUtils.feedDate(updatedStr);
         }
 
         if (imgThumbObj!=null) {
@@ -149,6 +153,22 @@ public class Article implements Parcelable {
 
     public void setGroupName(String groupName) {
         this.groupName = groupName;
+    }
+
+    public void setPubDateStr(String pubDateStr){
+        this.pubDateStr = pubDateStr;
+    }
+
+    public String getPubDateStr(){
+        return pubDateStr;
+    }
+
+    public void setUpdatedStr(String updatedStr){
+        this.updatedStr = updatedStr;
+    }
+
+    public String getUpdatedStr(){
+        return this.updatedStr;
     }
 
     protected Article(Parcel in) {
