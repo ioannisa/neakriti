@@ -17,6 +17,7 @@ import eu.anifantakis.neakriti.utils.AppUtils;
 @Root(name = "item", strict = false)
 public class Article implements Parcelable {
 
+    @Element(name = "guid", required = false)
     private int guid;
 
     @Element(name = "link", required = false)
@@ -30,11 +31,9 @@ public class Article implements Parcelable {
 
     @Element(name = "pubDate", required = false)
     private String pubDateStr;
-    private Date pubDate;
 
     @Element(name = "updated", required = false)
     private String updatedStr;
-    private Date updated;
 
     @Element(name = "pubDateGre", required = false)
     private String pubDateGre;
@@ -53,12 +52,6 @@ public class Article implements Parcelable {
 
     @Commit
     private void parseDates(){
-        if (pubDateStr != null){
-            // TODO Use a converter to store date representation from the date string
-            pubDate = AppUtils.feedDate(pubDateStr);
-            updated = AppUtils.feedDate(updatedStr);
-        }
-
         if (imgThumbObj!=null) {
             imgThumb = imgThumbObj.getUrl();
             imgLarge = imgLargeObj.getUrl();
@@ -97,22 +90,6 @@ public class Article implements Parcelable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Date getPubDate() {
-        return pubDate;
-    }
-
-    public void setPubDate(Date pubDate) {
-        this.pubDate = pubDate;
-    }
-
-    public Date getUpdated() {
-        return updated;
-    }
-
-    public void setUpdated(Date updated) {
-        this.updated = updated;
     }
 
     public String getPubDateGre() {
@@ -176,15 +153,8 @@ public class Article implements Parcelable {
         link = in.readString();
         title = in.readString();
         description = in.readString();
-
         pubDateStr = in.readString();
-        long pubDateLong = in.readLong();
-        if (pubDateLong>0) { pubDate = new Date(pubDateLong); } else{ pubDate = null; }
-
         updatedStr = in.readString();
-        long updatedLong = in.readLong();
-        if (updatedLong>0) { updated = new Date(updatedLong); } else{ updated = null; }
-
         pubDateGre = in.readString();
         enclosures = in.createStringArrayList();
         imgThumb = in.readString();
@@ -198,8 +168,8 @@ public class Article implements Parcelable {
         dest.writeString(link);
         dest.writeString(title);
         dest.writeString(description);
-        dest.writeString(pubDateStr); if (pubDate != null) { dest.writeLong( pubDate.getTime()); } else dest.writeLong(0);
-        dest.writeString(updatedStr); if (updated != null) { dest.writeLong( updated.getTime()); } else dest.writeLong(0);
+        dest.writeString(pubDateStr);
+        dest.writeString(updatedStr);
         dest.writeString(pubDateGre);
         dest.writeStringList(enclosures);
         dest.writeString(imgThumb);

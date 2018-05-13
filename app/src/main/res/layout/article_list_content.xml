@@ -26,8 +26,6 @@
                 android:layout_marginTop="0dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/row.thumb_description"
-                android:transitionName="@string/transition_photo"
-
                 tools:src="@drawable/backdrop_noimage" />
 
             <LinearLayout

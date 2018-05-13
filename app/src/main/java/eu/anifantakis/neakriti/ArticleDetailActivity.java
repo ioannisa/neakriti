@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
@@ -50,11 +51,16 @@ public class ArticleDetailActivity extends AppCompatActivity {
             }
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            detailActivityImage.setTransitionName(Integer.toString(mArticle.getGuid()));
+            Log.d("TRANSITION RECEIVED", Integer.toString(mArticle.getGuid()));
+        }
+
         if (detailActivityImage!=null) {
             Picasso.with(this)
-                    .load(mArticle.getImgLarge())
+                    .load(mArticle.getImgThumb())
                     .noFade()
-                    .placeholder(detailActivityImage.getDrawable())
+                    //.placeholder(detailActivityImage.getDrawable())
                     .into(detailActivityImage, new Callback() {
                         @Override
                         public void onSuccess() {

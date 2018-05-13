@@ -34,8 +34,7 @@
                         android:layout_height="wrap_content"
                         android:adjustViewBounds="true"
                         android:contentDescription="@string/detail.img_description"
-                        tools:src="@drawable/backdrop_noimage"
-                        android:transitionName="@string/transition_photo"/>
+                        tools:src="@drawable/backdrop_noimage"/>
 
                     <View
                         android:id="@+id/article_title"

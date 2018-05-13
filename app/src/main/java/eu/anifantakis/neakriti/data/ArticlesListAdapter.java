@@ -3,7 +3,9 @@ package eu.anifantakis.neakriti.data;
 import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -130,6 +132,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
     public void onBindViewHolder(@NonNull ArticleViewHolder holder, int position) {
         Article article = collection.getArticle(position);
 
+        ViewCompat.setTransitionName (holder.getImageView(), Integer.toString(article.getGuid()));
         holder.setTitle(article.getTitle());
         holder.setImage(article.getImgThumb());
         holder.setDateStr(article.getPubDateStr());
@@ -192,6 +195,10 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
                         .load(image)
                         .into(binding.rowIvArticleThumb);
             }
+        }
+
+        ImageView getImageView(){
+            return binding.rowIvArticleThumb;
         }
 
         void setDateStr(String dateStr){

@@ -17,6 +17,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -168,17 +169,22 @@ public class ArticleListActivity extends AppCompatActivity implements
             article.setGroupName(feedName);
             intent.putExtra(AppUtils.EXTRAS_ARTICLE, article);
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+                Log.d("TRANSITION NAME", ViewCompat.getTransitionName(sharedImage));
+            }
+
             Bitmap bm=((BitmapDrawable)sharedImage.getDrawable()).getBitmap();
             intent.putExtra(AppUtils.EXTRAS_LOW_RES_BITMAP, bm);
 
             // bundle for the transition effect
             Bundle bundle = null;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 bundle = ActivityOptionsCompat
                         .makeSceneTransitionAnimation(
                                 this,
                                 sharedImage,
-                                sharedImage.getTransitionName()
+                                ViewCompat.getTransitionName(sharedImage) //sharedImage.getTransitionName()
                         ).toBundle();
 
                 startActivity(intent, bundle);
