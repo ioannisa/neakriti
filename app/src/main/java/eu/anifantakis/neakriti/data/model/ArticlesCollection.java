@@ -3,11 +3,7 @@ package eu.anifantakis.neakriti.data.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.Root;
-
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ArticlesCollection implements Parcelable {

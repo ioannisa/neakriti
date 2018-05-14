@@ -30,12 +30,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 
-import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
@@ -70,6 +67,8 @@ import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
+
+import static eu.anifantakis.neakriti.utils.AppUtils.sRadioPlayer;
 
 
 public class ArticleListActivity extends AppCompatActivity implements
@@ -127,10 +126,11 @@ public class ArticleListActivity extends AppCompatActivity implements
                 exoPlayerIsPlaying = savedInstanceState.getBoolean(STATE_EXO_PLAYER_RADIO_PLAYING);
 
             if (exoPlayerIsPlaying){
+                btnRadio.setImageResource(R.drawable.btn_radio_pause);
+                /*
                 Picasso.with(this)
                         .load(R.drawable.btn_radio_pause)
-                        .into(btnRadio);
-                //btnRadio.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.btn_radio_pause), null, null, null);
+                        .into(btnRadio);*/
             }
         }
         else{
@@ -432,24 +432,33 @@ public class ArticleListActivity extends AppCompatActivity implements
         startActivity(intent);
     }
 
-    private SimpleExoPlayer mExoPlayer;
     public void liveStreamRadioClicked(View view){
-        mExoPlayer.setPlayWhenReady(!exoPlayerIsPlaying);
+        sRadioPlayer.setPlayWhenReady(!exoPlayerIsPlaying);
+        if (exoPlayerIsPlaying){
+            Picasso.with(this)
+                    .load(R.drawable.btn_radio_pause)
+                    .into(btnRadio);
+        }
+        else{
+            Picasso.with(this)
+                    .load(R.drawable.btn_radio)
+                    .into(btnRadio);
+        }
     }
 
     private void initializeRadioExoPlayer(){
-        if (mExoPlayer == null){
+        if (sRadioPlayer == null){
             TrackSelector trackSelector = new DefaultTrackSelector(
                     new AdaptiveTrackSelection.Factory(
                             new DefaultBandwidthMeter()
                     )
             );
 
-            mExoPlayer = ExoPlayerFactory.newSimpleInstance(
+            sRadioPlayer = ExoPlayerFactory.newSimpleInstance(
                     getApplicationContext(),
                     trackSelector
             );
-            mExoPlayer.addListener(this);
+            sRadioPlayer.addListener(this);
 
             String userAgent = Util.getUserAgent(getApplicationContext(), "rssreadernk");
 
@@ -465,8 +474,8 @@ public class ArticleListActivity extends AppCompatActivity implements
                     null
             );
 
-            mExoPlayer.prepare(source);
-            //mExoPlayer.setPlayWhenReady(true);
+            sRadioPlayer.prepare(source);
+            //sRadioPlayer.setPlayWhenReady(true);
 
         }
     }
@@ -491,18 +500,10 @@ public class ArticleListActivity extends AppCompatActivity implements
         if((playbackState == Player.STATE_READY) && playWhenReady){
             Log.d("RssReader", "onPlayerStateChanged: PLAYING");
             exoPlayerIsPlaying=true;
-            Picasso.with(this)
-                    .load(R.drawable.btn_radio_pause)
-                    .into(btnRadio);
-            //btnRadio.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.btn_radio_pause), null, null, null);
             //makeNotification();
         } else if((playbackState == Player.STATE_READY)){
             Log.d("RssReader", "onPlayerStateChanged: PAUSED");
             exoPlayerIsPlaying=false;
-            Picasso.with(this)
-                    .load(R.drawable.btn_radio)
-                    .into(btnRadio);
-            //btnRadio.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.btn_radio), null, null, null);
             //if (mNotificationManager!=null)
             //    mNotificationManager.cancel(NOTIFICATION_RADIO984_ID);
         }

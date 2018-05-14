@@ -2,17 +2,12 @@ package eu.anifantakis.neakriti.data.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
-import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.core.Commit;
 
-import java.util.Date;
 import java.util.List;
-
-import eu.anifantakis.neakriti.utils.AppUtils;
 
 @Root(name = "item", strict = false)
 public class Article implements Parcelable {

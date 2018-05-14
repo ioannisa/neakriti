@@ -6,15 +6,17 @@ import android.view.animation.Animation;
 import android.view.animation.LayoutAnimationController;
 import android.view.animation.TranslateAnimation;
 
+import com.google.android.exoplayer2.SimpleExoPlayer;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 
 public final class AppUtils {
+    public static SimpleExoPlayer sRadioPlayer;
+
     // no instances of App Utils are allowed
     private AppUtils() {}
 

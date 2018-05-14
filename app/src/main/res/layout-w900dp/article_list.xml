@@ -18,9 +18,9 @@
             android:layout_width="@dimen/item_width"
             android:layout_height="match_parent"
             android:orientation="vertical">
-<!--
+
             <include android:id="@+id/inc_live_panel" layout="@layout/live_panel" />
--->
+
             <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/main_layout_swipe"
                 android:layout_width="@dimen/item_width"
