@@ -1,5 +1,11 @@
 package eu.anifantakis.neakriti.utils;
 
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.LayoutAnimationController;
+import android.view.animation.TranslateAnimation;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -75,5 +81,94 @@ public final class AppUtils {
             e1.printStackTrace();
         }
         return dayStr+" "+dateStr;
+    }
+
+    /**
+     * Create Animation for sliding down views (useful to slide down to the live view)
+     * @param panel
+     * @param hidepanel_at_end
+     */
+    public static void setLayoutAnim_slidedown(final ViewGroup panel, final boolean hidepanel_at_end) {
+
+        //AnimationSet set = new AnimationSet(true);
+
+        Animation animation = new TranslateAnimation(
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+                0.0f, Animation.RELATIVE_TO_SELF, -1.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f);
+        animation.setDuration(300);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+
+
+            public void onAnimationStart(Animation animation) {
+                // TODO Auto-generated method stub
+            }
+
+
+            public void onAnimationRepeat(Animation animation) {
+                // TODO Auto-generated method stub
+            }
+
+
+            public void onAnimationEnd(Animation animation) {
+                // TODO Auto-generated method stub
+                if (hidepanel_at_end)
+                    panel.setVisibility(View.GONE);
+            }
+        });
+        //set.addAnimation(animation);
+
+        LayoutAnimationController controller = new LayoutAnimationController(
+                animation, 0.25f);
+
+        panel.setLayoutAnimation(controller);
+    }
+
+    /**
+     * Create Animation for sliding up views (useful to slide up the live view)
+     * @param panel
+     * @param hidepanel_at_end
+     */
+    public static void setLayoutAnim_slideup(final ViewGroup panel, final boolean hidepanel_at_end) {
+
+        //AnimationSet set = new AnimationSet(true);
+
+        /*
+         * Animation animation = new AlphaAnimation(1.0f, 0.0f);
+         * animation.setDuration(200); set.addAnimation(animation);
+         */
+
+        Animation animation = new TranslateAnimation(
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+                0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, -1.0f);
+        animation.setDuration(300);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+
+
+            public void onAnimationStart(Animation animation) {
+                // TODO Auto-generated method stub
+
+            }
+
+
+            public void onAnimationRepeat(Animation animation) {
+                // TODO Auto-generated method stub
+
+            }
+
+
+            public void onAnimationEnd(Animation animation) {
+                // MapContacts.this.mapviewgroup.setVisibility(View.INVISIBLE);
+                // TODO Auto-generated method stub
+                if (hidepanel_at_end)
+                    panel.setVisibility(View.GONE);
+            }
+        });
+        //set.addAnimation(animation);
+
+        LayoutAnimationController controller = new LayoutAnimationController(
+                animation, 0.25f);
+        panel.setLayoutAnimation(controller);
     }
 }

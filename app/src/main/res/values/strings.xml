@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">playground1</string>
+    <string name="app_name">neakriti</string>
     <string name="title_article_detail">Article Detail</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -12,5 +12,17 @@
     <string name="transition_photo" translatable="false">transition_photo</string>
     <string name="row.thumb_description">Article Thumbnail</string>
     <string name="detail.img_description">Article Image</string>
+
+    <string name="nav_home">Αρχική</string>
+    <string name="nav_crete">Κρήτη</string>
+    <string name="nav_views">Απόψεις</string>
+    <string name="nav_economy">Οικονομία</string>
+    <string name="nav_culture">Πολιτισμός</string>
+    <string name="nav_pioneering">Καινοτομία</string>
+    <string name="nav_sports">Αθλητισμός</string>
+    <string name="nav_lifestyle">Lifestyle</string>
+    <string name="nav_health">Υγεία</string>
+    <string name="nav_woman">Γυναίκα</string>
+    <string name="nav_travel">Ταξίδια</string>
 
 </resources>

@@ -8,10 +8,10 @@ import android.content.Loader;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -29,13 +29,35 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
 import org.simpleframework.xml.convert.AnnotationStrategy;
 import org.simpleframework.xml.core.Persister;
 
 import java.io.IOException;
-import java.util.List;
 
 import eu.anifantakis.neakriti.data.ArticlesListAdapter;
 import eu.anifantakis.neakriti.data.RequestInterface;
@@ -46,8 +68,6 @@ import eu.anifantakis.neakriti.databinding.ActivityArticleListBinding;
 import eu.anifantakis.neakriti.utils.AppUtils;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
@@ -56,7 +76,8 @@ public class ArticleListActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         ArticlesListAdapter.ArticleItemClickListener,
         LoaderManager.LoaderCallbacks<ArticlesCollection>,
-        SwipeRefreshLayout.OnRefreshListener {
+        SwipeRefreshLayout.OnRefreshListener,
+        Player.EventListener{
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -69,11 +90,18 @@ public class ArticleListActivity extends AppCompatActivity implements
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private Retrofit retrofit;
+    private ViewGroup liveView;
     private static ArticlesCollection cachedCollection = null;
+    private ImageView btnRadio;
+    private ImageView btnTv;
+    private static boolean exoPlayerIsPlaying = false;
 
     private static final int ARTICLES_FEED_LOADER = 0;
     private static final String LOADER_SRVID = "LOADER_SRVID";
     private static final String LOADER_ITEMS_COUNT = "LOADER_ITEMS_COUNT";
+    private static final String CACHED_COLLECTION = "CACHED_COLLECTION";
+    private static final String LIVE_PANEL_VISIBILITY = "LIVE_PANEL_VISIBILITY";
+    private static final String STATE_EXO_PLAYER_RADIO_PLAYING = "exo_player_radio_playing";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +113,28 @@ public class ArticleListActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
         //toolbar.setTitle(getTitle());
 
+        btnRadio = binding.masterView.articles.incLivePanel.btnLiveRadio;
+        btnTv = binding.masterView.articles.incLivePanel.btnLiveTv;
+        initializeRadioExoPlayer();
+
+        liveView = binding.masterView.articles.incLivePanel.liveView;
+
         if (savedInstanceState!=null){
-            cachedCollection = savedInstanceState.getParcelable("xx");
+            cachedCollection = savedInstanceState.getParcelable(CACHED_COLLECTION);
+            liveView.setVisibility(savedInstanceState.getInt(LIVE_PANEL_VISIBILITY));
+
+            if (savedInstanceState.containsKey(STATE_EXO_PLAYER_RADIO_PLAYING))
+                exoPlayerIsPlaying = savedInstanceState.getBoolean(STATE_EXO_PLAYER_RADIO_PLAYING);
+
+            if (exoPlayerIsPlaying){
+                Picasso.with(this)
+                        .load(R.drawable.btn_radio_pause)
+                        .into(btnRadio);
+                //btnRadio.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.btn_radio_pause), null, null, null);
+            }
+        }
+        else{
+            liveView.setVisibility(View.GONE);
         }
 
         FloatingActionButton fab = binding.masterView.fab;
@@ -97,7 +145,6 @@ public class ArticleListActivity extends AppCompatActivity implements
                         .setAction("Action", null).show();
             }
         });
-
 
         //if (findViewById(R.id.article_detail_container) != null) {
         if (binding.masterView.articles.articleDetailContainer != null){
@@ -293,12 +340,33 @@ public class ArticleListActivity extends AppCompatActivity implements
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        if (id == R.id.action_live){
+            switchLivePanelVisibility();
+        }
+
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        else if (id == R.id.action_settings) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Changes the livePanel's visibility from visible to gone with an animation
+     */
+    private void switchLivePanelVisibility(){
+        liveView.clearAnimation();
+        liveView.invalidate();
+
+        if (liveView.getVisibility()==View.GONE){
+            liveView.setVisibility(View.VISIBLE);
+            AppUtils.setLayoutAnim_slidedown(liveView, false);
+        }
+        else{
+            liveView.setVisibility(View.GONE);
+            AppUtils.setLayoutAnim_slideup(liveView, true);
+        }
     }
 
     private static String feedName = "";
@@ -311,27 +379,29 @@ public class ArticleListActivity extends AppCompatActivity implements
         int id = item.getItemId();
         cachedCollection = null;
 
-        if (id == R.id.nav_camera) {
-            feedSrvid = "127";
-            feedItems = 25;
-            feedName = "Αρχική";
-        } else if (id == R.id.nav_gallery) {
-            feedSrvid = "159";
-            feedItems = 25;
-            feedName = "Οικονομία";
-        } else if (id == R.id.nav_slideshow) {
-            feedSrvid = "225";
-            feedItems = 25;
-            feedName = "Αθλητισμός";
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
+        if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
 
         }
+        else {
+            feedItems = 25;
+            feedName = item.getTitle().toString();
 
-        makeArticlesLoaderQuery(feedSrvid, feedItems);
+            if (id == R.id.nav_home)            { feedSrvid = "127"; }
+            else if (id == R.id.nav_crete)      { feedSrvid = "95"; }
+            else if (id == R.id.nav_views)      { feedSrvid = "322"; }
+            else if (id == R.id.nav_economy)    { feedSrvid = "159"; }
+            else if (id == R.id.nav_culture)    { feedSrvid = "116"; }
+            else if (id == R.id.nav_pioneering) { feedSrvid = "131"; }
+            else if (id == R.id.nav_sports)     { feedSrvid = "225"; }
+            else if (id == R.id.nav_lifestyle)  { feedSrvid = "133"; }
+            else if (id == R.id.nav_health)     { feedSrvid = "115"; }
+            else if (id == R.id.nav_woman)      { feedSrvid = "128"; }
+            else if (id == R.id.nav_travel)     { feedSrvid = "263"; }
+
+            makeArticlesLoaderQuery(feedSrvid, feedItems);
+        }
 
         DrawerLayout drawer = binding.drawerLayout;// (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -348,10 +418,123 @@ public class ArticleListActivity extends AppCompatActivity implements
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putParcelable("xx", cachedCollection);
+        outState.putParcelable(CACHED_COLLECTION, cachedCollection);
+        outState.putInt(LIVE_PANEL_VISIBILITY, liveView.getVisibility());
+        outState.putBoolean(STATE_EXO_PLAYER_RADIO_PLAYING, exoPlayerIsPlaying);
     }
 
     public void actionUpClicked(View view) {
         super.onBackPressed();
+    }
+
+    public void liveStreamTVClicked(View view){
+        Intent intent = new Intent(this, TVStreamActivity.class);
+        startActivity(intent);
+    }
+
+    private SimpleExoPlayer mExoPlayer;
+    public void liveStreamRadioClicked(View view){
+        mExoPlayer.setPlayWhenReady(!exoPlayerIsPlaying);
+    }
+
+    private void initializeRadioExoPlayer(){
+        if (mExoPlayer == null){
+            TrackSelector trackSelector = new DefaultTrackSelector(
+                    new AdaptiveTrackSelection.Factory(
+                            new DefaultBandwidthMeter()
+                    )
+            );
+
+            mExoPlayer = ExoPlayerFactory.newSimpleInstance(
+                    getApplicationContext(),
+                    trackSelector
+            );
+            mExoPlayer.addListener(this);
+
+            String userAgent = Util.getUserAgent(getApplicationContext(), "rssreadernk");
+
+            MediaSource source = new ExtractorMediaSource(
+                    Uri.parse("http://eco.onestreaming.com:8237/live"),
+                    new OkHttpDataSourceFactory(
+                            new OkHttpClient(),
+                            userAgent,
+                            null
+                    ),
+                    new DefaultExtractorsFactory(),
+                    null,
+                    null
+            );
+
+            mExoPlayer.prepare(source);
+            //mExoPlayer.setPlayWhenReady(true);
+
+        }
+    }
+
+    @Override
+    public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
+
+    }
+
+    @Override
+    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+
+    }
+
+    @Override
+    public void onLoadingChanged(boolean isLoading) {
+
+    }
+
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        if((playbackState == Player.STATE_READY) && playWhenReady){
+            Log.d("RssReader", "onPlayerStateChanged: PLAYING");
+            exoPlayerIsPlaying=true;
+            Picasso.with(this)
+                    .load(R.drawable.btn_radio_pause)
+                    .into(btnRadio);
+            //btnRadio.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.btn_radio_pause), null, null, null);
+            //makeNotification();
+        } else if((playbackState == Player.STATE_READY)){
+            Log.d("RssReader", "onPlayerStateChanged: PAUSED");
+            exoPlayerIsPlaying=false;
+            Picasso.with(this)
+                    .load(R.drawable.btn_radio)
+                    .into(btnRadio);
+            //btnRadio.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.btn_radio), null, null, null);
+            //if (mNotificationManager!=null)
+            //    mNotificationManager.cancel(NOTIFICATION_RADIO984_ID);
+        }
+    }
+
+    @Override
+    public void onRepeatModeChanged(int repeatMode) {
+
+    }
+
+    @Override
+    public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
+
+    }
+
+    @Override
+    public void onPlayerError(ExoPlaybackException error) {
+
+    }
+
+    @Override
+    public void onPositionDiscontinuity(int reason) {
+
+    }
+
+    @Override
+    public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+
+    }
+
+    @Override
+    public void onSeekProcessed() {
+
     }
 }

@@ -5,21 +5,49 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home"
+            android:title="@string/nav_home" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:id="@+id/nav_crete"
+            android:icon="@drawable/map_marker"
+            android:title="@string/nav_crete" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:id="@+id/nav_views"
+            android:icon="@drawable/message_text"
+            android:title="@string/nav_views" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/nav_economy"
+            android:icon="@drawable/currency_eur"
+            android:title="@string/nav_economy" />
+        <item
+            android:id="@+id/nav_culture"
+            android:icon="@drawable/school"
+            android:title="@string/nav_culture" />
+        <item
+            android:id="@+id/nav_pioneering"
+            android:icon="@drawable/satellite_variant"
+            android:title="@string/nav_pioneering" />
+        <item
+            android:id="@+id/nav_sports"
+            android:icon="@drawable/soccer"
+            android:title="@string/nav_sports" />
+        <item
+            android:id="@+id/nav_lifestyle"
+            android:icon="@drawable/tie"
+            android:title="@string/nav_lifestyle" />
+        <item
+            android:id="@+id/nav_health"
+            android:icon="@drawable/hospital"
+            android:title="@string/nav_health" />
+        <item
+            android:id="@+id/nav_woman"
+            android:icon="@drawable/gender_female"
+            android:title="@string/nav_woman" />
+        <item
+            android:id="@+id/nav_travel"
+            android:icon="@drawable/wallet_travel"
+            android:title="@string/nav_travel" />
     </group>
 
     <item android:title="Communicate">
