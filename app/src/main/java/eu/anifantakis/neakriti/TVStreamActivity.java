@@ -3,6 +3,7 @@ package eu.anifantakis.neakriti;
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,9 +13,15 @@ import android.view.WindowManager;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.drm.DrmInitData;
+import com.google.android.exoplayer2.drm.DrmSession;
+import com.google.android.exoplayer2.drm.DrmSessionManager;
+import com.google.android.exoplayer2.drm.FrameworkMediaCrypto;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
@@ -30,6 +37,9 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
 import in.championswimmer.sfg.lib.SimpleFingerGestures;
+
+import static com.google.android.exoplayer2.DefaultRenderersFactory.DEFAULT_ALLOWED_VIDEO_JOINING_TIME_MS;
+import static com.google.android.exoplayer2.DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF;
 
 public class TVStreamActivity extends AppCompatActivity {
 
@@ -119,8 +129,28 @@ public class TVStreamActivity extends AppCompatActivity {
         TrackSelector trackSelector = new DefaultTrackSelector(videoFactory);
         LoadControl loadControl = new DefaultLoadControl();
 
+        // Create DrmSessionManager and RenderersFactory
+        DrmSessionManager<FrameworkMediaCrypto> drmSessionManager = new DrmSessionManager<FrameworkMediaCrypto>() {
+            @Override
+            public boolean canAcquireSession(DrmInitData drmInitData) {
+                return false;
+            }
+
+            @Override
+            public DrmSession<FrameworkMediaCrypto> acquireSession(Looper playbackLooper, DrmInitData drmInitData) {
+                return null;
+            }
+
+            @Override
+            public void releaseSession(DrmSession<FrameworkMediaCrypto> drmSession) {
+
+            }
+        };
+        RenderersFactory renderersFactory = new DefaultRenderersFactory(this, drmSessionManager,
+                DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF, 0);
+
         // Create Player
-        mExoPlayer = ExoPlayerFactory.newSimpleInstance(getApplicationContext(), trackSelector, loadControl);
+        mExoPlayer = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, loadControl);
 
         // attach player view on player object
         videoView.setPlayer(mExoPlayer);
@@ -135,9 +165,11 @@ public class TVStreamActivity extends AppCompatActivity {
                 1800000,
                 true);
 
+
         Uri url = Uri.parse("http://live.cretetv.gr:1935/cretetv/myStream/playlist.m3u8");
-        HlsMediaSource mediaSource = new HlsMediaSource(url, dataSourceFactory, 1800000,
-                mHandler, null);
+        HlsMediaSource mediaSource = new HlsMediaSource.Factory(dataSourceFactory)
+                .setAllowChunklessPreparation(true)
+                .createMediaSource(url, mHandler, null);
 
         if (position>0)
             mExoPlayer.seekTo(position);
