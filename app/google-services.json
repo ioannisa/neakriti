@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "538065719385-qkfan92a1r9qnbih89k74e98fu2ijhrj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ioannisa.rssreadernk",
+            "certificate_hash": "8b7f2c41f4b8c78e785c9860d541ded8a2bdb5fe"
+          }
+        },
+        {
           "client_id": "538065719385-r5797tdh533q8elflugu0cchbab3s93p.apps.googleusercontent.com",
           "client_type": 3
         },
@@ -30,14 +38,59 @@
       ],
       "services": {
         "analytics_service": {
-          "status": 2,
-          "analytics_property": {
-            "tracking_id": "UA-76225746-1"
-          }
+          "status": 1
         },
         "appinvite_service": {
           "status": 1,
           "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:538065719385:android:f1c493676f0e5fd1",
+        "android_client_info": {
+          "package_name": "eu.anifantakis.neakriti"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "538065719385-dq2n296u797asttr2kf2pakcq6cqcl8m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "eu.anifantakis.neakriti",
+            "certificate_hash": "8b7f2c41f4b8c78e785c9860d541ded8a2bdb5fe"
+          }
+        },
+        {
+          "client_id": "538065719385-r5797tdh533q8elflugu0cchbab3s93p.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "538065719385-t0j0ogc5qgqhae86bv47dbq1blvuf32q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3FHi3uQbJ6haq0wQuGijwduG0CJDTUCA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "538065719385-r5797tdh533q8elflugu0cchbab3s93p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
