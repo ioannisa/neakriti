@@ -25,4 +25,10 @@
     <string name="nav_woman">Γυναίκα</string>
     <string name="nav_travel">Ταξίδια</string>
 
+    <!--
+    <string name="unitID_bottom" translatable="false">ca-app-pub-2829208774884013/3884082301</string>
+    <string name="admob_app_id" translatable="false">ca-app-pub-2829208774884013~8453882708</string>
+    -->
+    <string name="unitID_bottom" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+
 </resources>

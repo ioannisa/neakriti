@@ -2,10 +2,20 @@
 <layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#eee"
         android:orientation="vertical">
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="680dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#fff"
+        android:elevation="4dp"
+        android:layout_centerHorizontal="true">
 
 
         <LinearLayout
@@ -66,10 +76,35 @@
             android:scrollbarStyle="insideOverlay"
             android:visibility="gone" />
 
+
+                <RelativeLayout
+                    android:id="@+id/detailAdViewLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingBottom="15dp"
+                    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+            <com.google.android.gms.ads.AdView
+                xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                ads:adUnitId="@string/unitID_bottom"
+                android:layout_gravity="center|bottom"
+
+                ads:adSize="BANNER"/>
+
+            </RelativeLayout>
+
             </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>
 
     </LinearLayout>
+
+    </RelativeLayout>
 
 </layout>

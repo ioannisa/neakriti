@@ -14,6 +14,9 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import eu.anifantakis.neakriti.data.model.Article;
 import eu.anifantakis.neakriti.utils.AppUtils;
 
@@ -26,6 +29,7 @@ import eu.anifantakis.neakriti.utils.AppUtils;
 public class ArticleDetailFragment extends Fragment {
     private Article mArticle;
     private WebView mWebView;
+    private AdView adView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -106,11 +110,21 @@ public class ArticleDetailFragment extends Fragment {
             mWebView.loadDataWithBaseURL(null, webStory, "text/html", "UTF-8", null);
 
 
+            adView = (AdView) rootView.findViewById(R.id.adView);
 
             //((TextView) rootView.findViewById(R.id.article_detail_text)).setText(webStory);
         }
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // fetch google ads
+        AdRequest adRequest = new AdRequest.Builder()
+                .setRequestAgent("android_studio:ad_template").build();
+        adView.loadAd(adRequest);
     }
 
     @Override
