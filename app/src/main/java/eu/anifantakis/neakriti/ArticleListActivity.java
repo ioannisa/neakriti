@@ -93,6 +93,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     private static ArticlesCollection cachedCollection = null;
     private ImageView btnRadio;
     private ImageView btnTv;
+    private  boolean clickedAtLeastOneItem = false;
     private static boolean exoPlayerIsPlaying = false;
 
     private static final int ARTICLES_FEED_LOADER = 0;
@@ -101,6 +102,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     private static final String CACHED_COLLECTION = "CACHED_COLLECTION";
     private static final String LIVE_PANEL_VISIBILITY = "LIVE_PANEL_VISIBILITY";
     private static final String STATE_EXO_PLAYER_RADIO_PLAYING = "exo_player_radio_playing";
+    private static final String STATE_CLICKED_AN_ITEM = "STATE_CLICKED_AN_ITEM";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,15 +124,14 @@ public class ArticleListActivity extends AppCompatActivity implements
             cachedCollection = savedInstanceState.getParcelable(CACHED_COLLECTION);
             liveView.setVisibility(savedInstanceState.getInt(LIVE_PANEL_VISIBILITY));
 
-            if (savedInstanceState.containsKey(STATE_EXO_PLAYER_RADIO_PLAYING))
+            if (savedInstanceState.containsKey(STATE_EXO_PLAYER_RADIO_PLAYING)) {
                 exoPlayerIsPlaying = savedInstanceState.getBoolean(STATE_EXO_PLAYER_RADIO_PLAYING);
-
+            }
             if (exoPlayerIsPlaying){
                 btnRadio.setImageResource(R.drawable.btn_radio_pause);
-                /*
-                Picasso.with(this)
-                        .load(R.drawable.btn_radio_pause)
-                        .into(btnRadio);*/
+            }
+            if (savedInstanceState.containsKey(STATE_CLICKED_AN_ITEM)) {
+                clickedAtLeastOneItem = savedInstanceState.getBoolean(STATE_CLICKED_AN_ITEM);
             }
         }
         else{
@@ -153,6 +154,10 @@ public class ArticleListActivity extends AppCompatActivity implements
             // If this view is present, then the
             // activity should be in two-pane mode.
             mTwoPane = true;
+        }
+
+        if (mTwoPane && !clickedAtLeastOneItem){
+            binding.masterView.articles.articleDetailContainer.setVisibility(View.GONE);
         }
 
         DrawerLayout drawer = binding.drawerLayout;// (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -214,6 +219,12 @@ public class ArticleListActivity extends AppCompatActivity implements
         String title = mArticlesListAdapter.getArticleAtIndex(clickedItemIndex).getTitle();
         Article article = mArticlesListAdapter.getArticleAtIndex(clickedItemIndex);
 
+        // display in the Two Pane version (tablet) the middle area where the article will be displayed
+        if (!clickedAtLeastOneItem) {
+            binding.masterView.articles.articleDetailContainer.setVisibility(View.VISIBLE);
+            clickedAtLeastOneItem = true;
+        }
+
         if (mTwoPane) {
             Bundle arguments = new Bundle();
             arguments.putParcelable(AppUtils.EXTRAS_ARTICLE, article);
@@ -255,6 +266,8 @@ public class ArticleListActivity extends AppCompatActivity implements
 
 
     private void makeArticlesLoaderQuery(String srvid, int items){
+
+
 
         Bundle bundle = new Bundle();
         bundle.putString(LOADER_SRVID, srvid);
@@ -432,6 +445,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         outState.putParcelable(CACHED_COLLECTION, cachedCollection);
         outState.putInt(LIVE_PANEL_VISIBILITY, liveView.getVisibility());
         outState.putBoolean(STATE_EXO_PLAYER_RADIO_PLAYING, exoPlayerIsPlaying);
+        outState.putBoolean(STATE_CLICKED_AN_ITEM, clickedAtLeastOneItem);
     }
 
     public void actionUpClicked(View view) {

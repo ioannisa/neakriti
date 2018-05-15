@@ -54,7 +54,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
 
         if (detailActivityImage!=null) {
             Picasso.with(this)
-                    .load(mArticle.getImgThumb())
+                    .load(mArticle.getImgLarge())
                     .noFade()
                     //.placeholder(detailActivityImage.getDrawable())
                     .into(detailActivityImage, new Callback() {

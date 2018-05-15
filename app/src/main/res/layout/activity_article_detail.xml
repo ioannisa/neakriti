@@ -18,7 +18,7 @@
                 android:id="@+id/toolbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:contentScrim="?attr/colorPrimary"
+                app:contentScrim="@color/colorPrimary"
                 app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
                 <FrameLayout
