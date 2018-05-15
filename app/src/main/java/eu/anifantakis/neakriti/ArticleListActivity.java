@@ -192,6 +192,17 @@ public class ArticleListActivity extends AppCompatActivity implements
         makeArticlesLoaderQuery(feedSrvid, feedItems);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // we don't want the selection to remain visible via article row color when we are on phone
+        // when we come back from the detail activity.  This is useful only on tablets
+        if (!mTwoPane) {
+            mArticlesListAdapter.clearRowSelection();
+        }
+    }
+
     /**
      * Interface implementation (defined in the adapter) for the clicking of an item in the articles recycler view
      * @param clickedItemIndex

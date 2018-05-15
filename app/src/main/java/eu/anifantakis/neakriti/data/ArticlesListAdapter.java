@@ -32,6 +32,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
     private ArticlesCollection collection;
     private static Picasso picassoCached = null;
     private Activity mActivity;
+    private int selectedPosition = -1;
 
     final private ArticleItemClickListener mOnClickListener;
 
@@ -135,12 +136,23 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
         holder.setTitle(article.getTitle());
         holder.setImage(article.getImgThumb());
         holder.setDateStr(article.getPubDateStr());
+
+        holder.binding.articleRow.setSelected((position==selectedPosition));
     }
 
     @Override
     public int getItemCount() {
         if (null == collection) return 0;
         return collection.getCollectionSize();
+    }
+
+    /**
+     * Removes selection from current row
+     * Useful to remove visually the selection of a row
+     */
+    public void clearRowSelection(){
+        selectedPosition = -1;
+        notifyDataSetChanged();;
     }
 
     public void clearCollection(){
@@ -206,8 +218,9 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
 
         @Override
         public void onClick(View view) {
-            int clickedPosition = getAdapterPosition();
-            mOnClickListener.onArticleItemClick(clickedPosition, binding.rowIvArticleThumb);
+            selectedPosition = getAdapterPosition();
+            mOnClickListener.onArticleItemClick(selectedPosition, binding.rowIvArticleThumb);
+            notifyDataSetChanged();
         }
     }
 }
