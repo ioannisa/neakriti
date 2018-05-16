@@ -1,30 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorPrimary</item>
-    </style>
 
-    <style name="AppTheme.DarkActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorPrimary</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="article_title_on_poster">
         <item name="android:layout_gravity">bottom|center_horizontal</item>
@@ -34,12 +11,26 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="movie_title_on_detail_poster">
+    <style name="poster_shader">
         <item name="android:layout_gravity">bottom|center_horizontal</item>
         <item name="android:gravity">bottom|center</item>
         <item name="android:background">@drawable/photo_background_protection_reversed</item>
         <item name="android:padding">8dp</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
+
+
+
+
+
+
+    <!-- CUSTOM STYLES -->
+
+    <style name="upperlogogray">
+        <item name="android:paddingTop">2sp</item>
+        <item name="android:paddingBottom">2sp</item>
+        <item name="android:background">@drawable/upperlogogray</item>
+    </style>
+
 
 </resources>

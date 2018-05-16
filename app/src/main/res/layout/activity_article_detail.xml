@@ -38,7 +38,7 @@
 
                     <View
                         android:id="@+id/article_title"
-                        style="@style/movie_title_on_detail_poster"
+                        style="@style/poster_shader"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
 

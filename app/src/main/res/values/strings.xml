@@ -4,8 +4,8 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">neakriti news agency</string>
+    <string name="nav_header_subtitle">info@neakriti.gr</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
@@ -25,10 +25,6 @@
     <string name="nav_woman">Γυναίκα</string>
     <string name="nav_travel">Ταξίδια</string>
 
-    <!--
-    <string name="unitID_bottom" translatable="false">ca-app-pub-2829208774884013/3884082301</string>
-    <string name="admob_app_id" translatable="false">ca-app-pub-2829208774884013~8453882708</string>
-    -->
     <string name="unitID_bottom" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
 
 </resources>

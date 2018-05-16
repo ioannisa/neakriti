@@ -31,6 +31,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -93,9 +94,9 @@ public class ArticleListActivity extends AppCompatActivity implements
     private ViewGroup liveView;
     private static ArticlesCollection cachedCollection = null;
     private ImageView btnRadio;
-    private ImageView btnTv;
     private  boolean clickedAtLeastOneItem = false;
     private static boolean exoPlayerIsPlaying = false;
+    private TextView feedCategoryTitle;
 
     private static final int ARTICLES_FEED_LOADER = 0;
     private static final String LOADER_SRVID = "LOADER_SRVID";
@@ -118,8 +119,8 @@ public class ArticleListActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
         //toolbar.setTitle(getTitle());
 
+        feedCategoryTitle = binding.masterView.articles.incLivePanel.feedCategoryTitle;
         btnRadio = binding.masterView.articles.incLivePanel.btnLiveRadio;
-        btnTv = binding.masterView.articles.incLivePanel.btnLiveTv;
         initializeRadioExoPlayer();
 
         liveView = binding.masterView.articles.incLivePanel.liveView;
@@ -224,7 +225,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         Article article = mArticlesListAdapter.getArticleAtIndex(clickedItemIndex);
 
         // display in the Two Pane version (tablet) the middle area where the article will be displayed
-        if (!clickedAtLeastOneItem) {
+        if (mTwoPane && !clickedAtLeastOneItem) {
             binding.masterView.articles.articleDetailContainer.setVisibility(View.VISIBLE);
             clickedAtLeastOneItem = true;
         }
@@ -270,12 +271,11 @@ public class ArticleListActivity extends AppCompatActivity implements
 
 
     private void makeArticlesLoaderQuery(String srvid, int items){
-
-
-
         Bundle bundle = new Bundle();
         bundle.putString(LOADER_SRVID, srvid);
         bundle.putInt(LOADER_ITEMS_COUNT, items);
+
+        feedCategoryTitle.setText(feedName);
 
         Loader<RssFeed> loader = getLoaderManager().getLoader(ARTICLES_FEED_LOADER);
         if (loader == null) {
