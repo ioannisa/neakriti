@@ -73,6 +73,7 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:paddingBottom="15dp"
+                    android:focusableInTouchMode="true"
                     xmlns:android="http://schemas.android.com/apk/res/android">
 
 
