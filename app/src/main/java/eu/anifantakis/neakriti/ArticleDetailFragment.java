@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-import eu.anifantakis.neakriti.data.model.Article;
+import eu.anifantakis.neakriti.data.feed.Article;
 import eu.anifantakis.neakriti.utils.AppUtils;
 
 /**

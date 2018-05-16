@@ -1,4 +1,4 @@
-package eu.anifantakis.neakriti.data.model;
+package eu.anifantakis.neakriti.data.feed;
 
 import android.os.Parcel;
 import android.os.Parcelable;

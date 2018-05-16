@@ -1,10 +1,10 @@
-package eu.anifantakis.neakriti.data.model;
+package eu.anifantakis.neakriti.data.feed;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Root;
 
-@Root(name = "img_thumb", strict = false)
-public class RssImgThumb {
+@Root(name = "img_large", strict = false)
+public class RssImgLarge {
 
     @Attribute
     private String url;

@@ -19,8 +19,8 @@ import java.io.File;
 import java.io.IOException;
 
 import eu.anifantakis.neakriti.R;
-import eu.anifantakis.neakriti.data.model.Article;
-import eu.anifantakis.neakriti.data.model.ArticlesCollection;
+import eu.anifantakis.neakriti.data.feed.Article;
+import eu.anifantakis.neakriti.data.feed.ArticlesCollection;
 import eu.anifantakis.neakriti.databinding.ArticleListContentBinding;
 import eu.anifantakis.neakriti.utils.AppUtils;
 import okhttp3.Cache;

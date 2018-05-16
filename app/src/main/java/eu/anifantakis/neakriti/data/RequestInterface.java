@@ -1,6 +1,6 @@
 package eu.anifantakis.neakriti.data;
 
-import eu.anifantakis.neakriti.data.model.RssFeed;
+import eu.anifantakis.neakriti.data.feed.RssFeed;
 import eu.anifantakis.neakriti.utils.AppUtils;
 import retrofit2.Call;
 import retrofit2.http.GET;

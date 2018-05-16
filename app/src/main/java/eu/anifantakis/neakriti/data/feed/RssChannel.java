@@ -1,4 +1,4 @@
-package eu.anifantakis.neakriti.data.model;
+package eu.anifantakis.neakriti.data.feed;
 
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;

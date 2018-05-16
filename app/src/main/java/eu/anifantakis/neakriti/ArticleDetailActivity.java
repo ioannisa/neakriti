@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import eu.anifantakis.neakriti.data.model.Article;
+import eu.anifantakis.neakriti.data.feed.Article;
 import eu.anifantakis.neakriti.utils.AppUtils;
 
 public class ArticleDetailActivity extends AppCompatActivity {
