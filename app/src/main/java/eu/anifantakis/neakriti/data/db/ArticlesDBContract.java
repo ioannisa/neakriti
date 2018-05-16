@@ -9,6 +9,11 @@ public final class ArticlesDBContract {
      */
     private ArticlesDBContract() {}
 
+    public static final String DB_TYPE_CATEGORY = "1";
+    public static final String DB_TYPE_ZONE = "2";
+    public static final String DB_TYPE_TAG = "3";
+    public static final String DB_TYPE_FAVORITE = "4";
+
     public static final String AUTHORITY = "eu.anifantakis.neakriti";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
     public static final String PATH_ARTICLES = "articles";

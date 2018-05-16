@@ -374,9 +374,6 @@ public class ArticleListActivity extends AppCompatActivity implements
         if (id == R.id.action_live){
             switchLivePanelVisibility();
         }
-        else if (id == R.id.nav_favorite){
-            Toast.makeText(this, "favorite", Toast.LENGTH_LONG).show();
-        }
 
         //noinspection SimplifiableIfStatement
         else if (id == R.id.action_settings) {
