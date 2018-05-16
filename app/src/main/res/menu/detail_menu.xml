@@ -18,10 +18,18 @@
         />
 
     <item
+        android:id="@+id/nav_favorite"
+        android:icon="@drawable/heart_outline"
+        android:title="Favorite Article"
+        android:orderInCategory="3"
+        app:showAsAction="always"
+        />
+
+    <item
         android:id="@+id/nav_more"
         android:icon="@drawable/baseline_share_24px"
         android:title="Change Font Size"
-        android:orderInCategory="3"
+        android:orderInCategory="4"
         app:showAsAction="never"
         />
 </menu>

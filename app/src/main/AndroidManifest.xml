@@ -43,6 +43,11 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
+        <provider
+            android:name="eu.anifantakis.neakriti.data.db.ArticlesContentProvider"
+            android:authorities="eu.anifantakis.neakriti"
+            android:exported="false"/>
     </application>
 
 </manifest>

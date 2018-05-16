@@ -5,6 +5,7 @@ import android.app.LoaderManager;
 import android.content.AsyncTaskLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -32,6 +33,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -60,6 +62,7 @@ import java.io.IOException;
 
 import eu.anifantakis.neakriti.data.ArticlesListAdapter;
 import eu.anifantakis.neakriti.data.RequestInterface;
+import eu.anifantakis.neakriti.data.db.ArticlesDBContract;
 import eu.anifantakis.neakriti.data.feed.Article;
 import eu.anifantakis.neakriti.data.feed.ArticlesCollection;
 import eu.anifantakis.neakriti.data.feed.RssFeed;
@@ -370,6 +373,9 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         if (id == R.id.action_live){
             switchLivePanelVisibility();
+        }
+        else if (id == R.id.nav_favorite){
+            Toast.makeText(this, "favorite", Toast.LENGTH_LONG).show();
         }
 
         //noinspection SimplifiableIfStatement

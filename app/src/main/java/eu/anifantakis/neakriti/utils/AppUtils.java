@@ -14,6 +14,8 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
+import org.jsoup.Jsoup;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -257,5 +259,14 @@ public final class AppUtils extends Application {
         super.onCreate();
 
         getPicasso();
+    }
+
+    /**
+     * Convert standard html to text
+     * @param html
+     * @return
+     */
+    public static String html2text(String html) {
+        return Jsoup.parse(html).text();
     }
 }
