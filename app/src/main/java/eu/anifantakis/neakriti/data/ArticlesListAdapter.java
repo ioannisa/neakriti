@@ -21,7 +21,7 @@ import java.io.IOException;
 import eu.anifantakis.neakriti.R;
 import eu.anifantakis.neakriti.data.feed.Article;
 import eu.anifantakis.neakriti.data.feed.ArticlesCollection;
-import eu.anifantakis.neakriti.databinding.ArticleListContentBinding;
+import eu.anifantakis.neakriti.databinding.RowArticleListBinding;
 import eu.anifantakis.neakriti.utils.AppUtils;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
@@ -124,7 +124,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
     @Override
     public ArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        ArticleListContentBinding binding = DataBindingUtil.inflate(inflater, R.layout.article_list_content, parent, false);
+        RowArticleListBinding binding = DataBindingUtil.inflate(inflater, R.layout.row_article_list, parent, false);
         return new ArticleViewHolder(binding.getRoot());
     }
 
@@ -172,7 +172,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
     }
 
     public class ArticleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ArticleListContentBinding binding;
+        RowArticleListBinding binding;
         private Context context;
 
         public ArticleViewHolder(View itemView) {
