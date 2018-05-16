@@ -1,5 +1,9 @@
 package eu.anifantakis.neakriti.utils;
 
+import android.app.Application;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -7,14 +11,26 @@ import android.view.animation.LayoutAnimationController;
 import android.view.animation.TranslateAnimation;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.jakewharton.picasso.OkHttp3Downloader;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public final class AppUtils {
+import okhttp3.Cache;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+public final class AppUtils extends Application {
     public static SimpleExoPlayer sRadioPlayer;
 
     // no instances of App Utils are allowed
@@ -25,6 +41,7 @@ public final class AppUtils {
 
     public static final String EXTRAS_ARTICLE = "ARTICLE";
     public static final String EXTRAS_LOW_RES_BITMAP = "low_res_bitmap";
+    public static final String EXTRAS_ORIGIN_NOTIFICATION = "EXTRAS_ORIGIN_NOTIFICATION";
 
     public static Date feedDate(String strDate){
         DateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
@@ -172,5 +189,73 @@ public final class AppUtils {
         LayoutAnimationController controller = new LayoutAnimationController(
                 animation, 0.25f);
         panel.setLayoutAnimation(controller);
+    }
+
+
+    public static String getResponseFromHttpUrl(URL url) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        Response response = client.newCall(request).execute();
+        return response.body().string();
+    }
+
+    public static Bitmap getBitmapfromUrl(String imageUrl) {
+        try {
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+                    .url(imageUrl)
+                    .build();
+            Response response = client.newCall(request).execute();
+            InputStream inputStream = response.body().byteStream();
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+            return bitmap;
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Picasso getPicasso() {
+        // Source: https://gist.github.com/iamtodor/eb7f02fc9571cc705774408a474d5dcb
+        OkHttpClient okHttpClient1 = new OkHttpClient.Builder()
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Response originalResponse = chain.proceed(chain.request());
+
+                        int days=2;
+                        long cacheTime = 60 * 60 * 24 * days;
+
+                        return originalResponse.newBuilder().header("Cache-Control", "max-age=" + (cacheTime))
+                                .build();
+                    }
+                })
+                .cache(new Cache(getCacheDir(), Integer.MAX_VALUE))
+                .build();
+
+        OkHttp3Downloader downloader = new OkHttp3Downloader(okHttpClient1);
+        Picasso picasso = new Picasso.Builder(this).downloader(downloader).build();
+        Picasso.setSingletonInstance(picasso);
+
+        File[] files=getCacheDir().listFiles();
+        Log.d("FILES IN CACHE", ""+files.length);
+
+        // indicator for checking picasso caching - need to comment out on release
+        //picasso.setIndicatorsEnabled(true);
+
+        return picasso;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        getPicasso();
     }
 }

@@ -1,16 +1,22 @@
 package eu.anifantakis.neakriti;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -19,6 +25,8 @@ import eu.anifantakis.neakriti.data.feed.Article;
 import eu.anifantakis.neakriti.utils.AppUtils;
 
 public class ArticleDetailActivity extends AppCompatActivity {
+
+    private boolean startedByNotification = false;
 
     private Article mArticle;
     private ImageView detailActivityImage;
@@ -38,13 +46,19 @@ public class ArticleDetailActivity extends AppCompatActivity {
             if (extras.containsKey(AppUtils.EXTRAS_ARTICLE)) {
                 mArticle = getIntent().getParcelableExtra(AppUtils.EXTRAS_ARTICLE);
             }
+
+            if (extras.containsKey(AppUtils.EXTRAS_ORIGIN_NOTIFICATION)){
+                startedByNotification = getIntent().getBooleanExtra(AppUtils.EXTRAS_ORIGIN_NOTIFICATION, false);
+            }
             // place directly the low res image from the main activity so there are no delays in the Transition
             // then later we will load the higher res image
+            /*
             if (extras.containsKey(AppUtils.EXTRAS_LOW_RES_BITMAP)){
                 lowResBitmap = getIntent().getParcelableExtra(AppUtils.EXTRAS_LOW_RES_BITMAP);
                 detailActivityImage.setImageBitmap(lowResBitmap);
                 supportStartPostponedEnterTransition();
             }
+            */
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -138,7 +152,12 @@ public class ArticleDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home: {
-                supportFinishAfterTransition();
+                if (startedByNotification) {
+                    startMainActivity();
+                }
+                else {
+                    supportFinishAfterTransition();
+                }
                 super.onBackPressed();
                 return true;
             }
@@ -149,5 +168,22 @@ public class ArticleDetailActivity extends AppCompatActivity {
             return true;
         }*/
         return super.onOptionsItemSelected(item);
+    }
+
+
+
+    private void startMainActivity(){
+        Intent intent = new Intent(getApplicationContext(), ArticleListActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //NavUtils.navigateUpTo(this, new Intent(this, ArticleListActivity.class));
+        if (startedByNotification) {
+            startMainActivity();
+        }
+        super.onBackPressed();
     }
 }

@@ -30,7 +30,6 @@ import okhttp3.Response;
 
 public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapter.ArticleViewHolder> {
     private ArticlesCollection collection;
-    private static Picasso picassoCached = null;
     private Activity mActivity;
     private int selectedPosition = -1;
 
@@ -45,9 +44,6 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
         mActivity = (Activity) mOnClickListener;
 
         clearOldFileCache(2);
-        if (picassoCached == null) {
-            picassoCached = getPicasso();
-        }
     }
 
     public ArticlesListAdapter(ArticleItemClickListener mOnClickListener, Activity activity) {
@@ -55,44 +51,6 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
         mActivity = activity;
 
         clearOldFileCache(2);
-        if (picassoCached == null) {
-            picassoCached = getPicasso();
-        }
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Picasso getPicasso() {
-        // Source: https://gist.github.com/iamtodor/eb7f02fc9571cc705774408a474d5dcb
-        OkHttpClient okHttpClient1 = new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Response originalResponse = chain.proceed(chain.request());
-
-                        int days=2;
-                        long cacheTime = 60 * 60 * 24 * days;
-
-                        return originalResponse.newBuilder().header("Cache-Control", "max-age=" + (cacheTime))
-                                .build();
-                    }
-                })
-                .cache(new Cache(mActivity.getCacheDir(), Integer.MAX_VALUE))
-                .build();
-
-        OkHttp3Downloader downloader = new OkHttp3Downloader(okHttpClient1);
-        Picasso picasso = new Picasso.Builder(mActivity).downloader(downloader).build();
-        Picasso.setSingletonInstance(picasso);
-
-        File[] files=mActivity.getCacheDir().listFiles();
-        Log.d("FILES IN CACHE", ""+files.length);
-
-        // indicator for checking picasso caching - need to comment out on release
-        //picasso.setIndicatorsEnabled(true);
-
-        return picasso;
     }
 
     /**

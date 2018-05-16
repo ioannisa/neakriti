@@ -13,5 +13,10 @@ public interface RequestInterface {
 
     @GET(AppUtils.XML_LOC)
     Call<RssFeed> getFeedByCategory(@Query("srvid") String srvid, @Query("items") int items);
+
+    @GET(AppUtils.XML_LOC)
     Call<RssFeed> getFeedByTag(@Query("tagid") String srvid, @Query("items") int items);
+
+    @GET(AppUtils.XML_LOC)
+    Call<RssFeed> getFeedByArticleId(@Query("docid") String docid);
 }
