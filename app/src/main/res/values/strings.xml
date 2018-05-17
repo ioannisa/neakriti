@@ -24,6 +24,7 @@
     <string name="nav_health">Υγεία</string>
     <string name="nav_woman">Γυναίκα</string>
     <string name="nav_travel">Ταξίδια</string>
+    <string name="nav_favorite_items">Αγαπημένα</string>
 
     <string name="unitID_bottom" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
 

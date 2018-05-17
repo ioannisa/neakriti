@@ -59,6 +59,7 @@ import org.simpleframework.xml.convert.AnnotationStrategy;
 import org.simpleframework.xml.core.Persister;
 
 import java.io.IOException;
+import java.util.Date;
 
 import eu.anifantakis.neakriti.data.ArticlesListAdapter;
 import eu.anifantakis.neakriti.data.RequestInterface;
@@ -102,7 +103,8 @@ public class ArticleListActivity extends AppCompatActivity implements
     private TextView feedCategoryTitle;
 
     private static final int ARTICLES_FEED_LOADER = 0;
-    private static final String LOADER_SRVID = "LOADER_SRVID";
+    private static final String LOADER_TYPE = "LOADER_TYPE";
+    private static final String LOADER_ID = "LOADER_ID";
     private static final String LOADER_ITEMS_COUNT = "LOADER_ITEMS_COUNT";
     private static final String CACHED_COLLECTION = "CACHED_COLLECTION";
     private static final String LIVE_PANEL_VISIBILITY = "LIVE_PANEL_VISIBILITY";
@@ -202,7 +204,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         feedSrvid = "127";
         feedItems = 25;
         feedName = "Αρχική";
-        makeArticlesLoaderQuery(feedSrvid, feedItems);
+        makeArticlesLoaderQuery(ArticlesDBContract.DB_TYPE_CATEGORY, feedSrvid, feedItems);
     }
 
     @Override
@@ -273,9 +275,10 @@ public class ArticleListActivity extends AppCompatActivity implements
     }
 
 
-    private void makeArticlesLoaderQuery(String srvid, int items){
+    private void makeArticlesLoaderQuery(int type, String id, int items){
         Bundle bundle = new Bundle();
-        bundle.putString(LOADER_SRVID, srvid);
+        bundle.putInt(LOADER_TYPE, type);
+        bundle.putString(LOADER_ID, id);
         bundle.putInt(LOADER_ITEMS_COUNT, items);
 
         feedCategoryTitle.setText(feedName);
@@ -296,18 +299,57 @@ public class ArticleListActivity extends AppCompatActivity implements
             @Override
             public ArticlesCollection loadInBackground() {
                 RssFeed feed = null;
-                try {
-                    RequestInterface request = retrofit.create(RequestInterface.class);
-                    Call<RssFeed> call = request.getFeedByCategory(bundle.getString(LOADER_SRVID), bundle.getInt(LOADER_ITEMS_COUNT));
-                    // make a synchronous retrofit call in our async task loader
-                    feed = call.execute().body();
+                int fetchType = bundle.getInt(LOADER_TYPE);
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return null;
+                if (fetchType == ArticlesDBContract.DB_TYPE_FAVORITE){
+                    Cursor cursor = getContentResolver().query(ArticlesDBContract.ArticleEntry.CONTENT_URI,
+                            null,
+                            null,
+                            null,
+                            ArticlesDBContract.ArticleEntry._ID + " DESC"
+                    );
+
+                    if (cursor!=null) {
+                        if (cursor.getCount() > 0) {
+                            ArticlesCollection favoriteArticles = new ArticlesCollection();
+
+                            cursor.moveToFirst();
+                            while (!cursor.isAfterLast()){
+                                Article article = new Article();
+
+                                article.setGuid(cursor.getInt(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_GUID)));
+                                article.setLink(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_LINK)));
+                                article.setTitle(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_TITLE)));
+                                article.setDescription(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_DESCRIPTION)));
+                                article.setPubDateStr(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_PUB_DATE_STR)));
+                                article.setUpdatedStr(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_UPDATED_STR)));
+                                article.setPubDateGre(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_PUB_DATE_GRE)));
+                                article.setImgThumb(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_IMG_THUMB)));
+                                article.setImgLarge(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_IMG_LARGE)));
+
+                                favoriteArticles.addArticle(article);
+                                cursor.moveToNext();
+                            }
+                            // all results of the favorites are contained in a single page (no endless load here)
+                            return favoriteArticles;
+                        }
+                    }
                 }
+                else {
+                    try {
+                        RequestInterface request = retrofit.create(RequestInterface.class);
+                        Call<RssFeed> call = request.getFeedByCategory(bundle.getString(LOADER_ID), bundle.getInt(LOADER_ITEMS_COUNT));
+                        // make a synchronous retrofit call in our async task loader
+                        feed = call.execute().body();
 
-                return new ArticlesCollection(feed.getChannel().getItemList());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+
+                    return new ArticlesCollection(feed.getChannel().getItemList());
+                }
+                return null;
             }
 
 
@@ -415,6 +457,12 @@ public class ArticleListActivity extends AppCompatActivity implements
         } else if (id == R.id.nav_send) {
 
         }
+
+        else if (id == R.id.nav_favorite_items){
+            feedItems = 200;
+            feedName = item.getTitle().toString();
+            makeArticlesLoaderQuery(ArticlesDBContract.DB_TYPE_FAVORITE, "0", feedItems);
+        }
         else {
             feedItems = 25;
             feedName = item.getTitle().toString();
@@ -431,7 +479,7 @@ public class ArticleListActivity extends AppCompatActivity implements
             else if (id == R.id.nav_woman)      { feedSrvid = "128"; }
             else if (id == R.id.nav_travel)     { feedSrvid = "263"; }
 
-            makeArticlesLoaderQuery(feedSrvid, feedItems);
+            makeArticlesLoaderQuery(ArticlesDBContract.DB_TYPE_CATEGORY, feedSrvid, feedItems);
         }
 
         DrawerLayout drawer = binding.drawerLayout;// (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -442,7 +490,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     @Override
     public void onRefresh() {
         cachedCollection = null;
-        makeArticlesLoaderQuery(feedSrvid, feedItems);
+        makeArticlesLoaderQuery(ArticlesDBContract.DB_TYPE_CATEGORY, feedSrvid, feedItems);
     }
 
     @Override

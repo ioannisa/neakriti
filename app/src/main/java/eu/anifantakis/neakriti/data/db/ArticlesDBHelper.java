@@ -18,7 +18,7 @@ public class ArticlesDBHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_ARTICLES_TABLE =
                 "CREATE TABLE "+ArticleEntry.TABLE_NAME + "(" +
                         ArticleEntry._ID +              " INTEGER PRIMARY KEY AUTOINCREMENT, "+
-                        ArticleEntry.COL_TYPE +         " TEXT NOT NULL, "+
+                        ArticleEntry.COL_TYPE +         " INTEGER NOT NULL, "+
                         ArticleEntry.COL_TYPE_ID +      " TEXT NOT NULL, "+
                         ArticleEntry.COL_GUID +         " INTEGER NOT NULL, "+
                         ArticleEntry.COL_LINK +         " TEXT NOT NULL, "+
