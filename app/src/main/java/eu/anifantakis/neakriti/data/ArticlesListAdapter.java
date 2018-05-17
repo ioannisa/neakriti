@@ -95,6 +95,8 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
         holder.setImage(article.getImgThumb());
         holder.setDateStr(article.getPubDateStr());
 
+        holder.itemView.setTag(article.getGuid());
+
         holder.binding.articleRow.setSelected((position==selectedPosition));
     }
 

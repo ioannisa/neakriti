@@ -26,6 +26,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -101,6 +102,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     private  boolean clickedAtLeastOneItem = false;
     private static boolean exoPlayerIsPlaying = false;
     private TextView feedCategoryTitle;
+    private ItemTouchHelper itemTouchHelper;
 
     private static final int ARTICLES_FEED_LOADER = 0;
     private static final String LOADER_TYPE = "LOADER_TYPE";
@@ -200,6 +202,25 @@ public class ArticleListActivity extends AppCompatActivity implements
         //mRecyclerView.setHasFixedSize(true);
         mArticlesListAdapter = new ArticlesListAdapter(this);
         mRecyclerView.setAdapter(mArticlesListAdapter);
+
+        itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                int id = (int) viewHolder.itemView.getTag();
+
+                Uri uri = ArticlesDBContract.ArticleEntry.CONTENT_URI;
+                uri = uri.buildUpon().appendPath(String.valueOf(id)).build();
+                getContentResolver().delete(uri, null, null);
+
+                cachedCollection = null;
+                makeArticlesLoaderQuery(ArticlesDBContract.DB_TYPE_FAVORITE, "0", 200);
+            }
+        });
 
         feedSrvid = "127";
         feedItems = 25;
@@ -304,7 +325,7 @@ public class ArticleListActivity extends AppCompatActivity implements
                 if (fetchType == ArticlesDBContract.DB_TYPE_FAVORITE){
                     Cursor cursor = getContentResolver().query(ArticlesDBContract.ArticleEntry.CONTENT_URI,
                             null,
-                            null,
+                            ArticlesDBContract.ArticleEntry.COL_TYPE + " = " + ArticlesDBContract.DB_TYPE_FAVORITE,
                             null,
                             ArticlesDBContract.ArticleEntry._ID + " DESC"
                     );
@@ -451,6 +472,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         cachedCollection = null;
+        itemTouchHelper.attachToRecyclerView(null);
 
         if (id == R.id.nav_share) {
 
@@ -462,6 +484,8 @@ public class ArticleListActivity extends AppCompatActivity implements
             feedItems = 200;
             feedName = item.getTitle().toString();
             makeArticlesLoaderQuery(ArticlesDBContract.DB_TYPE_FAVORITE, "0", feedItems);
+
+            itemTouchHelper.attachToRecyclerView(mRecyclerView);
         }
         else {
             feedItems = 25;
