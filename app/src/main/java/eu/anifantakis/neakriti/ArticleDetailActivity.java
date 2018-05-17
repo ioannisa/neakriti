@@ -50,15 +50,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
             if (extras.containsKey(AppUtils.EXTRAS_ORIGIN_NOTIFICATION)){
                 startedByNotification = getIntent().getBooleanExtra(AppUtils.EXTRAS_ORIGIN_NOTIFICATION, false);
             }
-            // place directly the low res image from the main activity so there are no delays in the Transition
-            // then later we will load the higher res image
-            /*
-            if (extras.containsKey(AppUtils.EXTRAS_LOW_RES_BITMAP)){
-                lowResBitmap = getIntent().getParcelableExtra(AppUtils.EXTRAS_LOW_RES_BITMAP);
-                detailActivityImage.setImageBitmap(lowResBitmap);
-                supportStartPostponedEnterTransition();
-            }
-            */
+
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -66,22 +58,29 @@ public class ArticleDetailActivity extends AppCompatActivity {
             Log.d("TRANSITION RECEIVED", Integer.toString(mArticle.getGuid()));
         }
 
-        if (detailActivityImage!=null) {
-            Picasso.with(this)
-                    .load(mArticle.getImgLarge())
-                    .noFade()
-                    //.placeholder(detailActivityImage.getDrawable())
-                    .into(detailActivityImage, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            supportStartPostponedEnterTransition();
-                        }
+        if (mArticle.getImgThumb()!=null) {
+               // Now place the larger image
+            if (detailActivityImage != null) {
+                Picasso.with(this)
+                        .load(mArticle.getImgLarge())
+                        .noFade()
+                        //.placeholder(detailActivityImage.getDrawable())
+                        .into(detailActivityImage, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                supportStartPostponedEnterTransition();
+                            }
 
-                        @Override
-                        public void onError() {
-                            supportStartPostponedEnterTransition();
-                        }
-                    });
+                            @Override
+                            public void onError() {
+                                supportStartPostponedEnterTransition();
+                            }
+                        });
+            }
+        }
+        else{
+            findViewById(R.id.toolbar_layout).setVisibility(View.GONE);
+            supportStartPostponedEnterTransition();
         }
 
         //Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);

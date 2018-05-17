@@ -1,10 +1,8 @@
 package eu.anifantakis.neakriti;
 
 import android.annotation.SuppressLint;
-import android.app.LoaderManager;
-import android.content.AsyncTaskLoader;
+import android.app.Activity;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
@@ -16,7 +14,11 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -274,8 +276,8 @@ public class ArticleListActivity extends AppCompatActivity implements
                 Log.d("TRANSITION NAME", ViewCompat.getTransitionName(sharedImage));
             }
 
-            Bitmap bm=((BitmapDrawable)sharedImage.getDrawable()).getBitmap();
-            intent.putExtra(AppUtils.EXTRAS_LOW_RES_BITMAP, bm);
+            //Bitmap bm=((BitmapDrawable)sharedImage.getDrawable()).getBitmap();
+            //intent.putExtra(AppUtils.EXTRAS_LOW_RES_BITMAP, bm);
 
             // bundle for the transition effect
             Bundle bundle = null;
@@ -287,14 +289,33 @@ public class ArticleListActivity extends AppCompatActivity implements
                                 ViewCompat.getTransitionName(sharedImage) //sharedImage.getTransitionName()
                         ).toBundle();
 
-                startActivity(intent, bundle);
+                if (feedType == ArticlesDBContract.DB_TYPE_FAVORITE){
+                    ActivityCompat.startActivityForResult(this, intent, 1, bundle);
+                }
+                else {
+                    startActivity(intent, bundle);
+                }
             }
             else{
-                startActivity(intent);
+                if (feedType == ArticlesDBContract.DB_TYPE_FAVORITE) {
+                    startActivityForResult(intent, 1);
+                }
+                else {
+                    startActivity(intent);
+                }
             }
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // if we are back from another activity and the type is favorites, refresh because we might
+        // have removed an item from the favorite list
+        if (feedType == ArticlesDBContract.DB_TYPE_FAVORITE){
+            cachedCollection = null;
+            makeArticlesLoaderQuery(ArticlesDBContract.DB_TYPE_FAVORITE, "0", feedItems);
+        }
+    }
 
     private void makeArticlesLoaderQuery(int type, String id, int items){
         Bundle bundle = new Bundle();
@@ -304,11 +325,11 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         feedCategoryTitle.setText(feedName);
 
-        Loader<RssFeed> loader = getLoaderManager().getLoader(ARTICLES_FEED_LOADER);
+        Loader<RssFeed> loader = getSupportLoaderManager().getLoader(ARTICLES_FEED_LOADER);
         if (loader == null) {
-            getLoaderManager().initLoader(ARTICLES_FEED_LOADER, bundle, this);
+            getSupportLoaderManager().initLoader(ARTICLES_FEED_LOADER, bundle, this);
         } else {
-            getLoaderManager().restartLoader(ARTICLES_FEED_LOADER, bundle, this);
+            getSupportLoaderManager().restartLoader(ARTICLES_FEED_LOADER, bundle, this);
         }
     }
 
@@ -396,11 +417,12 @@ public class ArticleListActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLoadFinished(Loader<ArticlesCollection> loader, ArticlesCollection articlesCollection) {
+    public void onLoadFinished(@NonNull Loader<ArticlesCollection> loader, ArticlesCollection data) {
         Log.d("LOADING", "LOAD FINISHED");
 
         mSwipeRefreshLayout.setRefreshing(false);
     }
+
 
     @Override
     public void onLoaderReset(Loader<ArticlesCollection> loader) {
@@ -463,6 +485,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
     }
 
+    private static int feedType = -1;
     private static String feedName = "";
     private static String feedSrvid = "";
     private static int feedItems = 0;
@@ -481,6 +504,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
 
         else if (id == R.id.nav_favorite_items){
+            feedType = ArticlesDBContract.DB_TYPE_FAVORITE;
             feedItems = 200;
             feedName = item.getTitle().toString();
             makeArticlesLoaderQuery(ArticlesDBContract.DB_TYPE_FAVORITE, "0", feedItems);
@@ -488,6 +512,7 @@ public class ArticleListActivity extends AppCompatActivity implements
             itemTouchHelper.attachToRecyclerView(mRecyclerView);
         }
         else {
+            feedType = ArticlesDBContract.DB_TYPE_CATEGORY;
             feedItems = 25;
             feedName = item.getTitle().toString();
 
@@ -514,7 +539,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     @Override
     public void onRefresh() {
         cachedCollection = null;
-        makeArticlesLoaderQuery(ArticlesDBContract.DB_TYPE_CATEGORY, feedSrvid, feedItems);
+        makeArticlesLoaderQuery(feedType, feedSrvid, feedItems);
     }
 
     @Override
