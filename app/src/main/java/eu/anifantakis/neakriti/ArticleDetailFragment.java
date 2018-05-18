@@ -194,31 +194,6 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         }
     }
 
-    public void Online_TTS(final String text,final String lan) {
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String Url = "https://translate.google.com/translate_tts?ie=UTF-8";
-                String pronouce = "&q=" + text.replaceAll(" ", "%20");
-                String language = "&tl=" + lan;
-                String web = "&client=tw-ob";
-
-                String fullUrl = Url + pronouce + language + web;
-
-                Uri uri = Uri.parse(fullUrl);
-                MediaPlayer mediaPlayer = new MediaPlayer();
-                try {
-                    mediaPlayer.setDataSource(getActivity(), uri);
-                    mediaPlayer.prepare();
-                    mediaPlayer.start();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
     /**
      * Article Sharing via implicit intent
      */
