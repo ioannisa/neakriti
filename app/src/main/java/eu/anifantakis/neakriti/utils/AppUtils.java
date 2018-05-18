@@ -1,6 +1,8 @@
 package eu.anifantakis.neakriti.utils;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -268,5 +270,22 @@ public final class AppUtils extends Application {
      */
     public static String html2text(String html) {
         return Jsoup.parse(html).text();
+    }
+
+    /**
+     * Check if an application is already installed on the user's device
+     * @param uri
+     * @return
+     */
+    public static boolean isAppInstalled(Context context, String uri) {
+        PackageManager pm = context.getPackageManager();
+        boolean installed = false;
+        try {
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            installed = true;
+        } catch (PackageManager.NameNotFoundException e) {
+            installed = false;
+        }
+        return installed;
     }
 }

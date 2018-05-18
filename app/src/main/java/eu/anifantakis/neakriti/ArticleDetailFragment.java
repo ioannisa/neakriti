@@ -1,12 +1,17 @@
 package eu.anifantakis.neakriti;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,7 +28,9 @@ import android.widget.Toast;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+import java.io.IOException;
 import java.util.Date;
+import java.util.Locale;
 
 import eu.anifantakis.neakriti.data.db.ArticlesDBContract;
 import eu.anifantakis.neakriti.data.feed.Article;
@@ -35,10 +42,11 @@ import eu.anifantakis.neakriti.utils.AppUtils;
  * in two-pane mode (on tablets) or a {@link ArticleDetailActivity}
  * on handsets.
  */
-public class ArticleDetailFragment extends Fragment {
+public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnInitListener {
     private Article mArticle;
     private WebView mWebView;
     private AdView adView;
+    private TextToSpeech mTextToSpeech;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -51,6 +59,8 @@ public class ArticleDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        mTextToSpeech = new TextToSpeech(getActivity(), this);//, "com.redzoc.ramees.tts.espeak");
 
         if (getArguments().containsKey(AppUtils.EXTRAS_ARTICLE)) {
             // Load the dummy content specified by the fragment
@@ -160,8 +170,105 @@ public class ArticleDetailFragment extends Fragment {
                 addArticleToFavorites();
             }
         }
+        else if (id == R.id.nav_share_article){
+            shareArticle();
+        }
+        else if (id == R.id.nav_tts){
+            speak();
+        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+
+    private void speak(){
+        if (!AppUtils.isAppInstalled(getContext(),"com.marvin.espeak")){
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            String market = "market://details?id=";
+                            String base = "com.marvin.espeak";
+                            String packageName = ""; //"eng_gbr_fem";
+                            String MARKET_URI = market + base + packageName;
+                            Uri marketUri = Uri.parse(MARKET_URI);
+                            Intent marketIntent;
+                            marketIntent = new Intent(Intent.ACTION_VIEW, marketUri);
+                            try{ startActivity(marketIntent);}
+                            catch(Exception e){
+                                e.printStackTrace();
+                                Toast.makeText(getContext(),"Δεν έχετε εγκατεστημένο το Google Play Store", Toast.LENGTH_LONG).show();
+                            }
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            //No button clicked
+                            break;
+                    }
+                }
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Δεν υπάρχει εγκατεστημένη ελληνική φωνή").setMessage(
+                    "Για να ακούσετε κείμενο πρέπει να εγκαταστήσετε βιβλιοθήκη κειμένου-σε-λόγο που να υποστηρίζει ελληνικά\n\n"+
+                            "Αυτή τη στιγμή το δωρεάν eSpeak είναι διαθέσιμο για την ελληνική γλώσσα και απαιτείται από το σύστημα."
+            ).setPositiveButton("Εγκατάσταση eSpeak", dialogClickListener).setNegativeButton("έξοδος", dialogClickListener).setIcon(R.drawable.baseline_headset_24px).show();
+
+            return;
+
+        }
+        else {
+            if (mTextToSpeech!=null){
+                if (mTextToSpeech.isSpeaking()){
+                    mTextToSpeech.stop();
+                    return;
+                }
+            }
+            else {
+                //mTextToSpeech.setLanguage(Locale.GREEK);
+
+                mTextToSpeech.speak(AppUtils.html2text(mArticle.getDescription()), TextToSpeech.QUEUE_FLUSH, null);
+            }
+        }
+    }
+
+    public void Online_TTS(final String text,final String lan) {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String Url = "https://translate.google.com/translate_tts?ie=UTF-8";
+                String pronouce = "&q=" + text.replaceAll(" ", "%20");
+                String language = "&tl=" + lan;
+                String web = "&client=tw-ob";
+
+                String fullUrl = Url + pronouce + language + web;
+
+                Uri uri = Uri.parse(fullUrl);
+                MediaPlayer mediaPlayer = new MediaPlayer();
+                try {
+                    mediaPlayer.setDataSource(getActivity(), uri);
+                    mediaPlayer.prepare();
+                    mediaPlayer.start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * Article Sharing via implicit intent
+     */
+    private void shareArticle(){
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+        String sArticle = "\n"+
+                getString(R.string.app_name)+" - "+mArticle.getTitle()+"\n\n"+
+                mArticle.getLink() + " \n\n";
+        intent.putExtra(Intent.EXTRA_TEXT, sArticle);
+        startActivity(Intent.createChooser(intent, getString(R.string.share_the_article)));
     }
 
     /**
@@ -224,5 +331,24 @@ public class ArticleDetailFragment extends Fragment {
                 null
         );
         return (cursor.getCount()>0);
+    }
+
+    /**
+     * Text to Speech initialization
+     * @param status
+     */
+    @Override
+    public void onInit(int status) {
+        if (status == mTextToSpeech.SUCCESS) {
+            mTextToSpeech.setOnUtteranceCompletedListener(new TextToSpeech.OnUtteranceCompletedListener() {
+
+                public void onUtteranceCompleted(String utId) {
+                    // TODO Auto-generated method stub
+                    if (utId.indexOf("ok") != -1)
+                        mTextToSpeech.shutdown();
+                }
+
+            });
+        }
     }
 }
