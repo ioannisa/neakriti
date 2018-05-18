@@ -11,6 +11,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.Voice;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -31,6 +32,7 @@ import com.google.android.gms.ads.AdView;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Set;
 
 import eu.anifantakis.neakriti.data.db.ArticlesDBContract;
 import eu.anifantakis.neakriti.data.feed.Article;
@@ -180,54 +182,14 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         return super.onOptionsItemSelected(item);
     }
 
-
-
     private void speak(){
-        if (!AppUtils.isAppInstalled(getContext(),"com.marvin.espeak")){
-            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    switch (which){
-                        case DialogInterface.BUTTON_POSITIVE:
-                            String market = "market://details?id=";
-                            String base = "com.marvin.espeak";
-                            String packageName = ""; //"eng_gbr_fem";
-                            String MARKET_URI = market + base + packageName;
-                            Uri marketUri = Uri.parse(MARKET_URI);
-                            Intent marketIntent;
-                            marketIntent = new Intent(Intent.ACTION_VIEW, marketUri);
-                            try{ startActivity(marketIntent);}
-                            catch(Exception e){
-                                e.printStackTrace();
-                                Toast.makeText(getContext(),"Δεν έχετε εγκατεστημένο το Google Play Store", Toast.LENGTH_LONG).show();
-                            }
-
-                        case DialogInterface.BUTTON_NEGATIVE:
-                            //No button clicked
-                            break;
-                    }
-                }
-            };
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle("Δεν υπάρχει εγκατεστημένη ελληνική φωνή").setMessage(
-                    "Για να ακούσετε κείμενο πρέπει να εγκαταστήσετε βιβλιοθήκη κειμένου-σε-λόγο που να υποστηρίζει ελληνικά\n\n"+
-                            "Αυτή τη στιγμή το δωρεάν eSpeak είναι διαθέσιμο για την ελληνική γλώσσα και απαιτείται από το σύστημα."
-            ).setPositiveButton("Εγκατάσταση eSpeak", dialogClickListener).setNegativeButton("έξοδος", dialogClickListener).setIcon(R.drawable.baseline_headset_24px).show();
-
-            return;
-
-        }
-        else {
-            if (mTextToSpeech!=null){
-                if (mTextToSpeech.isSpeaking()){
-                    mTextToSpeech.stop();
-                    return;
-                }
-            }
-            else {
-                //mTextToSpeech.setLanguage(Locale.GREEK);
-
-                mTextToSpeech.speak(AppUtils.html2text(mArticle.getDescription()), TextToSpeech.QUEUE_FLUSH, null);
+        if (mTextToSpeech!=null) {
+            if (mTextToSpeech.isSpeaking()) {
+                mTextToSpeech.stop();
+                return;
+            } else {
+                mTextToSpeech.setLanguage(new Locale("el", "GR"));
+                mTextToSpeech.speak(AppUtils.makeReadableGreekText(mArticle.getDescription()), TextToSpeech.QUEUE_FLUSH, null);
             }
         }
     }

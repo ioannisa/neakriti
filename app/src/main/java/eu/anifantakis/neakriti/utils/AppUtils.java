@@ -288,4 +288,83 @@ public final class AppUtils extends Application {
         }
         return installed;
     }
+
+    public static String makeReadableGreekText(String html){
+        String text = html2text(html);
+
+        text.replace(" Κ.", " Κ ").
+                toLowerCase().
+
+                replace(" κ.", " κ-κ").
+                replace(" κα.", " κυρία").
+                replace(" εκατ.", " εκατομύρια ").
+                replace(" εκ.", " εκατομύρια ").
+                replace(" χιλ.", " χιλιάδες ").
+
+
+                replace(" α. ", " Α ").
+                replace(" β. ", " Β ").
+                replace(" γ. ", " Γ ").
+                replace(" δ. ", " Δ ").
+                replace(" ε. ", " Ε ").
+                replace(" ζ. ", " Ζ ").
+                replace(" η. ", " Η ").
+                replace(" θ. ", " Θ ").
+                replace(" ι. ", " Ι ").
+                replace(" κ. ", " Κ ").
+                replace(" λ. ", " Λ ").
+                replace(" μ. ", " Μ ").
+                replace(" ν. ", " Ν ").
+                replace(" ξ. ", " Ξ ").
+                replace(" ο. ", " Ο ").
+                replace(" π. ", " Π ").
+                replace(" ρ. ", " Ρ ").
+                replace(" σ. ", " Σ ").
+                replace(" τ. ", " Τ ").
+                replace(" υ. ", " Υ ").
+                replace(" φ. ", " Φ ").
+                replace(" χ. ", " Χ ").
+                replace(" ψ. ", " Ψ ").
+                replace(" ω. ", " Ω ").
+
+                replace(". ", "\n\n ").
+                replace("<br/>", "\n").
+
+                replace(".", "").
+                replace("«", " ").
+                replace("»", " ").
+                replace("(", " ").
+                replace(")", " ").
+                replace(",", " , ").
+                replace("\n", "\n\n").
+                replace("...", ",").
+                replace("/", " κάθετος ").
+                replace("\"", " ").
+
+                replace(" atm ", " έη τι εμ ").
+                replace(" ατμ ", " έη τι εμ ").
+                replace(" κλπ ", " και τα λοιπά ").
+                replace(" gps ", " τζι πι ες ").
+
+                replace(" κ-κ", " κ.").
+                replace("φπα", "φι πι α ").
+                replace(" κκε", " κου κου ε ").
+                replace(" νκ ", " Νέα Κρήτη ").
+                replace(" nk ", " Νέα Κρήτη ").
+                replace("tv", " TV ").
+                replace("τβ", " TV ").
+                replace(" νδ", " νέα δημοκρατία ").
+
+                replace("www", " 3 W ").
+                replace("http", " ειτς τι τι πι ").
+
+                replace(" gr ", " τζι αρ ").
+                replace(" gp ", " γκραντ πρι ").
+                replace(" league ", " λιγκ ").
+                replace(" f1 ", " Forumla 1 ").
+
+                replace(" gr ", " GR");
+
+        return text;
+    }
 }
