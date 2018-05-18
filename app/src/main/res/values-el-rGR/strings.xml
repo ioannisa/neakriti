@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">neakriti</string>
+    <string name="nav_crete">Κρήτη</string>
+    <string name="nav_home">Αρχική</string>
+    <string name="nav_views">Απόψεις</string>
+    <string name="nav_economy">Οικονομία</string>
+    <string name="nav_culture">Πολιτισμός</string>
+    <string name="nav_pioneering">Καινοτομία</string>
+    <string name="nav_sports">Αθλητισμός</string>
+    <string name="nav_lifestyle">Lifestyle</string>
+    <string name="nav_health">Υγεία</string>
+    <string name="nav_woman">Γυναίκα</string>
+    <string name="nav_travel">Ταξίδια</string>
+    <string name="nav_favorite_items">Αγαπημένα</string>
+    <string name="share_the_article">neakriti.gr - Μοιραστείτε το άρθρο</string>
+    <string name="action_settings">Ρυθμίσεις</string>
+</resources>

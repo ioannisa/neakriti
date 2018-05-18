@@ -226,7 +226,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         feedSrvid = "127";
         feedItems = 25;
-        feedName = "Αρχική";
+        feedName = getString(R.string.nav_home);
         makeArticlesLoaderQuery(ArticlesDBContract.DB_TYPE_CATEGORY, feedSrvid, feedItems);
     }
 
