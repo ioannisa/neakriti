@@ -288,4 +288,13 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
             });
         }
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        if (mTextToSpeech.isSpeaking())
+            mTextToSpeech.stop();
+            mTextToSpeech.shutdown();
+    }
 }
