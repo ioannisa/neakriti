@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -366,5 +367,14 @@ public final class AppUtils extends Application {
                 replace(" gr ", " GR");
 
         return text;
+    }
+
+    /**
+     * Check if WiFi is connected to warn user before streaming data for possible charges
+     * @return true if WiFi is connected, false othersie
+     */
+    public static boolean isWifiConnected(Context context){
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
+        return cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected();
     }
 }

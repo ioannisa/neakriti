@@ -8,11 +8,16 @@
     <string name="nav_culture">Culture</string>
     <string name="nav_pioneering">Innovation</string>
     <string name="nav_sports">Sports</string>
-    <string name="nav_lifestyle">Lifestyle</string>
+    <string name="nav_lifestyle">LifeStyle</string>
     <string name="nav_health">Health</string>
     <string name="nav_woman">Woman</string>
     <string name="nav_travel">Trips</string>
     <string name="nav_favorite_items">Favorites</string>
     <string name="share_the_article">neakriti.gr - Share this Article</string>
-    <string name="action_settings">Settings</string>
+    <string name="dlg_no_wifi_detected_title">No Wifi Connection Found</string>
+    <string name="dlg_no_wifi_detected_body">Do you wish to continue making use of your mobile data plan?</string>
+    <string name="dlg_radio_playing_title">Radio is already active</string>
+    <string name="dlg_continue">Continue</string>
+    <string name="dlg_cancel">Cancel</string>
+    <string name="dlg_radio_playing_body">To watch TV, the Radio should be first turned off.  Do you want to continue?</string>
 </resources>

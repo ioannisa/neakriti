@@ -2,6 +2,9 @@ package eu.anifantakis.neakriti;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
@@ -557,11 +560,35 @@ public class ArticleListActivity extends AppCompatActivity implements
     }
 
     public void liveStreamTVClicked(View view){
-        Intent intent = new Intent(this, TVStreamActivity.class);
-        startActivity(intent);
+        // if no WiFi connected, warn the user for possible charges while watching streamed content
+        if (!AppUtils.isWifiConnected(this)) {
+            alertForStream(false);
+        }
+        else{
+            streamTV();
+        }
     }
 
     public void liveStreamRadioClicked(View view){
+        if (!exoPlayerIsPlaying){
+            // if no WiFi connected, warn the user for possible charges while watching streamed content
+            if (!AppUtils.isWifiConnected(this)) {
+                alertForStream(true);
+            }
+            else{
+                // in wifi no questions asked, just play ;)
+                streamRadioOnOff();
+            }
+        }
+        else{
+            streamRadioOnOff();
+        }
+    }
+
+    /**
+     * Plays/Stops Radio Stream
+     */
+    private void streamRadioOnOff(){
         sRadioPlayer.setPlayWhenReady(!exoPlayerIsPlaying);
         if (exoPlayerIsPlaying){
             Picasso.with(this)
@@ -573,6 +600,75 @@ public class ArticleListActivity extends AppCompatActivity implements
                     .load(R.drawable.btn_radio)
                     .into(btnRadio);
         }
+    }
+
+    /**
+     * Launches Activity that contains the TV Stream
+     */
+    private void streamTV(){
+        // If radio is currently playing, ask the user to stop radio, or continue listening
+        if (exoPlayerIsPlaying){
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case DialogInterface.BUTTON_POSITIVE:
+                            streamRadioOnOff();
+                            Intent intent = new Intent(ArticleListActivity.this, TVStreamActivity.class);
+                            startActivity(intent);
+                            break;
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            break;
+                    }
+                }
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            new AlertDialog.Builder(this)
+                    .setIcon(R.drawable.radio_48px)
+                    .setTitle(getString(R.string.dlg_radio_playing_title))
+                    .setMessage(getString(R.string.dlg_radio_playing_body))
+                    .setPositiveButton(getString(R.string.dlg_continue), dialogClickListener)
+                    .setNegativeButton(getString(R.string.dlg_cancel), dialogClickListener)
+                    .create().show();
+        }
+        else {
+            Intent intent = new Intent(this, TVStreamActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    /**
+     * Displays a warning when attempting to stream Audio/Video in LTE/3G mode rather than in WiFi.
+     * @param forRadio if true, alerts and starts radio stream, if false alerts and starts tv stream
+     */
+    private void alertForStream(final boolean forRadio){
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        if (forRadio) {
+                            streamRadioOnOff();
+                        }
+                        else{
+                            streamTV();
+                        }
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        new AlertDialog.Builder(this)
+                .setIcon(R.drawable.signal_wifi_off_48px)
+                .setTitle(getString(R.string.dlg_no_wifi_detected_title))
+                .setMessage(getString(R.string.dlg_no_wifi_detected_body))
+                .setPositiveButton(getString(R.string.dlg_continue), dialogClickListener)
+                .setNegativeButton(getString(R.string.dlg_cancel), dialogClickListener)
+                .create().show();
     }
 
     private void initializeRadioExoPlayer(){
