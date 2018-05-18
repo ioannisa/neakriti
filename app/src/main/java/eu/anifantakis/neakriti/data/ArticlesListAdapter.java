@@ -160,10 +160,11 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
         void setImage(String image) {
             if (image==null || image.isEmpty()){
                 // if movie has no accompanied backdrop image, load the "no image found" from the drawable folder
-                binding.rowIvArticleThumb.setImageResource(R.drawable.backdrop_noimage);
+                binding.rowIvArticleThumb.setImageResource(R.drawable.placeholder);
             }else {
                 Picasso.with(context)
                         .load(image)
+                        .placeholder(R.drawable.placeholder)
                         .into(binding.rowIvArticleThumb);
             }
         }
