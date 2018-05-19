@@ -26,7 +26,7 @@
             android:name=".ArticleDetailActivity"
             android:label="@string/title_article_detail"
             android:parentActivityName=".ArticleListActivity"
-            android:theme="@style/AppTheme.DarkActionBar">
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="eu.anifantakis.neakriti.ArticleListActivity" />
