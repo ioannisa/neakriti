@@ -1,9 +1,7 @@
 package eu.anifantakis.neakriti;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -39,7 +37,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -65,7 +62,6 @@ import org.simpleframework.xml.convert.AnnotationStrategy;
 import org.simpleframework.xml.core.Persister;
 
 import java.io.IOException;
-import java.util.Date;
 
 import eu.anifantakis.neakriti.data.ArticlesListAdapter;
 import eu.anifantakis.neakriti.data.RequestInterface;
@@ -233,17 +229,6 @@ public class ArticleListActivity extends AppCompatActivity implements
         makeArticlesLoaderQuery(ArticlesDBContract.DB_TYPE_CATEGORY, feedSrvid, feedItems);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // we don't want the selection to remain visible via article row color when we are on phone
-        // when we come back from the detail activity.  This is useful only on tablets
-        if (!mTwoPane) {
-            mArticlesListAdapter.clearRowSelection();
-        }
-    }
-
     /**
      * Interface implementation (defined in the adapter) for the clicking of an item in the articles recycler view
      * @param clickedItemIndex
@@ -279,8 +264,10 @@ public class ArticleListActivity extends AppCompatActivity implements
                 Log.d("TRANSITION NAME", ViewCompat.getTransitionName(sharedImage));
             }
 
-            //Bitmap bm=((BitmapDrawable)sharedImage.getDrawable()).getBitmap();
-            //intent.putExtra(AppUtils.EXTRAS_LOW_RES_BITMAP, bm);
+            //AppUtils.saveToInternalStorage(getApplicationContext(), ((BitmapDrawable)sharedImage.getDrawable()).getBitmap(), "images", "current_thumb.jpg");
+
+            Bitmap bm=((BitmapDrawable)sharedImage.getDrawable()).getBitmap();
+            intent.putExtra(AppUtils.EXTRAS_LOW_RES_BITMAP, bm);
 
             // bundle for the transition effect
             Bundle bundle = null;
@@ -412,6 +399,9 @@ public class ArticleListActivity extends AppCompatActivity implements
 
             @Override
             public void deliverResult(ArticlesCollection data) {
+                if (cachedCollection == null)
+                    mArticlesListAdapter.notifyDataSetChanged();
+
                 cachedCollection = data;
                 mArticlesListAdapter.setCollection(data);
                 super.deliverResult(data);

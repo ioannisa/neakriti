@@ -12,21 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.IOException;
 
 import eu.anifantakis.neakriti.R;
 import eu.anifantakis.neakriti.data.feed.Article;
 import eu.anifantakis.neakriti.data.feed.ArticlesCollection;
 import eu.anifantakis.neakriti.databinding.RowArticleListBinding;
 import eu.anifantakis.neakriti.utils.AppUtils;
-import okhttp3.Cache;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Response;
 
 public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapter.ArticleViewHolder> {
     private ArticlesCollection collection;
@@ -106,15 +100,6 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
         return collection.getCollectionSize();
     }
 
-    /**
-     * Removes selection from current row
-     * Useful to remove visually the selection of a row
-     */
-    public void clearRowSelection(){
-        selectedPosition = -1;
-        notifyDataSetChanged();;
-    }
-
     public void clearCollection(){
         if (collection!=null) {
             collection.clear();
@@ -123,8 +108,9 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
     }
 
     public void setCollection(ArticlesCollection collection){
+        Log.d("COLLECTION", "SET DATA");
         this.collection = collection;
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
     }
 
     public Article getArticleAtIndex(int index){
@@ -181,7 +167,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
         public void onClick(View view) {
             selectedPosition = getAdapterPosition();
             mOnClickListener.onArticleItemClick(selectedPosition, binding.rowIvArticleThumb);
-            notifyDataSetChanged();
+            //notifyDataSetChanged();
         }
     }
 }

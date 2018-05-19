@@ -6,20 +6,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
-
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import eu.anifantakis.neakriti.data.feed.Article;
 import eu.anifantakis.neakriti.utils.AppUtils;
@@ -51,6 +43,17 @@ public class ArticleDetailActivity extends AppCompatActivity {
                 startedByNotification = getIntent().getBooleanExtra(AppUtils.EXTRAS_ORIGIN_NOTIFICATION, false);
             }
 
+            // place directly the low res image from the main activity so there are no delays in the Transition
+            // then later we will load the higher res image
+
+            if (extras.containsKey(AppUtils.EXTRAS_LOW_RES_BITMAP)){
+                lowResBitmap = getIntent().getParcelableExtra(AppUtils.EXTRAS_LOW_RES_BITMAP);
+                detailActivityImage.setImageBitmap(lowResBitmap);
+                supportStartPostponedEnterTransition();
+            }
+
+            //detailActivityImage.setImageBitmap(AppUtils.loadImageFromStorage("images", "current_thumb.jpg"));
+            //supportStartPostponedEnterTransition();
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -58,11 +61,12 @@ public class ArticleDetailActivity extends AppCompatActivity {
             Log.d("TRANSITION RECEIVED", Integer.toString(mArticle.getGuid()));
         }
 
+        /*
         if (mArticle.getImgThumb()!=null) {
                // Now place the larger image
             if (detailActivityImage != null) {
                 Picasso.with(this)
-                        .load(mArticle.getImgLarge())
+                        .load(mArticle.getImgThumb())
                         .noFade()
                         //.placeholder(detailActivityImage.getDrawable())
                         .into(detailActivityImage, new Callback() {
@@ -82,6 +86,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
             findViewById(R.id.toolbar_layout).setVisibility(View.GONE);
             supportStartPostponedEnterTransition();
         }
+        */
 
         //Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         //setSupportActionBar(toolbar);
@@ -100,8 +105,6 @@ public class ArticleDetailActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
-
 
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
