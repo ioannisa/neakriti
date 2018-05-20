@@ -47,8 +47,8 @@ public final class AppUtils extends Application {
     // no instances of App Utils are allowed
     private AppUtils() {}
 
-    public static final String BASE_URL = "https://www.neakriti.gr";
-    public static final String XML_LOC = "/webServices/MobileFeedAndroid_v2.aspx";
+    public static String URL_BASE = "https://www.neakriti.gr";
+    public static final String RSSFEED_BASE = "/webServices/MobileFeedAndroid_v2.aspx";
 
     public static final String EXTRAS_ARTICLE = "ARTICLE";
     public static final String EXTRAS_LOW_RES_BITMAP = "low_res_bitmap";
@@ -265,6 +265,7 @@ public final class AppUtils extends Application {
 
         return picasso;
     }
+
 
     @Override
     public void onCreate() {

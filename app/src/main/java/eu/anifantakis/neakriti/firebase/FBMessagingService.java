@@ -236,7 +236,7 @@ public class FBMessagingService extends FirebaseMessagingService {
      */
     public void sendNotification(final String title, final String messageBody, final Bitmap image, final Bitmap bigPicture, String articleId, final int notification_id) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(AppUtils.BASE_URL)
+                .baseUrl(AppUtils.URL_BASE)
                 .addConverterFactory(SimpleXmlConverterFactory.createNonStrict(new Persister(new AnnotationStrategy())))
                 .build();
 

@@ -61,6 +61,8 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.util.Util;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.squareup.picasso.Picasso;
 
 import org.simpleframework.xml.convert.AnnotationStrategy;
@@ -83,6 +85,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
+import static eu.anifantakis.neakriti.utils.AppUtils.URL_BASE;
 import static eu.anifantakis.neakriti.utils.AppUtils.mNotificationManager;
 import static eu.anifantakis.neakriti.utils.AppUtils.sRadioPlayer;
 
@@ -132,6 +135,9 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         FirebaseApp.initializeApp(this);
         FirebaseMessaging.getInstance().subscribeToTopic("neakriti-android-news-test");
+
+        initFirebaseRemoteConfig();
+        applyFirebaseConfiguration(); // apply default or last fetched configuration settings
 
         Toolbar toolbar = binding.masterView.toolbar; //(Toolbar) findViewById(R.id.toolbar); // binding.masterView.toolbar;
         setSupportActionBar(toolbar);
@@ -202,7 +208,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         // SETUP RETROFIT
 
         retrofit = new Retrofit.Builder()
-                .baseUrl(AppUtils.BASE_URL)
+                .baseUrl(URL_BASE)
                 .client(new OkHttpClient())
                 .addConverterFactory(SimpleXmlConverterFactory.createNonStrict(new Persister(new AnnotationStrategy())))
                 .build();
@@ -867,5 +873,45 @@ public class ArticleListActivity extends AppCompatActivity implements
     @Override
     public void onSeekProcessed() {
 
+    }
+
+    public static FirebaseRemoteConfig mFirebaseRemoteConfig;
+
+    /**
+     * Initializations to the firebase remote configuration and application of the "actual"  configuration to the application
+     */
+    private void initFirebaseRemoteConfig(){
+        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .build();
+        mFirebaseRemoteConfig.setConfigSettings(configSettings);
+        mFirebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
+    }
+
+    private String getFireBaseString(String field){
+        String value = mFirebaseRemoteConfig.getString(field);
+        value = value.replace("&amp;", "&");
+        return value;
+    }
+
+    /**
+     * Applies current configuration from firebase defaults or cloud settings
+     */
+    private void applyFirebaseConfiguration(){
+        URL_BASE = getFireBaseString("URL_BASE");
+        /*
+        RSSFEED_BASE = URL_BASE + getFireBaseString("RSSFEED_BASE");
+        RSSDOC_BASE = URL_BASE + getFireBaseString("RSSDOC_BASE");
+        IMGURL_BASE = URL_BASE + getFireBaseString("IMGURL_BASE");
+        DETAIL_BASE = URL_BASE + getFireBaseString("DETAIL_BASE");
+        MOBILE_BASE = getFireBaseString("MOBILE_BASE");
+        RADIO_STATION_URL = getFireBaseString("RADIO_STATION_URL");
+
+        try {MAIN_1_CAT_POS = Integer.parseInt(mFirebaseRemoteConfig.getString("MAIN_1_CAT_POS")); MAIN_1_CAT_NAME = mFirebaseRemoteConfig.getString("MAIN_1_CAT_NAME"); }catch(Exception e){ MAIN_1_CAT_POS = -1; MAIN_1_CAT_NAME = ""; }
+        try {MAIN_2_CAT_POS = Integer.parseInt(mFirebaseRemoteConfig.getString("MAIN_2_CAT_POS")); MAIN_2_CAT_NAME = mFirebaseRemoteConfig.getString("MAIN_2_CAT_NAME"); }catch(Exception e){ MAIN_2_CAT_POS = -1; MAIN_2_CAT_NAME = ""; }
+        try {MAIN_3_CAT_POS = Integer.parseInt(mFirebaseRemoteConfig.getString("MAIN_3_CAT_POS")); MAIN_3_CAT_NAME = mFirebaseRemoteConfig.getString("MAIN_3_CAT_NAME"); }catch(Exception e){ MAIN_3_CAT_POS = -1; MAIN_3_CAT_NAME = ""; }
+
+        showCinemaSection = mFirebaseRemoteConfig.getBoolean("SHOW_CINEMA");*/
     }
 }

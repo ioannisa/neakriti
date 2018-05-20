@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>URL_BASE</key>
+        <value>https://www.neakriti.gr</value>
+    </entry>
+    <entry>
+        <key>RSSFEED_BASE</key>
+        <value>/WebServices/MobileFeedAndroid_v2.aspx?srvid=</value>
+    </entry>
+    <entry>
+        <key>RSSDOC_BASE</key>
+        <value>/WebServices/MobileFeedAndroid_v2.aspx?docid=</value>
+    </entry>
+    <entry>
+        <key>IMGURL_BASE</key>
+        <value>/NewsASSET/neakriti-news-image.aspx?Doc=</value>
+    </entry>
+    <entry>
+        <key>DETAIL_BASE</key>
+        <value>/?page=newsdetail&amp;DocID=</value>
+    </entry>
+    <entry>
+        <key>MOBILE_BASE</key>
+        <value>http://mobile.neakriti.gr/fullarticle.php?docid=</value>
+    </entry>
+    <entry>
+        <key>RADIO_STATION_URL</key>
+        <value>http://eco.onestreaming.com:8237/live</value>
+    </entry>
+    <entry>
+        <key>AUTHOR_NAME</key>
+        <value>Ioannis Anifantakis</value>
+    </entry>
+    <entry>
+        <key>AUTHOR_URL</key>
+        <value>https://anifantakis.eu</value>
+    </entry>
+    <entry>
+        <key>MAIN_1_CAT_POS</key>
+        <value>0</value>
+    </entry>
+    <entry>
+        <key>MAIN_1_CAT_NAME</key>
+        <value>Θέμα Κρήτη</value>
+    </entry>
+    <entry>
+        <key>MAIN_2_CAT_POS</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>MAIN_2_CAT_NAME</key>
+        <value>Σημαντικότερα Θέματα</value>
+    </entry>
+    <entry>
+        <key>MAIN_3_CAT_POS</key>
+        <value>6</value>
+    </entry>
+    <entry>
+        <key>MAIN_3_CAT_NAME</key>
+        <value>Τελευταίες Ειδήσεις</value>
+    </entry>
+    <entry>
+        <key>SHOW_CINEMA</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>ATT</key>
+        <value>AT&amp;T</value>
+    </entry>
+</defaultsMap>

@@ -58,6 +58,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "538065719385-ple8kvaibhdtb2vrqmrobvm2vt7a2dia.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "eu.anifantakis.neakriti",
+            "certificate_hash": "3bbce9dd3f945f3a0cfe6f4f2b72abe49fecb488"
+          }
+        },
+        {
           "client_id": "538065719385-dq2n296u797asttr2kf2pakcq6cqcl8m.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
