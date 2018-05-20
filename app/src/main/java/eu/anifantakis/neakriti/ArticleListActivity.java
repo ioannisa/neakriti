@@ -1,6 +1,11 @@
 package eu.anifantakis.neakriti;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -70,12 +75,14 @@ import eu.anifantakis.neakriti.data.feed.Article;
 import eu.anifantakis.neakriti.data.feed.ArticlesCollection;
 import eu.anifantakis.neakriti.data.feed.RssFeed;
 import eu.anifantakis.neakriti.databinding.ActivityArticleListBinding;
+import eu.anifantakis.neakriti.firebase.FBMessagingService;
 import eu.anifantakis.neakriti.utils.AppUtils;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
+import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
 import static eu.anifantakis.neakriti.utils.AppUtils.sRadioPlayer;
 
 
@@ -636,6 +643,8 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
     }
 
+    private static final int NOTIFICATION_RADIO984_ID = 235425424;
+
     /**
      * Plays/Stops Radio Stream
      */
@@ -646,15 +655,50 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     private void setStreamRadioStatus(boolean status){
         sRadioPlayer.setPlayWhenReady(status);
-        if (exoPlayerIsPlaying){
+
+        if (status){
             Picasso.with(this)
                     .load(R.drawable.btn_radio_pause)
                     .into(btnRadio);
+
+            String channelId = "radio-channel";
+            String channelName = "Radio Player Notification";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            AppUtils.mNotificationManager = (NotificationManager) ArticleListActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                NotificationChannel mChannel = new NotificationChannel(
+                        channelId, channelName, importance);
+                AppUtils.mNotificationManager.createNotificationChannel(mChannel);
+            }
+
+            Intent intent = new Intent(this, ArticleListActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent,
+                    PendingIntent.FLAG_ONE_SHOT);
+
+            NotificationCompat.Builder builder =
+                    new NotificationCompat.Builder(getApplicationContext(), channelId)
+                            .setSmallIcon(R.drawable.play_circle_outline_wh_24px)
+                            .setContentTitle("Radio 984")
+                            .setVisibility(VISIBILITY_PUBLIC)
+                            .setAutoCancel(false)
+                            .setContentText("Ακούτε Radio9.84 Live")
+                            .setOngoing(true)
+                            .setContentIntent(pendingIntent);
+
+            AppUtils.mNotificationManager.notify(NOTIFICATION_RADIO984_ID, builder.build());
+
         }
         else{
             Picasso.with(this)
                     .load(R.drawable.btn_radio)
                     .into(btnRadio);
+
+            if (AppUtils.mNotificationManager != null){
+                AppUtils.mNotificationManager.cancel(NOTIFICATION_RADIO984_ID);
+            }
         }
     }
 

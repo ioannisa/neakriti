@@ -1,6 +1,7 @@
 package eu.anifantakis.neakriti.utils;
 
 import android.app.Application;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
@@ -54,6 +55,7 @@ public final class AppUtils extends Application {
     public static final String EXTRAS_ORIGIN_NOTIFICATION = "EXTRAS_ORIGIN_NOTIFICATION";
 
     public static boolean onlineMode = true;
+    public static NotificationManager mNotificationManager;;
 
     public static Date feedDate(String strDate){
         DateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
