@@ -83,6 +83,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
+import static eu.anifantakis.neakriti.utils.AppUtils.mNotificationManager;
 import static eu.anifantakis.neakriti.utils.AppUtils.sRadioPlayer;
 
 
@@ -649,6 +650,8 @@ public class ArticleListActivity extends AppCompatActivity implements
      * Plays/Stops Radio Stream
      */
     private void streamRadioOnOff(){
+        exoPlayerIsPlaying = (mNotificationManager!=null);
+
         exoPlayerIsPlaying = !exoPlayerIsPlaying;
         setStreamRadioStatus(exoPlayerIsPlaying);
     }
@@ -698,6 +701,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
             if (AppUtils.mNotificationManager != null){
                 AppUtils.mNotificationManager.cancel(NOTIFICATION_RADIO984_ID);
+                AppUtils.mNotificationManager = null;
             }
         }
     }

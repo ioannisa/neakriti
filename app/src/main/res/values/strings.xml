@@ -43,11 +43,18 @@
     <string name="dlg_cancel">Ακύρωση</string>
     <string name="dlg_close">Κλείσιμο</string>
     <string name="dlg_exit">Έξοδος</string>
+    <string name="dlg_install">Εγκατάσταση</string>
 
     <!-- No Network Alert Dialog -->
     <string name="dlg_no_network_title">Δε βρέθηκε Δίκτυο</string>
     <string name="dlg_no_network_body">Επιθυμείτε να συνεχίσετε σε Offline Mode;</string>
     <string name="dlg_no_network_stream_body">Δε μπορείτε να κάνετε χρήση ζωντανού προγράμματος τηλεόρασης ή ραδιοφώνου χωρίς την ύπαρξη δικτύου</string>
     <string name="dlg_no_network_offline_mode">Offline Mode</string>
+
+    <string name="dlg_no_tts_lang_installed_title">Εγκατάσταη Ελληνική Γλώσσας</string>
+    <string name="dlg_no_tts_lang_installed_body">Για τη χρήση Κειμένου-Σε-Λόγο (TTS) πρέπει να εγκαταστήσετε δεδομένα Ελληνικής γλώσσας.\n\nΑπό τι Διαθέσιμες γλώσσες επιλέξτε "Ελληνικά (Ελλάδα)" ή "Greek (Greece)"</string>
+
+    <string name="dlg_no_tts_lang_unavailable_title">Μη Διαθέσιμη Γλώσσα</string>
+    <string name="dlg_no_tts_lang_unavailable_body">Λυπούμαστε, αλλά η Ελληνική γλώσσα δεν είναι διαθέσιμη ακόμα για τη συσκευή σας.\n\nΔοκιμάστε ξανά στο μέλλον για πιθανή διαθεσιμότητα</string>
 
 </resources>

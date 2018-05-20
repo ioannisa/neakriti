@@ -1,20 +1,16 @@
 package eu.anifantakis.neakriti;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.speech.tts.Voice;
-import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,15 +21,13 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Set;
 
 import eu.anifantakis.neakriti.data.db.ArticlesDBContract;
 import eu.anifantakis.neakriti.data.feed.Article;
@@ -63,7 +57,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        mTextToSpeech = new TextToSpeech(getActivity(), this);//, "com.redzoc.ramees.tts.espeak");
+        mTextToSpeech = new TextToSpeech(getActivity(), this);
 
         if (getArguments().containsKey(AppUtils.EXTRAS_ARTICLE)) {
             // Load the dummy content specified by the fragment
@@ -183,17 +177,77 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        mTextToSpeech.shutdown();
+
+    }
+
+
     private void speak(){
-        if (mTextToSpeech!=null) {
-            if (mTextToSpeech.isSpeaking()) {
-                mTextToSpeech.stop();
-                return;
-            } else {
+        if (mTextToSpeech==null)
+            mTextToSpeech = new TextToSpeech(getActivity(), this);
+
+        if (mTextToSpeech.isSpeaking()) {
+            mTextToSpeech.stop();
+            return;
+        } else {
+            // Check if TTS for the Greek Language - Greece (el_GR) is installed for the TTS Engine Running on the user's device
+            int langAvailability = mTextToSpeech.isLanguageAvailable(new Locale("el", "GR"));
+            if (langAvailability==TextToSpeech.LANG_AVAILABLE || langAvailability==TextToSpeech.LANG_COUNTRY_AVAILABLE || langAvailability==TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE){
+                Log.d("TTS AVAILABILITY", "INSTALLED");
                 mTextToSpeech.setLanguage(new Locale("el", "GR"));
+                mTextToSpeech.setSpeechRate(1);
+                mTextToSpeech.setPitch(1);
                 mTextToSpeech.speak(AppUtils.makeReadableGreekText(mArticle.getDescription()), TextToSpeech.QUEUE_FLUSH, null);
+            }
+            else if (langAvailability==TextToSpeech.LANG_MISSING_DATA){
+                Log.d("TTS AVAILABILITY", "MISSING INSTALLATION");
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder
+                        .setTitle(R.string.dlg_no_tts_lang_installed_title)
+                        .setMessage(R.string.dlg_no_tts_lang_installed_body)
+                        .setIcon(R.drawable.warning_48px)
+                        .setNegativeButton(R.string.dlg_cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                            }
+                        })
+                        .setPositiveButton(R.string.dlg_install, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Intent installTTSIntent = new Intent();
+                                installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+                                ArrayList<String> languages = new ArrayList<String>();
+                                languages.add("el-GR");
+                                installTTSIntent.putStringArrayListExtra(TextToSpeech.Engine.EXTRA_CHECK_VOICE_DATA_FOR,
+                                        languages);
+                                startActivity(installTTSIntent);
+                            }
+                        });
+                // Create the AlertDialog object and return it
+                builder.create().show();
+            }
+            else if (langAvailability==TextToSpeech.LANG_NOT_SUPPORTED){
+                Log.d("TTS AVAILABILITY", "LANGUAGE UNAVAILABLE");
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder
+                        .setTitle(R.string.dlg_no_tts_lang_unavailable_title)
+                        .setMessage(R.string.dlg_no_tts_lang_unavailable_body)
+                        .setIcon(R.drawable.not_interested_48px)
+                        .setNegativeButton(R.string.dlg_exit, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                            }
+                        });
+                // Create the AlertDialog object and return it
+                builder.create().show();
             }
         }
     }
+
+
 
     /**
      * Article Sharing via implicit intent
