@@ -53,6 +53,8 @@ public final class AppUtils extends Application {
     public static final String EXTRAS_LOW_RES_BITMAP = "low_res_bitmap";
     public static final String EXTRAS_ORIGIN_NOTIFICATION = "EXTRAS_ORIGIN_NOTIFICATION";
 
+    public static boolean onlineMode = true;
+
     public static Date feedDate(String strDate){
         DateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
         try {
@@ -418,5 +420,18 @@ public final class AppUtils extends Application {
             e.printStackTrace();
             return null;
         }
+    }
+
+
+    /**
+     * Check network availability
+     *
+     * @return true if network is available, false otherwise
+     */
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

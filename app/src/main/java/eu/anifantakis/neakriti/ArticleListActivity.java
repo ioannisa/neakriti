@@ -1,7 +1,7 @@
 package eu.anifantakis.neakriti;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
+import android.support.v7.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -314,6 +314,33 @@ public class ArticleListActivity extends AppCompatActivity implements
     }
 
     private void makeArticlesLoaderQuery(int type, String id, int items){
+        boolean isNetworkAvailable = AppUtils.isNetworkAvailable(this);
+        // if we knew we were in online mode, but discovered that there is no network (going offline for the first time)
+        if (AppUtils.onlineMode && !isNetworkAvailable){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder
+                    .setTitle(R.string.dlg_no_network_title)
+                    .setMessage(R.string.dlg_no_network_body)
+                    .setIcon(R.drawable.cloud_off_48px)
+                    .setNegativeButton(R.string.dlg_no_network_offline_mode, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    })
+                    .setPositiveButton(R.string.dlg_exit, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            builder.create().show();
+        }
+        // if we knew we were in offline mode, but discovered that there is network (going online for the first time)
+        else  if (!AppUtils.onlineMode && isNetworkAvailable){
+
+        }
+        AppUtils.onlineMode = isNetworkAvailable;
+
         Bundle bundle = new Bundle();
         bundle.putInt(LOADER_TYPE, type);
         bundle.putString(LOADER_ID, id);
@@ -561,29 +588,51 @@ public class ArticleListActivity extends AppCompatActivity implements
         super.onBackPressed();
     }
 
-    public void liveStreamTVClicked(View view){
-        // if no WiFi connected, warn the user for possible charges while watching streamed content
-        if (!AppUtils.isWifiConnected(this)) {
-            alertForStream(false);
+    private boolean checkNetworkAvailabilityBeforeStreaming(){
+        boolean isNetworkAvailable = (AppUtils.isNetworkAvailable(this));
+
+        if (!isNetworkAvailable){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder
+                    .setTitle(R.string.dlg_no_network_title)
+                    .setMessage(R.string.dlg_no_network_stream_body)
+                    .setIcon(R.drawable.cloud_off_48px)
+                    .setNegativeButton(R.string.dlg_close, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            builder.create().show();
         }
-        else{
-            streamTV();
+
+        return isNetworkAvailable;
+    }
+
+    public void liveStreamTVClicked(View view){
+        if (checkNetworkAvailabilityBeforeStreaming()) {
+            // if no WiFi connected, warn the user for possible charges while watching streamed content
+            if (!AppUtils.isWifiConnected(this)) {
+                alertForStream(false);
+            } else {
+                streamTV();
+            }
         }
     }
 
     public void liveStreamRadioClicked(View view){
-        if (!exoPlayerIsPlaying){
-            // if no WiFi connected, warn the user for possible charges while watching streamed content
-            if (!AppUtils.isWifiConnected(this)) {
-                alertForStream(true);
-            }
-            else{
-                // in wifi no questions asked, just play ;)
+        if (checkNetworkAvailabilityBeforeStreaming()) {
+            if (!exoPlayerIsPlaying) {
+                // if no WiFi connected, warn the user for possible charges while watching streamed content
+                if (!AppUtils.isWifiConnected(this)) {
+                    alertForStream(true);
+                } else {
+                    // in wifi no questions asked, just play ;)
+                    streamRadioOnOff();
+                }
+            } else {
                 streamRadioOnOff();
             }
-        }
-        else{
-            streamRadioOnOff();
         }
     }
 
@@ -591,7 +640,12 @@ public class ArticleListActivity extends AppCompatActivity implements
      * Plays/Stops Radio Stream
      */
     private void streamRadioOnOff(){
-        sRadioPlayer.setPlayWhenReady(!exoPlayerIsPlaying);
+        exoPlayerIsPlaying = !exoPlayerIsPlaying;
+        setStreamRadioStatus(exoPlayerIsPlaying);
+    }
+
+    private void setStreamRadioStatus(boolean status){
+        sRadioPlayer.setPlayWhenReady(status);
         if (exoPlayerIsPlaying){
             Picasso.with(this)
                     .load(R.drawable.btn_radio_pause)
@@ -748,7 +802,8 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     @Override
     public void onPlayerError(ExoPlaybackException error) {
-
+        exoPlayerIsPlaying = false;
+        setStreamRadioStatus(false);
     }
 
     @Override

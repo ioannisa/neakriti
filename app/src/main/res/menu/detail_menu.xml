@@ -19,7 +19,7 @@
 
     <item
         android:id="@+id/nav_favorite"
-        android:icon="@drawable/heart_outline"
+        android:icon="@drawable/bookmark_outline_wh_48px"
         android:title="Favorite Article"
         android:orderInCategory="3"
         app:showAsAction="always"

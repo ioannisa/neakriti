@@ -12,7 +12,7 @@
     <string name="nav_health">Health</string>
     <string name="nav_woman">Woman</string>
     <string name="nav_travel">Trips</string>
-    <string name="nav_favorite_items">Favorites</string>
+    <string name="nav_favorite_items">Bookmarks</string>
     <string name="share_the_article">neakriti.gr - Share this Article</string>
     <string name="dlg_no_wifi_detected_title">No Wifi Connection Found</string>
     <string name="dlg_no_wifi_detected_body">Do you wish to continue making use of your mobile data plan?</string>

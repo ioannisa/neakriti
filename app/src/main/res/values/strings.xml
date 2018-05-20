@@ -24,7 +24,7 @@
     <string name="nav_health">Υγεία</string>
     <string name="nav_woman">Γυναίκα</string>
     <string name="nav_travel">Ταξίδια</string>
-    <string name="nav_favorite_items">Αγαπημένα</string>
+    <string name="nav_favorite_items">Σελιδοδείκτες</string>
 
     <string name="unitID_bottom" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
 
@@ -41,5 +41,13 @@
 
     <string name="dlg_continue">Συνέχεια</string>
     <string name="dlg_cancel">Ακύρωση</string>
+    <string name="dlg_close">Κλείσιμο</string>
+    <string name="dlg_exit">Έξοδος</string>
+
+    <!-- No Network Alert Dialog -->
+    <string name="dlg_no_network_title">Δε βρέθηκε Δίκτυο</string>
+    <string name="dlg_no_network_body">Επιθυμείτε να συνεχίσετε σε Offline Mode;</string>
+    <string name="dlg_no_network_stream_body">Δε μπορείτε να κάνετε χρήση ζωντανού προγράμματος τηλεόρασης ή ραδιοφώνου χωρίς την ύπαρξη δικτύου</string>
+    <string name="dlg_no_network_offline_mode">Offline Mode</string>
 
 </resources>

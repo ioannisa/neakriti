@@ -51,7 +51,7 @@
 
         <item
             android:id="@+id/nav_favorite_items"
-            android:icon="@drawable/heart_outline_black"
+            android:icon="@drawable/bookmark_outline_48px"
             android:title="@string/nav_favorite_items" />
     </group>
 
