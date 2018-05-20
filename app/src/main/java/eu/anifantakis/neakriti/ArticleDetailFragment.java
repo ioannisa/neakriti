@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -75,10 +76,10 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
             if (appBarLayout != null) {
                 // using a theme with NoActionBar we would set title like that
                 //appBarLayout.setTitle(mArticle.getTitle());
-                //appBarLayout.setTitle(mArticle.getGroupName());
+                appBarLayout.setTitle(mArticle.getGroupName());
 
                 // using a theme with ActionBar we set the activity's toolbar name like that
-                getActivity().setTitle(mArticle.getGroupName());
+                //getActivity().setTitle(mArticle.getGroupName());
             }
         }
 

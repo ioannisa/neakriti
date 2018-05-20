@@ -104,6 +104,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     private static boolean exoPlayerIsPlaying = false;
     private TextView feedCategoryTitle;
     private ItemTouchHelper itemTouchHelper;
+    private ArticleDetailFragment fragment;
 
     private static final int ARTICLES_FEED_LOADER = 0;
     private static final String LOADER_TYPE = "LOADER_TYPE";
@@ -113,6 +114,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     private static final String LIVE_PANEL_VISIBILITY = "LIVE_PANEL_VISIBILITY";
     private static final String STATE_EXO_PLAYER_RADIO_PLAYING = "exo_player_radio_playing";
     private static final String STATE_CLICKED_AN_ITEM = "STATE_CLICKED_AN_ITEM";
+    private static final String STATE_FRAGMENT = "STATE_FRAGMENT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,6 +147,10 @@ public class ArticleListActivity extends AppCompatActivity implements
             }
             if (savedInstanceState.containsKey(STATE_CLICKED_AN_ITEM)) {
                 clickedAtLeastOneItem = savedInstanceState.getBoolean(STATE_CLICKED_AN_ITEM);
+            }
+
+            if (savedInstanceState.containsKey(STATE_FRAGMENT)){
+                fragment = (ArticleDetailFragment) getSupportFragmentManager().getFragment(savedInstanceState, STATE_FRAGMENT);
             }
         }
         else{
@@ -249,7 +255,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         if (mTwoPane) {
             Bundle arguments = new Bundle();
             arguments.putParcelable(AppUtils.EXTRAS_ARTICLE, article);
-            ArticleDetailFragment fragment = new ArticleDetailFragment();
+            fragment = new ArticleDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.article_detail_container, fragment)
@@ -399,8 +405,10 @@ public class ArticleListActivity extends AppCompatActivity implements
 
             @Override
             public void deliverResult(ArticlesCollection data) {
-                if (cachedCollection == null)
+                if (cachedCollection == null) {
                     mArticlesListAdapter.notifyDataSetChanged();
+                    mRecyclerView.smoothScrollToPosition(0);
+                }
 
                 cachedCollection = data;
                 mArticlesListAdapter.setCollection(data);
@@ -543,6 +551,10 @@ public class ArticleListActivity extends AppCompatActivity implements
         outState.putInt(LIVE_PANEL_VISIBILITY, liveView.getVisibility());
         outState.putBoolean(STATE_EXO_PLAYER_RADIO_PLAYING, exoPlayerIsPlaying);
         outState.putBoolean(STATE_CLICKED_AN_ITEM, clickedAtLeastOneItem);
+
+        if (fragment!=null) {
+            getSupportFragmentManager().putFragment(outState, STATE_FRAGMENT, fragment);
+        }
     }
 
     public void actionUpClicked(View view) {

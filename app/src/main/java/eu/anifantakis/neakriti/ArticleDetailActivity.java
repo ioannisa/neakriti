@@ -66,6 +66,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
         }
 
         if (mArticle.getImgThumb()!=null) {
+            /*
                // Now place the larger image
             if (detailActivityImage != null) {
                 Picasso.with(this)
@@ -84,6 +85,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
                             }
                         });
             }
+            */
         }
         else{
             findViewById(R.id.toolbar_layout).setVisibility(View.GONE);
