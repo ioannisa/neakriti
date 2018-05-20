@@ -148,10 +148,10 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
 
         // once the menu is inflated we can modify the "heart" as we enter the article, if its a favorite movie
         if (isArticleInFavorites()){
-            menu.findItem(R.id.nav_favorite).setIcon(R.drawable.bookmark_wh_48px);
+            menu.findItem(R.id.nav_favorite).setIcon(R.drawable.bookmark_wh_24px);
         }
         else{
-            menu.findItem(R.id.nav_favorite).setIcon(R.drawable.bookmark_outline_wh_48px);
+            menu.findItem(R.id.nav_favorite).setIcon(R.drawable.bookmark_outline_wh_24px);
         }
     }
 
@@ -291,7 +291,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
 
             Uri uri = getContext().getContentResolver().insert(ArticlesDBContract.ArticleEntry.CONTENT_URI, contentValues);
         if(uri != null) {
-            menu.findItem(R.id.nav_favorite).setIcon(R.drawable.bookmark_wh_48px);
+            menu.findItem(R.id.nav_favorite).setIcon(R.drawable.bookmark_wh_24px);
         }
         //Snackbar.make(binding.detailContentLayout, R.string.favourites_add, Snackbar.LENGTH_SHORT).show();
     }
@@ -306,7 +306,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         uri = uri.buildUpon().appendPath(String.valueOf(mArticle.getGuid())).build();
         getContext().getContentResolver().delete(uri, null, null);
 
-        menu.findItem(R.id.nav_favorite).setIcon(R.drawable.bookmark_outline_wh_48px);
+        menu.findItem(R.id.nav_favorite).setIcon(R.drawable.bookmark_outline_wh_24px);
 
         //Snackbar.make(binding.detailContentLayout, R.string.favourites_removed, Snackbar.LENGTH_SHORT).show();
     }
