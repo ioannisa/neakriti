@@ -30,14 +30,14 @@ public class StorageRetrievalAsyncTask extends AsyncTask<Object, Void, ArticlesC
         //ContentResolver resolver = getco
         Cursor cursor = context.getContentResolver().query(ArticlesDBContract.ArticleEntry.CONTENT_URI,
                 null,
-                ArticlesDBContract.ArticleEntry.COL_TYPE + " = " + collectionType,
+                ArticlesDBContract.ArticleEntry.COL_TYPE + " = " + collectionType + " AND " + ArticlesDBContract.ArticleEntry.COL_TYPE_ID + " = " + categoryID,
                 null,
                 ArticlesDBContract.ArticleEntry._ID + " DESC"
         );
 
         if (cursor!=null) {
             if (cursor.getCount() > 0) {
-                ArticlesCollection favoriteArticles = new ArticlesCollection(collectionTitle, collectionType, categoryID);
+                ArticlesCollection collection = new ArticlesCollection(collectionTitle, collectionType, categoryID);
 
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()){
@@ -53,11 +53,11 @@ public class StorageRetrievalAsyncTask extends AsyncTask<Object, Void, ArticlesC
                     article.setImgThumb(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_IMG_THUMB)));
                     article.setImgLarge(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_IMG_LARGE)));
 
-                    favoriteArticles.addArticle(article);
+                    collection.addArticle(article);
                     cursor.moveToNext();
                 }
                 // all results of the favorites are contained in a single page (no endless load here)
-                return favoriteArticles;
+                return collection;
             }
         }
 
@@ -67,8 +67,8 @@ public class StorageRetrievalAsyncTask extends AsyncTask<Object, Void, ArticlesC
     @Override
     protected void onPostExecute(ArticlesCollection collection) {
         super.onPostExecute(collection);
-        if (collection != null) {
+        //if (collection != null) {
             mTaskCompleteListener.onTaskComplete(collection);
-        }
+        //}
     }
 }

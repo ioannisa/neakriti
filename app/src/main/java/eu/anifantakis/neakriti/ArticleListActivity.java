@@ -73,6 +73,7 @@ import java.io.IOException;
 import eu.anifantakis.neakriti.data.ArticlesListAdapter;
 import eu.anifantakis.neakriti.data.RequestInterface;
 import eu.anifantakis.neakriti.data.StorageIntentService;
+import eu.anifantakis.neakriti.data.StorageRetrievalAsyncTask;
 import eu.anifantakis.neakriti.data.db.ArticlesDBContract;
 import eu.anifantakis.neakriti.data.feed.Article;
 import eu.anifantakis.neakriti.data.feed.ArticlesCollection;
@@ -88,6 +89,7 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
 import static eu.anifantakis.neakriti.utils.AppUtils.URL_BASE;
 import static eu.anifantakis.neakriti.utils.AppUtils.mNotificationManager;
+import static eu.anifantakis.neakriti.utils.AppUtils.onlineMode;
 import static eu.anifantakis.neakriti.utils.AppUtils.sRadioPlayer;
 
 
@@ -329,7 +331,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
     }
 
-    private void makeArticlesLoaderQuery(String title, int type, String id, int items){
+    private void makeArticlesLoaderQuery(final String title, final int type, String id, int items){
         boolean isNetworkAvailable = AppUtils.isNetworkAvailable(this);
         // if we knew we were in online mode, but discovered that there is no network (going offline for the first time)
         if (AppUtils.onlineMode && !isNetworkAvailable){
@@ -357,19 +359,35 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
         AppUtils.onlineMode = isNetworkAvailable;
 
-        Bundle bundle = new Bundle();
-        bundle.putString(LOADER_TITLE, title);
-        bundle.putInt(LOADER_TYPE, type);
-        bundle.putString(LOADER_ID, id);
-        bundle.putInt(LOADER_ITEMS_COUNT, items);
-
         feedCategoryTitle.setText(feedName);
 
-        Loader<RssFeed> loader = getSupportLoaderManager().getLoader(ARTICLES_FEED_LOADER);
-        if (loader == null) {
-            getSupportLoaderManager().initLoader(ARTICLES_FEED_LOADER, bundle, this);
-        } else {
-            getSupportLoaderManager().restartLoader(ARTICLES_FEED_LOADER, bundle, this);
+        if (onlineMode) {
+            Bundle bundle = new Bundle();
+            bundle.putString(LOADER_TITLE, title);
+            bundle.putInt(LOADER_TYPE, type);
+            bundle.putString(LOADER_ID, id);
+            bundle.putInt(LOADER_ITEMS_COUNT, items);
+
+            Loader<RssFeed> loader = getSupportLoaderManager().getLoader(ARTICLES_FEED_LOADER);
+            if (loader == null) {
+                getSupportLoaderManager().initLoader(ARTICLES_FEED_LOADER, bundle, this);
+            } else {
+                getSupportLoaderManager().restartLoader(ARTICLES_FEED_LOADER, bundle, this);
+            }
+        }
+        else{
+            // handle offline data, fetch articles from the database for the given category
+            new StorageRetrievalAsyncTask(new StorageRetrievalAsyncTask.TaskCompleteListener() {
+                @Override
+                public void onTaskComplete(ArticlesCollection collection) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    cachedCollection = collection;
+                    mArticlesListAdapter.setCollection(collection);
+                    mArticlesListAdapter.notifyDataSetChanged();
+                    mRecyclerView.smoothScrollToPosition(0);
+                    Log.d("ASYNC TASK", "FETCHING DATABASE DATA");
+                }
+            }).execute(this, id, title, type);
         }
     }
 
