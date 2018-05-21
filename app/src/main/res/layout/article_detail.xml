@@ -26,13 +26,13 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp"
-                android:text="ARTICLE TITILE HERE" />
+                tools:text="ARTICLE TITILE HERE" />
 
             <TextView
                 android:id="@+id/detail_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="ARTICLE DATE TIME HERE" />
+                tools:text="ARTICLE DATE TIME HERE" />
 
 
         </LinearLayout>
