@@ -283,19 +283,19 @@ public class ArticleListActivity extends AppCompatActivity implements
             article.setGroupName(feedName);
             intent.putExtra(AppUtils.EXTRAS_ARTICLE, article);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-                Log.d("TRANSITION NAME", ViewCompat.getTransitionName(sharedImage));
-            }
-
             //AppUtils.saveToInternalStorage(getApplicationContext(), ((BitmapDrawable)sharedImage.getDrawable()).getBitmap(), "images", "current_thumb.jpg");
+            if (sharedImage != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Log.d("TRANSITION NAME", ViewCompat.getTransitionName(sharedImage));
+                }
 
-            Bitmap bm=((BitmapDrawable)sharedImage.getDrawable()).getBitmap();
-            intent.putExtra(AppUtils.EXTRAS_LOW_RES_BITMAP, bm);
+                Bitmap bm = ((BitmapDrawable) sharedImage.getDrawable()).getBitmap();
+                intent.putExtra(AppUtils.EXTRAS_LOW_RES_BITMAP, bm);
+            }
 
             // bundle for the transition effect
             Bundle bundle = null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedImage!=null) {
                 bundle = ActivityOptionsCompat
                         .makeSceneTransitionAnimation(
                                 this,

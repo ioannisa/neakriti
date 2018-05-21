@@ -52,9 +52,10 @@ public class ArticleDetailActivity extends AppCompatActivity {
 
             if (extras.containsKey(AppUtils.EXTRAS_LOW_RES_BITMAP)){
                 lowResBitmap = getIntent().getParcelableExtra(AppUtils.EXTRAS_LOW_RES_BITMAP);
-                detailActivityImage.setImageBitmap(lowResBitmap);
-                supportStartPostponedEnterTransition();
+                if (lowResBitmap!=null)
+                    detailActivityImage.setImageBitmap(lowResBitmap);
             }
+            supportStartPostponedEnterTransition();
 
             //detailActivityImage.setImageBitmap(AppUtils.loadImageFromStorage("images", "current_thumb.jpg"));
             //supportStartPostponedEnterTransition();

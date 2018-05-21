@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -120,6 +121,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
     public class ArticleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         RowArticleListBinding binding;
         private Context context;
+        private boolean imageLoaded = false;
 
         public ArticleViewHolder(View itemView) {
             super(itemView);
@@ -144,6 +146,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
          * @param image
          */
         void setImage(String image) {
+            imageLoaded = false;
             if (image==null || image.isEmpty()){
                 // if movie has no accompanied backdrop image, load the "no image found" from the drawable folder
                 binding.rowIvArticleThumb.setImageResource(R.drawable.placeholder);
@@ -151,7 +154,17 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
                 Picasso.with(context)
                         .load(image)
                         .placeholder(R.drawable.placeholder)
-                        .into(binding.rowIvArticleThumb);
+                        .into(binding.rowIvArticleThumb, new Callback(){
+                    @Override
+                    public void onSuccess() {
+                        imageLoaded = true;
+                    }
+
+                    @Override
+                    public void onError() {
+                        imageLoaded = false;
+                    }
+                });
             }
         }
 
@@ -166,7 +179,12 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
         @Override
         public void onClick(View view) {
             selectedPosition = getAdapterPosition();
-            mOnClickListener.onArticleItemClick(selectedPosition, binding.rowIvArticleThumb);
+            if (imageLoaded) {
+                mOnClickListener.onArticleItemClick(selectedPosition, binding.rowIvArticleThumb);
+            }
+            else{
+                mOnClickListener.onArticleItemClick(selectedPosition, null);
+            }
             //notifyDataSetChanged();
         }
     }
