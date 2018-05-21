@@ -42,5 +42,7 @@ public final class ArticlesDBContract {
         public static final String COL_PUB_DATE_GRE = "pubDateGre";
         public static final String COL_IMG_THUMB = "img_thumb";
         public static final String COL_IMG_LARGE = "img_large";
+        public static final String COL_IMG_BLOB_THUMB = "img_blob_thumb";
+        public static final String COL_IMG_BLOB_LARGE = "img_blob_large";
     }
 }
