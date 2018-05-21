@@ -15,14 +15,16 @@ public final class ArticlesDBContract {
     public static final int DB_TYPE_FAVORITE = 4;
 
     public static final String AUTHORITY = "eu.anifantakis.neakriti";
-    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
+    private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
     public static final String PATH_ARTICLES = "articles";
     public static final String PATH_CATEGORY = "category";
+    public static final String PATH_FAVORITE_ARTICLES = "favorite_articles";
 
     public static class ArticleEntry implements BaseColumns{
         // Content URI for the Content Provider of a single article
-        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_ARTICLES).build();
-        public static final Uri CATGORY_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_CATEGORY).build();
+        public static final Uri CONTENT_URI             = BASE_CONTENT_URI.buildUpon().appendPath(PATH_ARTICLES).build();
+        public static final Uri CATGORY_URI             = BASE_CONTENT_URI.buildUpon().appendPath(PATH_CATEGORY).build();
+        public static final Uri FAVORITE_CONTENT_URI    = BASE_CONTENT_URI.buildUpon().appendPath(PATH_FAVORITE_ARTICLES).build();
 
         // Fields regarding the table "articles" and its columns
         public static final String TABLE_NAME = "article";

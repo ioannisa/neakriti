@@ -299,7 +299,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
      * Call "delete" on the Content Provider, to remove the existing article from the database
      */
     private void removeArticleFromFavorites(){
-        Uri uri = ArticlesDBContract.ArticleEntry.CONTENT_URI;
+        Uri uri = ArticlesDBContract.ArticleEntry.FAVORITE_CONTENT_URI;
         uri = uri.buildUpon().appendPath(String.valueOf(mArticle.getGuid())).build();
         getContext().getContentResolver().delete(uri, null, null);
 
@@ -315,7 +315,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
     private boolean isArticleInFavorites(){
         Cursor cursor = getContext().getContentResolver().query(ArticlesDBContract.ArticleEntry.CONTENT_URI,
                 null,
-                ArticlesDBContract.ArticleEntry.COL_GUID + " = " + mArticle.getGuid(),
+                ArticlesDBContract.ArticleEntry.COL_TYPE + " = " + ArticlesDBContract.DB_TYPE_FAVORITE + " AND " + ArticlesDBContract.ArticleEntry.COL_GUID + " = " + mArticle.getGuid(),
                 null,
                 null
         );

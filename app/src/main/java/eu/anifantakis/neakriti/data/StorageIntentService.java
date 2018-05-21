@@ -55,7 +55,7 @@ public class StorageIntentService extends IntentService {
 
         getContentResolver().delete(
                 uri,
-                ArticlesDBContract.ArticleEntry.COL_TYPE + " = " + ArticlesDBContract.DB_TYPE_CATEGORY + " AND " +ArticlesDBContract.ArticleEntry.COL_TYPE_ID + " = " + categoryID,
+                ArticlesDBContract.ArticleEntry.COL_TYPE + " = " + ArticlesDBContract.DB_TYPE_CATEGORY + " AND " + ArticlesDBContract.ArticleEntry.COL_TYPE_ID + " = " + categoryID,
                 null);
     }
 

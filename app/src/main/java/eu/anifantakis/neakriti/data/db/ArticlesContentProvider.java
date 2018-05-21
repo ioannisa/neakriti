@@ -18,6 +18,7 @@ public class ArticlesContentProvider extends ContentProvider{
     public static final int ARTICLES = 100;
     public static final int ARTICLE_WITH_ID = 101;
     public static final int CATEGORY_WITH_ID = 102;
+    public static final int FAVORITE_ARTICLE_WITH_ID = 103;
 
     ArticlesDBHelper dbHelper;
     private static final UriMatcher sUriMatcher = buildUriMatcher();
@@ -28,6 +29,7 @@ public class ArticlesContentProvider extends ContentProvider{
         uriMatcher.addURI(ArticlesDBContract.AUTHORITY, ArticlesDBContract.PATH_ARTICLES, ARTICLES);
         uriMatcher.addURI(ArticlesDBContract.AUTHORITY, ArticlesDBContract.PATH_ARTICLES + "/#", ARTICLE_WITH_ID);
         uriMatcher.addURI(ArticlesDBContract.AUTHORITY, ArticlesDBContract.PATH_CATEGORY + "/#", CATEGORY_WITH_ID);
+        uriMatcher.addURI(ArticlesDBContract.AUTHORITY, ArticlesDBContract.PATH_FAVORITE_ARTICLES + "/#", FAVORITE_ARTICLE_WITH_ID);
 
         return uriMatcher;
     }
@@ -108,6 +110,11 @@ public class ArticlesContentProvider extends ContentProvider{
             case ARTICLE_WITH_ID:
                 String id = uri.getPathSegments().get(1);
                 tasksDeleted = db.delete(TABLE_NAME, ArticlesDBContract.ArticleEntry.COL_GUID+ "=?", new String[]{id});
+                break;
+
+            case FAVORITE_ARTICLE_WITH_ID:
+                String favorite_article_id = uri.getPathSegments().get(1);
+                tasksDeleted = db.delete(TABLE_NAME, ArticlesDBContract.ArticleEntry.COL_TYPE + " = " + ArticlesDBContract.DB_TYPE_CATEGORY + " AND " + ArticlesDBContract.ArticleEntry.COL_GUID+ "=?", new String[]{favorite_article_id});
                 break;
 
             case CATEGORY_WITH_ID:
