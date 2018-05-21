@@ -127,19 +127,16 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
             adView = (AdView) rootView.findViewById(R.id.adView);
 
             //((TextView) rootView.findViewById(R.id.article_detail_text)).setText(webStory);
+
+            // fetch google ads
+            AdRequest adRequest = new AdRequest.Builder()
+                    .setRequestAgent("android_studio:ad_template").build();
+            adView.loadAd(adRequest);
         }
 
         return rootView;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        // fetch google ads
-        AdRequest adRequest = new AdRequest.Builder()
-                .setRequestAgent("android_studio:ad_template").build();
-        adView.loadAd(adRequest);
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
