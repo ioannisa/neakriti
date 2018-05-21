@@ -72,6 +72,7 @@ import java.io.IOException;
 
 import eu.anifantakis.neakriti.data.ArticlesListAdapter;
 import eu.anifantakis.neakriti.data.RequestInterface;
+import eu.anifantakis.neakriti.data.StorageIntentService;
 import eu.anifantakis.neakriti.data.db.ArticlesDBContract;
 import eu.anifantakis.neakriti.data.feed.Article;
 import eu.anifantakis.neakriti.data.feed.ArticlesCollection;
@@ -118,6 +119,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     private ArticleDetailFragment fragment;
 
     private static final int ARTICLES_FEED_LOADER = 0;
+    private static final String LOADER_TITLE = "LOADER_TITLE";
     private static final String LOADER_TYPE = "LOADER_TYPE";
     private static final String LOADER_ID = "LOADER_ID";
     private static final String LOADER_ITEMS_COUNT = "LOADER_ITEMS_COUNT";
@@ -239,14 +241,14 @@ public class ArticleListActivity extends AppCompatActivity implements
                 getContentResolver().delete(uri, null, null);
 
                 cachedCollection = null;
-                makeArticlesLoaderQuery(ArticlesDBContract.DB_TYPE_FAVORITE, "0", 200);
+                makeArticlesLoaderQuery(feedName, ArticlesDBContract.DB_TYPE_FAVORITE, "0", 200);
             }
         });
 
         feedSrvid = "127";
         feedItems = 25;
         feedName = getString(R.string.nav_home);
-        makeArticlesLoaderQuery(ArticlesDBContract.DB_TYPE_CATEGORY, feedSrvid, feedItems);
+        makeArticlesLoaderQuery(feedName, ArticlesDBContract.DB_TYPE_CATEGORY, feedSrvid, feedItems);
     }
 
     /**
@@ -323,11 +325,11 @@ public class ArticleListActivity extends AppCompatActivity implements
         // have removed an item from the favorite list
         if (feedType == ArticlesDBContract.DB_TYPE_FAVORITE){
             cachedCollection = null;
-            makeArticlesLoaderQuery(ArticlesDBContract.DB_TYPE_FAVORITE, "0", feedItems);
+            makeArticlesLoaderQuery(feedName, ArticlesDBContract.DB_TYPE_FAVORITE, "0", feedItems);
         }
     }
 
-    private void makeArticlesLoaderQuery(int type, String id, int items){
+    private void makeArticlesLoaderQuery(String title, int type, String id, int items){
         boolean isNetworkAvailable = AppUtils.isNetworkAvailable(this);
         // if we knew we were in online mode, but discovered that there is no network (going offline for the first time)
         if (AppUtils.onlineMode && !isNetworkAvailable){
@@ -356,6 +358,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         AppUtils.onlineMode = isNetworkAvailable;
 
         Bundle bundle = new Bundle();
+        bundle.putString(LOADER_TITLE, title);
         bundle.putInt(LOADER_TYPE, type);
         bundle.putString(LOADER_ID, id);
         bundle.putInt(LOADER_ITEMS_COUNT, items);
@@ -390,7 +393,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
                     if (cursor!=null) {
                         if (cursor.getCount() > 0) {
-                            ArticlesCollection favoriteArticles = new ArticlesCollection();
+                            ArticlesCollection favoriteArticles = new ArticlesCollection(bundle.getString(LOADER_TITLE), ArticlesDBContract.DB_TYPE_FAVORITE, bundle.getString(LOADER_ID));
 
                             cursor.moveToFirst();
                             while (!cursor.isAfterLast()){
@@ -426,7 +429,10 @@ public class ArticleListActivity extends AppCompatActivity implements
                         return null;
                     }
 
-                    return new ArticlesCollection(feed.getChannel().getItemList());
+                    ArticlesCollection result = new ArticlesCollection(feed.getChannel().getItemList(), bundle.getString(LOADER_TITLE), ArticlesDBContract.DB_TYPE_CATEGORY, bundle.getString(LOADER_ID));
+                    storeForOfflineUsageCollection(result);
+
+                    return result;
                 }
                 return null;
             }
@@ -456,6 +462,16 @@ public class ArticleListActivity extends AppCompatActivity implements
                 super.deliverResult(data);
             }
         };
+    }
+
+    /**
+     * Store the category collection for offline usage by calling the IntentService that saves all
+     * @param collection
+     */
+    private void storeForOfflineUsageCollection(ArticlesCollection collection){
+        Intent intent = new Intent(ArticleListActivity.this, StorageIntentService.class);
+        intent.putExtra(StorageIntentService.COLLECTION, collection);
+        startService(intent);
     }
 
     @Override
@@ -498,6 +514,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        // show/hide the live streaming panel
         if (id == R.id.action_live){
             switchLivePanelVisibility();
         }
@@ -549,7 +566,7 @@ public class ArticleListActivity extends AppCompatActivity implements
             feedType = ArticlesDBContract.DB_TYPE_FAVORITE;
             feedItems = 200;
             feedName = item.getTitle().toString();
-            makeArticlesLoaderQuery(ArticlesDBContract.DB_TYPE_FAVORITE, "0", feedItems);
+            makeArticlesLoaderQuery(feedName, ArticlesDBContract.DB_TYPE_FAVORITE, "0", feedItems);
 
             itemTouchHelper.attachToRecyclerView(mRecyclerView);
         }
@@ -570,7 +587,7 @@ public class ArticleListActivity extends AppCompatActivity implements
             else if (id == R.id.nav_woman)      { feedSrvid = "128"; }
             else if (id == R.id.nav_travel)     { feedSrvid = "263"; }
 
-            makeArticlesLoaderQuery(ArticlesDBContract.DB_TYPE_CATEGORY, feedSrvid, feedItems);
+            makeArticlesLoaderQuery(feedName, ArticlesDBContract.DB_TYPE_CATEGORY, feedSrvid, feedItems);
         }
 
         DrawerLayout drawer = binding.drawerLayout;// (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -581,7 +598,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     @Override
     public void onRefresh() {
         cachedCollection = null;
-        makeArticlesLoaderQuery(feedType, feedSrvid, feedItems);
+        makeArticlesLoaderQuery(feedName, feedType, feedSrvid, feedItems);
     }
 
     @Override

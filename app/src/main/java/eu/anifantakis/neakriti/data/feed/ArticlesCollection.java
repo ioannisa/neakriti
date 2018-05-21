@@ -7,37 +7,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArticlesCollection implements Parcelable {
-    public static final int LISTY_TYPE_CATEGORY = 0;
-    public static final int LISTY_TYPE_TAG = 1;
-    public static final int LISTY_TYPE_ZONE = 2;
-    public static final int LISTY_TYPE_SEARCH = 3;
-    public static final int LISTY_TYPE_FAVORITE = 4;
-
     private String listName;
     private int listType;
-    private int listId;
+    private String listId;
     private List<Article> articleList;
 
-    public ArticlesCollection() {
+    public ArticlesCollection(String listName, int listType, String listId) {
+        this.listName = listName;
+        this.listType = listType;
+        this.listId = listId;
         articleList = new ArrayList<>();
     }
 
-    public ArticlesCollection(List<Article> articlesList) {
+    public ArticlesCollection(List<Article> articlesList, String listName, int listType, String listId) {
+        this.listName = listName;
+        this.listType = listType;
+        this.listId = listId;
         articleList = articlesList;
     }
 
     protected ArticlesCollection(Parcel in) {
         listName = in.readString();
         listType = in.readInt();
-        listId = in.readInt();
+        listId = in.readString();
         articleList = in.createTypedArrayList(Article.CREATOR);
+    }
+
+    public String getListName(){
+        return listName;
+    }
+
+    public int getListType(){
+        return listType;
+    }
+
+    public String getListId(){
+        return listId;
+    }
+
+    public List<Article> getArticleList(){
+        return articleList;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(listName);
         dest.writeInt(listType);
-        dest.writeInt(listId);
+        dest.writeString(listId);
         dest.writeTypedList(articleList);
     }
 

@@ -282,7 +282,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         if (pubDate!=null) { contentValues.put(ArticlesDBContract.ArticleEntry.COL_PUB_DATE, pubDate.getTime()); }
         else{ contentValues.put(ArticlesDBContract.ArticleEntry.COL_PUB_DATE, 0); }
 
-        Date updated = AppUtils.feedDate(mArticle.getUpdatedStr());
+        Date updated = AppUtils.feedDateUpdated(mArticle.getUpdatedStr());
         if (updated!=null) { contentValues.put(ArticlesDBContract.ArticleEntry.COL_UPDATED, updated.getTime()); }
         else{ contentValues.put(ArticlesDBContract.ArticleEntry.COL_UPDATED, 0); }
 

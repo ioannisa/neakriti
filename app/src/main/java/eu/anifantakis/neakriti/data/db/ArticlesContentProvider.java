@@ -17,6 +17,7 @@ public class ArticlesContentProvider extends ContentProvider{
 
     public static final int ARTICLES = 100;
     public static final int ARTICLE_WITH_ID = 101;
+    public static final int CATEGORY_WITH_ID = 102;
 
     ArticlesDBHelper dbHelper;
     private static final UriMatcher sUriMatcher = buildUriMatcher();
@@ -26,6 +27,7 @@ public class ArticlesContentProvider extends ContentProvider{
 
         uriMatcher.addURI(ArticlesDBContract.AUTHORITY, ArticlesDBContract.PATH_ARTICLES, ARTICLES);
         uriMatcher.addURI(ArticlesDBContract.AUTHORITY, ArticlesDBContract.PATH_ARTICLES + "/#", ARTICLE_WITH_ID);
+        uriMatcher.addURI(ArticlesDBContract.AUTHORITY, ArticlesDBContract.PATH_CATEGORY + "/#", CATEGORY_WITH_ID);
 
         return uriMatcher;
     }
@@ -107,6 +109,14 @@ public class ArticlesContentProvider extends ContentProvider{
                 String id = uri.getPathSegments().get(1);
                 tasksDeleted = db.delete(TABLE_NAME, ArticlesDBContract.ArticleEntry.COL_GUID+ "=?", new String[]{id});
                 break;
+
+            case CATEGORY_WITH_ID:
+                String categoryID = uri.getPathSegments().get(1);
+                tasksDeleted = db.delete(TABLE_NAME,
+                        ArticlesDBContract.ArticleEntry.COL_TYPE+"="+ArticlesDBContract.DB_TYPE_CATEGORY+
+                                " AND "+ ArticlesDBContract.ArticleEntry.COL_TYPE_ID+ "=?", new String[]{categoryID});
+                break;
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }

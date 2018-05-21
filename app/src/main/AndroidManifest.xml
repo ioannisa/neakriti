@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="eu.anifantakis.neakriti">
+    package="eu.anifantakis.neakriti"
+    android:installLocation="auto">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -31,7 +32,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="eu.anifantakis.neakriti.ArticleListActivity" />
         </activity>
-        <activity android:name=".TVStreamActivity"></activity>
+        <activity android:name=".TVStreamActivity" />
 
         <service android:name=".firebase.FBMessagingService">
             <intent-filter>
@@ -43,6 +44,9 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
+        <service android:name=".data.StorageIntentService"
+            android:exported="false"/>
 
         <provider
             android:name="eu.anifantakis.neakriti.data.db.ArticlesContentProvider"

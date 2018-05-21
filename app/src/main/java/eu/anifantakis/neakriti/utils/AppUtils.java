@@ -68,6 +68,17 @@ public final class AppUtils extends Application {
         }
     }
 
+    public static Date feedDateUpdated(String strDate){
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH);
+        try {
+            return formatter.parse(strDate);
+        }
+        catch (ParseException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static String pubDateFormat(String pubdate){
         String dateStr = pubdate;
         String dayStr = dateStr.substring(0,3);
