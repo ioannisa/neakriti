@@ -22,8 +22,8 @@ public class StorageRetrievalAsyncTask extends AsyncTask<Object, Void, ArticlesC
 
     @Override
     protected ArticlesCollection doInBackground(Object... objects) {
-        String categoryID = (String) objects[0];
-        Context context = (Context) objects[1];
+        Context context = (Context) objects[0];
+        String categoryID = (String) objects[1];
         String collectionTitle = (String) objects[2];
         Integer collectionType = (Integer) objects[3];
 
