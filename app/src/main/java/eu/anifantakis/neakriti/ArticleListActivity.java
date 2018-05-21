@@ -59,6 +59,8 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.util.Util;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -119,6 +121,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     private TextView feedCategoryTitle;
     private ItemTouchHelper itemTouchHelper;
     private ArticleDetailFragment fragment;
+    private Tracker mTracker;
 
     private static final int ARTICLES_FEED_LOADER = 0;
     private static final String LOADER_TITLE = "LOADER_TITLE";
@@ -136,6 +139,9 @@ public class ArticleListActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_article_list);
         //setContentView(R.layout.activity_article_list);
+
+        //mTracker = ((AppUtils) getApplication()).getDefaultTracker();
+        // TODO ENABLE TRACKING
 
         FirebaseApp.initializeApp(this);
         FirebaseMessaging.getInstance().subscribeToTopic("neakriti-android-news-test");
@@ -260,6 +266,10 @@ public class ArticleListActivity extends AppCompatActivity implements
     @Override
     public void onArticleItemClick(int clickedItemIndex, ImageView sharedImage) {
         Log.d("RV ACTION", "ITEM CLICK");
+
+        //mTracker.setScreenName("MAIN - " + getTitle());
+        //mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        //TODO more advanced
 
         String title = mArticlesListAdapter.getArticleAtIndex(clickedItemIndex).getTitle();
         Article article = mArticlesListAdapter.getArticleAtIndex(clickedItemIndex);

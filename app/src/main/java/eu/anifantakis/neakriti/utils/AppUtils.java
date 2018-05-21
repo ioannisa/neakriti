@@ -17,6 +17,8 @@ import android.view.animation.LayoutAnimationController;
 import android.view.animation.TranslateAnimation;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
@@ -35,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import eu.anifantakis.neakriti.R;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -55,7 +58,32 @@ public final class AppUtils extends Application {
     public static final String EXTRAS_ORIGIN_NOTIFICATION = "EXTRAS_ORIGIN_NOTIFICATION";
 
     public static boolean onlineMode = true;
-    public static NotificationManager mNotificationManager;;
+    public static NotificationManager mNotificationManager;
+
+    private static GoogleAnalytics sAnalytics;
+    private static Tracker sTracker;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        sAnalytics = GoogleAnalytics.getInstance(this);
+        getPicasso();
+    }
+
+    /**
+     * Gets the default {@link Tracker} for this {@link Application}.
+     * @return tracker
+     */
+    synchronized public Tracker getDefaultTracker() {
+        // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
+        if (sTracker == null) {
+            sTracker = sAnalytics.newTracker(R.xml.global_tracker);
+        }
+
+        return sTracker;
+    }
+
 
     public static Date feedDate(String strDate){
         DateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
@@ -246,7 +274,7 @@ public final class AppUtils extends Application {
         }
     }
 
-    public Picasso getPicasso() {
+    private Picasso getPicasso() {
         // Source: https://gist.github.com/iamtodor/eb7f02fc9571cc705774408a474d5dcb
         OkHttpClient okHttpClient1 = new OkHttpClient.Builder()
                 .addInterceptor(new Interceptor() {
@@ -275,14 +303,6 @@ public final class AppUtils extends Application {
         //picasso.setIndicatorsEnabled(true);
 
         return picasso;
-    }
-
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        getPicasso();
     }
 
     /**
