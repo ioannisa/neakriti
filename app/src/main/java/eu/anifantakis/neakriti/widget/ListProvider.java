@@ -3,6 +3,7 @@ package eu.anifantakis.neakriti.widget;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService.RemoteViewsFactory;
 
@@ -39,7 +40,6 @@ public class ListProvider implements RemoteViewsFactory {
         catch(Exception e){
             listItemList = null;
         }
-
     }
 
     @Override
@@ -61,9 +61,11 @@ public class ListProvider implements RemoteViewsFactory {
     public RemoteViews getViewAt(int position) {
         final RemoteViews remoteView = new RemoteViews(
                 context.getPackageName(), R.layout.row_widget_list);
-        ListItem listItem = listItemList.get(position);
-        remoteView.setTextViewText(R.id.widget_row_heading, listItem.heading);
-        remoteView.setImageViewBitmap(R.id.widget_row_image, AppUtils.getBitmapfromUrl(listItem.imageUrl));
+        if (listItemList!=null) {
+            ListItem listItem = listItemList.get(position);
+            remoteView.setTextViewText(R.id.widget_row_heading, listItem.heading);
+            remoteView.setImageViewBitmap(R.id.widget_row_image, AppUtils.getBitmapfromUrl(listItem.imageUrl));
+        }
 
         return remoteView;
     }

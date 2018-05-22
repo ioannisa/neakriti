@@ -15,10 +15,9 @@ import eu.anifantakis.neakriti.R;
 public class NewsWidgetProvider extends AppWidgetProvider {
 
     public static final String APPWIDGET_UPDATE="android.appwidget.action.APPWIDGET_UPDATE";
+    public static final String APPWIDGET_NOITEMS="eu.anifantakis.neakriti.APPWIDGET_NOITEMS";
 
-    private RemoteViews  updateAppWidget(Context context, int appWidgetId) {
-
-
+    private RemoteViews updateAppWidget(Context context, int appWidgetId, boolean hasData) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.news_widget_provider);
 
         //RemoteViews Service needed to provide adapter for ListView
@@ -28,17 +27,16 @@ public class NewsWidgetProvider extends AppWidgetProvider {
         svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 
         //setting a unique Uri to the intent
-        //don't know its purpose to me right now
         svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
 
-        //setting adapter to listview of the widget
-        views.setRemoteAdapter(appWidgetId, R.id.list_view_widget,
-                svcIntent);
+        if (hasData) {
+            //setting adapter to listview of the widget
+            views.setRemoteAdapter(appWidgetId, R.id.list_view_widget,
+                    svcIntent);
+        }
 
         // if the list_view_widget is empty, then show the text view that contains the empty text
         views.setEmptyView(R.id.list_view_widget, R.id.list_view_empty_text);
-
-
 
         //updateAppWidget(context,appWidgetId);
         return views;
@@ -56,15 +54,27 @@ public class NewsWidgetProvider extends AppWidgetProvider {
 
     }
 
-    @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        final int N = appWidgetIds.length;
+    private static int[] savedAppWidgetIds;
+
+    public static void onUpdateMyView(Context context) {
+        final int N = savedAppWidgetIds.length;
         for (int i = 0; i < N; i++) {
             Intent serviceIntent = new Intent(context, WidgetFetchArticlesService.class);
-            serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
+            serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, savedAppWidgetIds[i]);
 
-            context.startService(serviceIntent);
+            try {
+                context.startService(serviceIntent);
+            }
+            catch(IllegalStateException e){
+                e.printStackTrace();
+            }
         }
+    }
+
+    @Override
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        savedAppWidgetIds = appWidgetIds;
+        onUpdateMyView(context);
 
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
@@ -79,21 +89,31 @@ public class NewsWidgetProvider extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-
         Log.d("WIDGET RECEIVER", "ON RECEIVE");
 
-        Log.d("WIDGET RECEIVER ACTION", intent.getAction());
-
         if (intent.getAction().equals(APPWIDGET_UPDATE)) {
-            Log.d("WIDGET RECEIVER", "DATA FETCHED");
             int appWidgetId = intent.getIntExtra(
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
+
+            boolean hasData = intent.getBooleanExtra(
+                    "HAS_DATA",
+                    true
+            );
+
+            if (hasData){
+                Log.d("WIDGET RECEIVER", "HAS DATA: TRUE");
+            }
+            else{
+                Log.d("WIDGET RECEIVER", "HAS DATA: FALSE");
+            }
+
             AppWidgetManager appWidgetManager = AppWidgetManager
                     .getInstance(context);
-            RemoteViews remoteViews = updateAppWidget(context, appWidgetId);
+
+            Log.d("WIDGET RECEIVER", "DATA FETCHED");
+            RemoteViews remoteViews = updateAppWidget(context, appWidgetId, hasData);
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
-
     }
 }
