@@ -114,7 +114,7 @@ public class ArticlesContentProvider extends ContentProvider{
 
             case FAVORITE_ARTICLE_WITH_ID:
                 String favorite_article_id = uri.getPathSegments().get(1);
-                tasksDeleted = db.delete(TABLE_NAME, ArticlesDBContract.ArticleEntry.COL_TYPE + " = " + ArticlesDBContract.DB_TYPE_CATEGORY + " AND " + ArticlesDBContract.ArticleEntry.COL_GUID+ "=?", new String[]{favorite_article_id});
+                tasksDeleted = db.delete(TABLE_NAME, ArticlesDBContract.ArticleEntry.COL_TYPE + " = " + ArticlesDBContract.DB_TYPE_FAVORITE + " AND " + ArticlesDBContract.ArticleEntry.COL_GUID+ "=?", new String[]{favorite_article_id});
                 break;
 
             case CATEGORY_WITH_ID:

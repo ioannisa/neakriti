@@ -244,7 +244,7 @@ public class ArticleListActivity extends AppCompatActivity implements
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int id = (int) viewHolder.itemView.getTag();
 
-                Uri uri = ArticlesDBContract.ArticleEntry.CONTENT_URI;
+                Uri uri = ArticlesDBContract.ArticleEntry.FAVORITE_CONTENT_URI;
                 uri = uri.buildUpon().appendPath(String.valueOf(id)).build();
                 getContentResolver().delete(uri, null, null);
 
