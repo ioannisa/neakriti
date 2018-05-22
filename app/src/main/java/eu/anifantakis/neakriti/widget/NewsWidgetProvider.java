@@ -14,7 +14,7 @@ import eu.anifantakis.neakriti.R;
 
 public class NewsWidgetProvider extends AppWidgetProvider {
 
-    public static final String DATA_FETCHED="eu.anifantakis.neakriti.DATA_FETCHED";
+    public static final String APPWIDGET_UPDATE="android.appwidget.action.APPWIDGET_UPDATE";
 
     private RemoteViews  updateAppWidget(Context context, int appWidgetId) {
 
@@ -37,9 +37,13 @@ public class NewsWidgetProvider extends AppWidgetProvider {
 
         // if the list_view_widget is empty, then show the text view that contains the empty text
         views.setEmptyView(R.id.list_view_widget, R.id.list_view_empty_text);
-        return views;
 
-/*
+
+
+        //updateAppWidget(context,appWidgetId);
+        return views;
+        /*
+
         views.setTextViewText(R.id.tv_widget_title, "TITLE");
 
         // open the app if someone click on either of the two textviews of the widget
@@ -57,8 +61,8 @@ public class NewsWidgetProvider extends AppWidgetProvider {
         final int N = appWidgetIds.length;
         for (int i = 0; i < N; i++) {
             Intent serviceIntent = new Intent(context, WidgetFetchArticlesService.class);
-            serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                    appWidgetIds[i]);
+            serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
+
             context.startService(serviceIntent);
         }
 
@@ -78,7 +82,9 @@ public class NewsWidgetProvider extends AppWidgetProvider {
 
         Log.d("WIDGET RECEIVER", "ON RECEIVE");
 
-        //if (intent.getAction().equals(DATA_FETCHED)) {
+        Log.d("WIDGET RECEIVER ACTION", intent.getAction());
+
+        if (intent.getAction().equals(APPWIDGET_UPDATE)) {
             Log.d("WIDGET RECEIVER", "DATA FETCHED");
             int appWidgetId = intent.getIntExtra(
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
@@ -87,7 +93,7 @@ public class NewsWidgetProvider extends AppWidgetProvider {
                     .getInstance(context);
             RemoteViews remoteViews = updateAppWidget(context, appWidgetId);
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
-        //}
+        }
 
     }
 }

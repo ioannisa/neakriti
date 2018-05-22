@@ -24,6 +24,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 import static eu.anifantakis.neakriti.utils.AppUtils.URL_BASE;
+import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.APPWIDGET_UPDATE;
 
 // source: https://laaptu.wordpress.com/2013/07/24/populate-appwidget-listview-with-remote-datadata-from-web/
 
@@ -70,7 +71,12 @@ public class WidgetFetchArticlesService extends Service {
 
                 List<Article> articleList = widgetFeed.getChannel().getItemList();
                 listItemList = new ArrayList<ListProvider.ListItem>();
+                int count = 0;
                 for (Article article : articleList){
+                    if (count==5)
+                        break;
+
+                    count++;
                     ListProvider.ListItem listItem = new ListProvider.ListItem();
                     listItem.heading = article.getTitle();
                     listItem.imageUrl = article.getImgThumb();
@@ -91,7 +97,7 @@ public class WidgetFetchArticlesService extends Service {
     private void populateWidget() {
         Log.d("WIDGET FETCH SERVICE", "POPULATING WIDGET");
         Intent widgetUpdateIntent = new Intent();
-        widgetUpdateIntent.setAction(NewsWidgetProvider.DATA_FETCHED);
+        widgetUpdateIntent.setAction(APPWIDGET_UPDATE);
         widgetUpdateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 appWidgetId);
         sendBroadcast(widgetUpdateIntent);
