@@ -329,7 +329,11 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
                 null,
                 null
         );
-        return (cursor.getCount()>0);
+
+        boolean isArticleInFavorites = (cursor.getCount()>0);
+        cursor.close();
+
+        return (isArticleInFavorites);
     }
 
     /**

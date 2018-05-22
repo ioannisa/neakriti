@@ -35,32 +35,34 @@ public class StorageRetrievalAsyncTask extends AsyncTask<Object, Void, ArticlesC
                 ArticlesDBContract.ArticleEntry._ID + " DESC"
         );
 
-        if (cursor!=null) {
-            if (cursor.getCount() > 0) {
-                ArticlesCollection collection = new ArticlesCollection(collectionTitle, collectionType, categoryID);
+        if (cursor != null && cursor.getCount() > 0) {
+            ArticlesCollection collection = new ArticlesCollection(collectionTitle, collectionType, categoryID);
 
-                cursor.moveToFirst();
-                while (!cursor.isAfterLast()){
-                    Article article = new Article();
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Article article = new Article();
 
-                    article.setGuid(cursor.getInt(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_GUID)));
-                    article.setLink(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_LINK)));
-                    article.setTitle(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_TITLE)));
-                    article.setDescription(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_DESCRIPTION)));
-                    article.setPubDateStr(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_PUB_DATE_STR)));
-                    article.setUpdatedStr(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_UPDATED_STR)));
-                    article.setPubDateGre(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_PUB_DATE_GRE)));
-                    article.setImgThumb(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_IMG_THUMB)));
-                    article.setImgLarge(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_IMG_LARGE)));
+                article.setGuid(cursor.getInt(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_GUID)));
+                article.setLink(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_LINK)));
+                article.setTitle(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_TITLE)));
+                article.setDescription(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_DESCRIPTION)));
+                article.setPubDateStr(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_PUB_DATE_STR)));
+                article.setUpdatedStr(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_UPDATED_STR)));
+                article.setPubDateGre(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_PUB_DATE_GRE)));
+                article.setImgThumb(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_IMG_THUMB)));
+                article.setImgLarge(cursor.getString(cursor.getColumnIndex(ArticlesDBContract.ArticleEntry.COL_IMG_LARGE)));
 
-                    collection.addArticle(article);
-                    cursor.moveToNext();
-                }
-                // all results of the favorites are contained in a single page (no endless load here)
-                return collection;
+                collection.addArticle(article);
+                cursor.moveToNext();
             }
+            cursor.close();
+            // all results of the favorites are contained in a single page (no endless load here)
+            return collection;
         }
 
+        if (cursor != null) {
+            cursor.close();
+        }
         return null;
     }
 

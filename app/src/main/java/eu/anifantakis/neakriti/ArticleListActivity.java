@@ -440,8 +440,13 @@ public class ArticleListActivity extends AppCompatActivity implements
                                 favoriteArticles.addArticle(article);
                                 cursor.moveToNext();
                             }
+                            cursor.close();
                             // all results of the favorites are contained in a single page (no endless load here)
                             return favoriteArticles;
+                        }
+                        else{
+                            cursor.close();
+                            return null;
                         }
                     }
                 }
