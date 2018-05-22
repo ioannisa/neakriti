@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import eu.anifantakis.neakriti.ArticleListActivity;
@@ -13,8 +14,9 @@ import eu.anifantakis.neakriti.R;
 
 public class NewsWidgetProvider extends AppWidgetProvider {
 
-    private RemoteViews  updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+    public static final String DATA_FETCHED="eu.anifantakis.neakriti.DATA_FETCHED";
+
+    private RemoteViews  updateAppWidget(Context context, int appWidgetId) {
 
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.news_widget_provider);
@@ -42,7 +44,7 @@ public class NewsWidgetProvider extends AppWidgetProvider {
         views.setEmptyView(R.id.list_view_widget, R.id.list_view_empty_text);
 
         // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetId, views);
+        //appWidgetManager.updateAppWidget(appWidgetId, views);
 
         return views;
 
@@ -67,14 +69,48 @@ public class NewsWidgetProvider extends AppWidgetProvider {
         }
         */
 
+        /*
         final int N = appWidgetIds.length;
-        /*int[] appWidgetIds holds ids of multiple instance of your widget
-         * meaning you are placing more than one widgets on your homescreen*/
         for (int i = 0; i < N; ++i) {
-            RemoteViews remoteViews = updateAppWidget(context, appWidgetManager, appWidgetIds[i]);
+            RemoteViews remoteViews = updateAppWidget(context, appWidgetIds[i]);
             appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
+        }
+        */
+
+        final int N = appWidgetIds.length;
+        for (int i = 0; i < N; i++) {
+            Intent serviceIntent = new Intent(context, WidgetFetchArticlesService.class);
+            serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+                    appWidgetIds[i]);
+            context.startService(serviceIntent);
         }
 
         super.onUpdate(context, appWidgetManager, appWidgetIds);
+    }
+
+    /**
+     * It receives the broadcast as per the action set on intent filters on
+     * Manifest.xml once data is fetched from RemotePostService,it sends
+     * broadcast and WidgetProvider notifies to change the data the data change
+     * right now happens on ListProvider as it takes RemoteFetchService
+     * listItemList as data
+     */
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+
+        Log.d("WIDGET RECEIVER", "ON RECEIVE");
+
+        //if (intent.getAction().equals(DATA_FETCHED)) {
+            Log.d("WIDGET RECEIVER", "DATA FETCHED");
+            int appWidgetId = intent.getIntExtra(
+                    AppWidgetManager.EXTRA_APPWIDGET_ID,
+                    AppWidgetManager.INVALID_APPWIDGET_ID);
+            AppWidgetManager appWidgetManager = AppWidgetManager
+                    .getInstance(context);
+            RemoteViews remoteViews = updateAppWidget(context, appWidgetId);
+            appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
+        //}
+
     }
 }

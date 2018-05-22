@@ -5,15 +5,17 @@ import java.util.ArrayList;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService.RemoteViewsFactory;
 
 import eu.anifantakis.neakriti.R;
+import eu.anifantakis.neakriti.utils.AppUtils;
 
 // source: https://laaptu.wordpress.com/2013/07/19/android-app-widget-with-listview/
 public class ListProvider implements RemoteViewsFactory {
-    public class ListItem {
-        public String heading,content;
+    public static class ListItem {
+        public String heading,imageUrl;
 
     }
 
@@ -30,13 +32,18 @@ public class ListProvider implements RemoteViewsFactory {
     }
 
     private void populateListItem() {
+        /*
         for (int i = 0; i < 10; i++) {
             ListItem listItem = new ListItem();
             listItem.heading = "Heading" + i;
-            listItem.content = i
-                    + " This is the content of the app widget listview.Nice content though";
             listItemList.add(listItem);
         }
+        */
+
+
+        listItemList = (ArrayList<ListItem>)
+                WidgetFetchArticlesService.listItemList
+                        .clone();
 
     }
 
@@ -61,6 +68,7 @@ public class ListProvider implements RemoteViewsFactory {
                 context.getPackageName(), R.layout.row_widget_list);
         ListItem listItem = listItemList.get(position);
         remoteView.setTextViewText(R.id.widget_row_heading, listItem.heading);
+        remoteView.setImageViewBitmap(R.id.widget_row_image, AppUtils.getBitmapfromUrl(listItem.imageUrl));
 
         return remoteView;
     }

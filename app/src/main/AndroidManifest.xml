@@ -50,10 +50,6 @@
         <service android:name=".data.StorageIntentService"
             android:exported="false"/>
 
-        <service
-            android:name=".widget.WidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS" />
-
         <provider
             android:name="eu.anifantakis.neakriti.data.db.ArticlesContentProvider"
             android:authorities="eu.anifantakis.neakriti"
@@ -62,12 +58,20 @@
         <receiver android:name=".widget.NewsWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="eu.anifantakis.neakriti.DATA_FETCHED" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/news_widget_provider_info" />
         </receiver>
+
+        <service
+            android:name=".widget.WidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <service
+            android:name=".widget.WidgetFetchArticlesService" />
     </application>
 
 </manifest>
