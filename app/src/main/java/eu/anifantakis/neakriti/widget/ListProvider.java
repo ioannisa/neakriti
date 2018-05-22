@@ -1,13 +1,12 @@
 package eu.anifantakis.neakriti.widget;
 
-import java.util.ArrayList;
-
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService.RemoteViewsFactory;
+
+import java.util.ArrayList;
 
 import eu.anifantakis.neakriti.R;
 import eu.anifantakis.neakriti.utils.AppUtils;
@@ -32,18 +31,14 @@ public class ListProvider implements RemoteViewsFactory {
     }
 
     private void populateListItem() {
-        /*
-        for (int i = 0; i < 10; i++) {
-            ListItem listItem = new ListItem();
-            listItem.heading = "Heading" + i;
-            listItemList.add(listItem);
+        try {
+            listItemList = (ArrayList<ListItem>)
+                    WidgetFetchArticlesService.listItemList
+                            .clone();
         }
-        */
-
-
-        listItemList = (ArrayList<ListItem>)
-                WidgetFetchArticlesService.listItemList
-                        .clone();
+        catch(Exception e){
+            listItemList = null;
+        }
 
     }
 

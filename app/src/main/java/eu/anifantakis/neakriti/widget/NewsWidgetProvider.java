@@ -35,17 +35,8 @@ public class NewsWidgetProvider extends AppWidgetProvider {
         views.setRemoteAdapter(appWidgetId, R.id.list_view_widget,
                 svcIntent);
 
-        //views.setEmptyView(R.id.list_view_widget, R.id.empty_view);
-
-
-        //views.setTextViewText(R.id.list_vew_empty_text, "TITLE");
-
         // if the list_view_widget is empty, then show the text view that contains the empty text
         views.setEmptyView(R.id.list_view_widget, R.id.list_view_empty_text);
-
-        // Instruct the widget manager to update the widget
-        //appWidgetManager.updateAppWidget(appWidgetId, views);
-
         return views;
 
 /*
@@ -63,20 +54,6 @@ public class NewsWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        // There may be multiple widgets active, so update all of them
-        /*for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId);
-        }
-        */
-
-        /*
-        final int N = appWidgetIds.length;
-        for (int i = 0; i < N; ++i) {
-            RemoteViews remoteViews = updateAppWidget(context, appWidgetIds[i]);
-            appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
-        }
-        */
-
         final int N = appWidgetIds.length;
         for (int i = 0; i < N; i++) {
             Intent serviceIntent = new Intent(context, WidgetFetchArticlesService.class);
