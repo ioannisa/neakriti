@@ -24,6 +24,8 @@ import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,6 +34,7 @@ import java.util.Locale;
 import eu.anifantakis.neakriti.data.db.ArticlesDBContract;
 import eu.anifantakis.neakriti.data.feed.Article;
 import eu.anifantakis.neakriti.utils.AppUtils;
+import eu.anifantakis.neakriti.utils.NeaKritiApp;
 
 /**
  * A fragment representing a single Article detail screen.
@@ -44,6 +47,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
     private WebView mWebView;
     private AdView adView;
     private TextToSpeech mTextToSpeech;
+    private Tracker mTracker;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -57,6 +61,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        mTracker = ((NeaKritiApp) getActivity().getApplication()).getDefaultTracker();
         mTextToSpeech = new TextToSpeech(getActivity(), this);
 
         if (getArguments().containsKey(AppUtils.EXTRAS_ARTICLE)) {
@@ -250,6 +255,11 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
      * Article Sharing via implicit intent
      */
     private void shareArticle(){
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Share")
+                .build());
+
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
