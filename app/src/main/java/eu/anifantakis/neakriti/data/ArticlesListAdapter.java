@@ -134,7 +134,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
         /**
          * Set the holder article's title
          *
-         * @param title
+         * @param title The Article title
          */
         void setTitle(String title) {
             binding.content.setText(title);
@@ -143,7 +143,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
         /**
          * Set the holder movie's thumbnail
          *
-         * @param image
+         * @param image The image thumbnail
          */
         void setImage(String image) {
             imageLoaded = false;

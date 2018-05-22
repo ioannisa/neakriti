@@ -125,8 +125,8 @@ public final class AppUtils {
 
     /**
      * Create Animation for sliding down views (useful to slide down to the live view)
-     * @param panel
-     * @param hidepanel_at_end
+     * @param panel The panel to which the animation will be applied
+     * @param hidepanel_at_end hidepanel_at_end if true at the end of animation the panel will have its visibility set to GONE
      */
     public static void setLayoutAnim_slidedown(final ViewGroup panel, final boolean hidepanel_at_end) {
 
@@ -166,8 +166,8 @@ public final class AppUtils {
 
     /**
      * Create Animation for sliding up views (useful to slide up the live view)
-     * @param panel
-     * @param hidepanel_at_end
+     * @param panel The panel to which the animation will be applied
+     * @param hidepanel_at_end if true at the end of animation the panel will have its visibility set to GONE
      */
     public static void setLayoutAnim_slideup(final ViewGroup panel, final boolean hidepanel_at_end) {
 
@@ -244,8 +244,8 @@ public final class AppUtils {
 
     /**
      * Convert standard html to text
-     * @param html
-     * @return
+     * @param html The html text to be converted
+     * @return The textual representation of the document, that is the html with all tags removed
      */
     public static String html2text(String html) {
         return Jsoup.parse(html).text();
@@ -253,8 +253,8 @@ public final class AppUtils {
 
     /**
      * Check if an application is already installed on the user's device
-     * @param uri
-     * @return
+     * @param uri The application URI
+     * @return true if it is installed, false otherwise
      */
     public static boolean isAppInstalled(Context context, String uri) {
         PackageManager pm = context.getPackageManager();

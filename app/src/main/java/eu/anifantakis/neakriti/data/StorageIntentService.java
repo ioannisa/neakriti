@@ -47,7 +47,7 @@ public class StorageIntentService extends IntentService {
 
     /**
      * Delete Old Articles stored for this category
-     * @param categoryID
+     * @param categoryID The articles with the specified categoryID will be deleted
      */
     private void deleteOldCollectionFromCategory(String categoryID){
         Uri uri = ArticlesDBContract.ArticleEntry.CATGORY_URI;
@@ -61,7 +61,7 @@ public class StorageIntentService extends IntentService {
 
     /**
      * Loop through all the items of the collection, calling the storage method per article on that collection
-     * @param collection
+     * @param collection The ArticlesCollection to attach on the given category ID
      */
     private void addNewCollectionToCategory(ArticlesCollection collection){
         String categoryID = collection.getListId();
@@ -73,8 +73,8 @@ public class StorageIntentService extends IntentService {
 
     /**
      * Store an individual item
-     * @param article
-     * @param categoryID
+     * @param article The article to store
+     * @param categoryID The category that this article will belong to
      */
     private void addArticleToCategory(Article article, String categoryID){
         ContentValues contentValues = new ContentValues();

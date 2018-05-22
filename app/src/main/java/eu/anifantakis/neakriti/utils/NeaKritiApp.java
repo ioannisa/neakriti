@@ -3,6 +3,12 @@ package eu.anifantakis.neakriti.utils;
 import android.app.Application;
 import android.util.Log;
 
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.jakewharton.picasso.OkHttp3Downloader;
@@ -20,6 +26,7 @@ import okhttp3.Response;
 public class NeaKritiApp extends Application {
     private static GoogleAnalytics sAnalytics;
     private static Tracker sTracker;
+    public SimpleExoPlayer mRadioPlayer;
 
     @Override
     public void onCreate() {
@@ -38,7 +45,6 @@ public class NeaKritiApp extends Application {
         if (sTracker == null) {
             sTracker = sAnalytics.newTracker(R.xml.global_tracker);
         }
-
         return sTracker;
     }
 

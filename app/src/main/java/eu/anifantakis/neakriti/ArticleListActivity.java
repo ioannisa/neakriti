@@ -5,8 +5,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -23,6 +21,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
@@ -30,6 +29,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -81,7 +81,6 @@ import eu.anifantakis.neakriti.data.feed.Article;
 import eu.anifantakis.neakriti.data.feed.ArticlesCollection;
 import eu.anifantakis.neakriti.data.feed.RssFeed;
 import eu.anifantakis.neakriti.databinding.ActivityArticleListBinding;
-import eu.anifantakis.neakriti.firebase.FBMessagingService;
 import eu.anifantakis.neakriti.utils.AppUtils;
 import eu.anifantakis.neakriti.utils.NeaKritiApp;
 import okhttp3.OkHttpClient;
@@ -261,7 +260,8 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     /**
      * Interface implementation (defined in the adapter) for the clicking of an item in the articles recycler view
-     * @param clickedItemIndex
+     * @param clickedItemIndex The index that refers to the selected item
+     * @param sharedImage the ImageView of the selected article
      */
     @Override
     public void onArticleItemClick(int clickedItemIndex, ImageView sharedImage) {
@@ -499,7 +499,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     /**
      * Store the category collection for offline usage by calling the IntentService that saves all
-     * @param collection
+     * @param collection The ArticlesCollection that we need to store in the database
      */
     private void storeForOfflineUsageCollection(ArticlesCollection collection){
         Intent intent = new Intent(ArticleListActivity.this, StorageIntentService.class);
@@ -925,7 +925,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     }
 
-    public static FirebaseRemoteConfig mFirebaseRemoteConfig;
+    public FirebaseRemoteConfig mFirebaseRemoteConfig;
 
     /**
      * Initializations to the firebase remote configuration and application of the "actual"  configuration to the application

@@ -143,7 +143,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
     /**
      * IF WE DONT MAKE USE OF THE ACTUAL ANDROID TOOLBAR
      * Then we have a drawable arrow icon on the upper left of the poster to act as back button
-     * @param view
+     * @param view The view corresponding to the icon that imitates the back arrow
      */
     public void actionUpClicked(View view) {
         super.onBackPressed();
@@ -153,8 +153,8 @@ public class ArticleDetailActivity extends AppCompatActivity {
      * IF WE MAKE USE OF THE ACTUAL ANDROID TOOLBAR...
      * When the arrow is pressed on the action bar, close the activity
      * by invoking the original "back button pressing". This is to reverse transition
-     * @param item
-     * @return
+     * @param item The menu item that is responsible for the back action
+     * @return true if that item was clicked
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
