@@ -1,6 +1,8 @@
 package eu.anifantakis.neakriti;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -296,10 +298,12 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         if (updated!=null) { contentValues.put(ArticlesDBContract.ArticleEntry.COL_UPDATED, updated.getTime()); }
         else{ contentValues.put(ArticlesDBContract.ArticleEntry.COL_UPDATED, 0); }
 
-            Uri uri = getContext().getContentResolver().insert(ArticlesDBContract.ArticleEntry.CONTENT_URI, contentValues);
-        if(uri != null) {
-            menu.findItem(R.id.nav_favorite).setIcon(R.drawable.bookmark_wh_24px);
-        }
+
+        AsyncQueryHandler queryHandler = new AsyncQueryHandler(getContext().getContentResolver()){};
+        queryHandler.startInsert(1,null,ArticlesDBContract.ArticleEntry.CONTENT_URI, contentValues);
+
+        //Uri uri = getContext().getContentResolver().insert(ArticlesDBContract.ArticleEntry.CONTENT_URI, contentValues);
+        menu.findItem(R.id.nav_favorite).setIcon(R.drawable.bookmark_wh_24px);
         //Snackbar.make(binding.detailContentLayout, R.string.favourites_add, Snackbar.LENGTH_SHORT).show();
     }
 
