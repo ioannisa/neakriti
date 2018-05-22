@@ -57,4 +57,6 @@
     <string name="dlg_no_tts_lang_unavailable_title">Μη Διαθέσιμη Γλώσσα</string>
     <string name="dlg_no_tts_lang_unavailable_body">Λυπούμαστε, αλλά η Ελληνική γλώσσα δεν είναι διαθέσιμη ακόμα για τη συσκευή σας.\n\nΔοκιμάστε ξανά στο μέλλον για πιθανή διαθεσιμότητα</string>
 
+    <!-- Widget -->
+    <string name="widget_no_news_to_display">Δεν υπάρχουν ειδήσεις για προβολή</string>
 </resources>

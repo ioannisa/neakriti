@@ -61,7 +61,6 @@ public class ListProvider implements RemoteViewsFactory {
                 context.getPackageName(), R.layout.row_widget_list);
         ListItem listItem = listItemList.get(position);
         remoteView.setTextViewText(R.id.widget_row_heading, listItem.heading);
-        remoteView.setTextViewText(R.id.widget_row_content, listItem.content);
 
         return remoteView;
     }
