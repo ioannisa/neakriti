@@ -83,6 +83,7 @@ import eu.anifantakis.neakriti.data.feed.RssFeed;
 import eu.anifantakis.neakriti.databinding.ActivityArticleListBinding;
 import eu.anifantakis.neakriti.firebase.FBMessagingService;
 import eu.anifantakis.neakriti.utils.AppUtils;
+import eu.anifantakis.neakriti.utils.NeaKritiApp;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -140,8 +141,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         binding = DataBindingUtil.setContentView(this, R.layout.activity_article_list);
         //setContentView(R.layout.activity_article_list);
 
-        //mTracker = ((AppUtils) getApplication()).getDefaultTracker();
-        // TODO ENABLE TRACKING
+        mTracker = ((NeaKritiApp) getApplication()).getDefaultTracker();
 
         FirebaseApp.initializeApp(this);
         FirebaseMessaging.getInstance().subscribeToTopic("neakriti-android-news-test");
@@ -267,12 +267,12 @@ public class ArticleListActivity extends AppCompatActivity implements
     public void onArticleItemClick(int clickedItemIndex, ImageView sharedImage) {
         Log.d("RV ACTION", "ITEM CLICK");
 
-        //mTracker.setScreenName("MAIN - " + getTitle());
-        //mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-        //TODO more advanced
-
         String title = mArticlesListAdapter.getArticleAtIndex(clickedItemIndex).getTitle();
         Article article = mArticlesListAdapter.getArticleAtIndex(clickedItemIndex);
+
+        // analytics track category id select
+        mTracker.setScreenName("ARTICLE - " + title);
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         // display in the Two Pane version (tablet) the middle area where the article will be displayed
         if (mTwoPane && !clickedAtLeastOneItem) {
@@ -363,15 +363,15 @@ public class ArticleListActivity extends AppCompatActivity implements
             // Create the AlertDialog object and return it
             builder.create().show();
         }
-        // if we knew we were in offline mode, but discovered that there is network (going online for the first time)
-        else  if (!AppUtils.onlineMode && isNetworkAvailable){
-
-        }
         AppUtils.onlineMode = isNetworkAvailable;
 
         feedCategoryTitle.setText(feedName);
 
         if (onlineMode) {
+            // analytics track category id select
+            mTracker.setScreenName("MAIN - " + id);
+            mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
             Bundle bundle = new Bundle();
             bundle.putString(LOADER_TITLE, title);
             bundle.putInt(LOADER_TYPE, type);

@@ -1,6 +1,5 @@
 package eu.anifantakis.neakriti.utils;
 
-import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -9,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -17,10 +15,6 @@ import android.view.animation.LayoutAnimationController;
 import android.view.animation.TranslateAnimation;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.Tracker;
-import com.jakewharton.picasso.OkHttp3Downloader;
-import com.squareup.picasso.Picasso;
 
 import org.jsoup.Jsoup;
 
@@ -37,14 +31,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import eu.anifantakis.neakriti.R;
-import okhttp3.Cache;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public final class AppUtils extends Application {
+import static android.content.Context.CONNECTIVITY_SERVICE;
+
+public final class AppUtils {
     public static SimpleExoPlayer sRadioPlayer;
 
     // no instances of App Utils are allowed
@@ -59,31 +52,6 @@ public final class AppUtils extends Application {
 
     public static boolean onlineMode = true;
     public static NotificationManager mNotificationManager;
-
-    private static GoogleAnalytics sAnalytics;
-    private static Tracker sTracker;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        sAnalytics = GoogleAnalytics.getInstance(this);
-        getPicasso();
-    }
-
-    /**
-     * Gets the default {@link Tracker} for this {@link Application}.
-     * @return tracker
-     */
-    synchronized public Tracker getDefaultTracker() {
-        // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
-        if (sTracker == null) {
-            sTracker = sAnalytics.newTracker(R.xml.global_tracker);
-        }
-
-        return sTracker;
-    }
-
 
     public static Date feedDate(String strDate){
         DateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
@@ -274,37 +242,6 @@ public final class AppUtils extends Application {
         }
     }
 
-    private Picasso getPicasso() {
-        // Source: https://gist.github.com/iamtodor/eb7f02fc9571cc705774408a474d5dcb
-        OkHttpClient okHttpClient1 = new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Response originalResponse = chain.proceed(chain.request());
-
-                        int days=2;
-                        long cacheTime = 60 * 60 * 24 * days;
-
-                        return originalResponse.newBuilder().header("Cache-Control", "max-age=" + (cacheTime))
-                                .build();
-                    }
-                })
-                .cache(new Cache(getCacheDir(), Integer.MAX_VALUE))
-                .build();
-
-        OkHttp3Downloader downloader = new OkHttp3Downloader(okHttpClient1);
-        Picasso picasso = new Picasso.Builder(this).downloader(downloader).build();
-        Picasso.setSingletonInstance(picasso);
-
-        File[] files=getCacheDir().listFiles();
-        Log.d("FILES IN CACHE", ""+files.length);
-
-        // indicator for checking picasso caching - need to comment out on release
-        //picasso.setIndicatorsEnabled(true);
-
-        return picasso;
-    }
-
     /**
      * Convert standard html to text
      * @param html
@@ -464,7 +401,7 @@ public final class AppUtils extends Application {
      */
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager
-                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
