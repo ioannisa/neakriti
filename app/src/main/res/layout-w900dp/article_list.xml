@@ -63,7 +63,6 @@
                 android:background="#fff"
                 android:elevation="4dp"
                 android:layout_height="match_parent"
-                android:layout_weight="3"
                 android:layout_centerHorizontal="true" />
 
         </RelativeLayout>

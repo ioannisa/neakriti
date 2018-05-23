@@ -1,9 +1,20 @@
 package eu.anifantakis.neakriti.utils;
 
 import android.app.Application;
+import android.net.Uri;
 import android.util.Log;
 
+import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.util.Util;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.jakewharton.picasso.OkHttp3Downloader;
@@ -41,6 +52,40 @@ public class NeaKritiApp extends Application {
             sTracker = sAnalytics.newTracker(R.xml.global_tracker);
         }
         return sTracker;
+    }
+
+    public SimpleExoPlayer getRadioPlayer(){
+        if (mRadioPlayer == null){
+            TrackSelector trackSelector = new DefaultTrackSelector(
+                    new AdaptiveTrackSelection.Factory(
+                            new DefaultBandwidthMeter()
+                    )
+            );
+
+            mRadioPlayer = ExoPlayerFactory.newSimpleInstance(
+                    getApplicationContext(),
+                    trackSelector
+            );
+            //mRadioPlayer.addListener(this);
+
+            String userAgent = Util.getUserAgent(getApplicationContext(), "rssreadernk");
+
+            MediaSource source = new ExtractorMediaSource(
+                    Uri.parse("http://eco.onestreaming.com:8237/live"),
+                    new OkHttpDataSourceFactory(
+                            new OkHttpClient(),
+                            userAgent,
+                            null
+                    ),
+                    new DefaultExtractorsFactory(),
+                    null,
+                    null
+            );
+
+            mRadioPlayer.prepare(source);
+            //sRadioPlayer.setPlayWhenReady(true);
+        }
+        return mRadioPlayer;
     }
 
     private void setupPicasso() {

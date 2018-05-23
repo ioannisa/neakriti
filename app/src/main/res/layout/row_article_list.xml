@@ -6,62 +6,55 @@
         android:id="@+id/article_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
+        android:background="@drawable/itemselector"
+        android:orientation="horizontal"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:orientation="vertical"
-        android:background="@drawable/itemselector">
+        android:paddingTop="8dp">
+
+
+        <LinearLayout
+            android:layout_width="120dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/row_iv_article_thumb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="0dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/row.thumb_description"
+                tools:src="@drawable/placeholder" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="120dp"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/row_iv_article_thumb"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginTop="0dp"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@string/row.thumb_description"
-                    tools:src="@drawable/placeholder" />
-
-            </LinearLayout>
-
-
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="TITLE Line 1\nLine 2\nLine 3\nLine 4" />
 
-                <TextView
-                    android:id="@+id/content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    tools:text="TITLE Line 1\nLine 2\nLine 3\nLine 4"/>
-
-                <TextView
-                    android:id="@+id/list_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    tools:text="DATE GOES HERE" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/list_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                tools:text="DATE GOES HERE" />
         </LinearLayout>
     </LinearLayout>
 </layout>

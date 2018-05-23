@@ -299,10 +299,10 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         else{ contentValues.put(ArticlesDBContract.ArticleEntry.COL_UPDATED, 0); }
 
 
-        AsyncQueryHandler queryHandler = new AsyncQueryHandler(getContext().getContentResolver()){};
-        queryHandler.startInsert(1,null,ArticlesDBContract.ArticleEntry.CONTENT_URI, contentValues);
+        //AsyncQueryHandler queryHandler = new AsyncQueryHandler(getContext().getContentResolver()){};
+        //queryHandler.startInsert(1,null,ArticlesDBContract.ArticleEntry.CONTENT_URI, contentValues);
 
-        //Uri uri = getContext().getContentResolver().insert(ArticlesDBContract.ArticleEntry.CONTENT_URI, contentValues);
+        Uri uri = getContext().getContentResolver().insert(ArticlesDBContract.ArticleEntry.CONTENT_URI, contentValues);
         menu.findItem(R.id.nav_favorite).setIcon(R.drawable.bookmark_wh_24px);
         //Snackbar.make(binding.detailContentLayout, R.string.favourites_add, Snackbar.LENGTH_SHORT).show();
     }

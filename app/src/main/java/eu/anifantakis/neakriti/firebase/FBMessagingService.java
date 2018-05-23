@@ -272,7 +272,10 @@ public class FBMessagingService extends FirebaseMessagingService {
                 int notificationId = 1;
                 String channelId = "channel-01";
                 String channelName = "Channel Name";
-                int importance = NotificationManager.IMPORTANCE_HIGH;
+                int importance = 0;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    importance = NotificationManager.IMPORTANCE_HIGH;
+                }
                 NotificationManager notificationManager = (NotificationManager) FBMessagingService.this.getSystemService(Context.NOTIFICATION_SERVICE);
 
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -326,7 +329,10 @@ public class FBMessagingService extends FirebaseMessagingService {
         int notificationId = 1;
         String channelId = "channel-01";
         String channelName = "Channel Name";
-        int importance = NotificationManager.IMPORTANCE_HIGH;
+        int importance = 0;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            importance = NotificationManager.IMPORTANCE_HIGH;
+        }
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel mChannel = new NotificationChannel(

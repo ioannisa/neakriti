@@ -38,8 +38,6 @@ import okhttp3.Response;
 import static android.content.Context.CONNECTIVITY_SERVICE;
 
 public final class AppUtils {
-    public static SimpleExoPlayer sRadioPlayer;
-
     // no instances of App Utils are allowed
     private AppUtils() {}
 

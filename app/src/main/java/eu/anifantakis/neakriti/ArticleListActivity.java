@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -45,21 +44,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer2.util.Util;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.FirebaseApp;
@@ -84,8 +74,6 @@ import eu.anifantakis.neakriti.data.feed.RssFeed;
 import eu.anifantakis.neakriti.databinding.ActivityArticleListBinding;
 import eu.anifantakis.neakriti.utils.AppUtils;
 import eu.anifantakis.neakriti.utils.NeaKritiApp;
-import eu.anifantakis.neakriti.widget.NewsWidgetProvider;
-import eu.anifantakis.neakriti.widget.WidgetFetchArticlesService;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -95,7 +83,6 @@ import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
 import static eu.anifantakis.neakriti.utils.AppUtils.URL_BASE;
 import static eu.anifantakis.neakriti.utils.AppUtils.mNotificationManager;
 import static eu.anifantakis.neakriti.utils.AppUtils.onlineMode;
-import static eu.anifantakis.neakriti.utils.AppUtils.sRadioPlayer;
 
 
 public class ArticleListActivity extends AppCompatActivity implements
@@ -125,6 +112,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     private ItemTouchHelper itemTouchHelper;
     private ArticleDetailFragment fragment;
     private Tracker mTracker;
+    private SimpleExoPlayer mRadioPlayer;
 
     private static final int ARTICLES_FEED_LOADER = 0;
     private static final String LOADER_TITLE = "LOADER_TITLE";
@@ -718,7 +706,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     }
 
     private void setStreamRadioStatus(boolean status){
-        sRadioPlayer.setPlayWhenReady(status);
+        mRadioPlayer.setPlayWhenReady(status);
 
         if (status){
             Picasso.with(this)
@@ -727,7 +715,10 @@ public class ArticleListActivity extends AppCompatActivity implements
 
             String channelId = "radio-channel";
             String channelName = "Radio Player Notification";
-            int importance = NotificationManager.IMPORTANCE_HIGH;
+            int importance = 0;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                importance = NotificationManager.IMPORTANCE_HIGH;
+            }
             AppUtils.mNotificationManager = (NotificationManager) ArticleListActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -837,37 +828,8 @@ public class ArticleListActivity extends AppCompatActivity implements
     }
 
     private void initializeRadioExoPlayer(){
-        if (sRadioPlayer == null){
-            TrackSelector trackSelector = new DefaultTrackSelector(
-                    new AdaptiveTrackSelection.Factory(
-                            new DefaultBandwidthMeter()
-                    )
-            );
-
-            sRadioPlayer = ExoPlayerFactory.newSimpleInstance(
-                    getApplicationContext(),
-                    trackSelector
-            );
-            sRadioPlayer.addListener(this);
-
-            String userAgent = Util.getUserAgent(getApplicationContext(), "rssreadernk");
-
-            MediaSource source = new ExtractorMediaSource(
-                    Uri.parse("http://eco.onestreaming.com:8237/live"),
-                    new OkHttpDataSourceFactory(
-                            new OkHttpClient(),
-                            userAgent,
-                            null
-                    ),
-                    new DefaultExtractorsFactory(),
-                    null,
-                    null
-            );
-
-            sRadioPlayer.prepare(source);
-            //sRadioPlayer.setPlayWhenReady(true);
-
-        }
+        mRadioPlayer = ((NeaKritiApp) getApplication()).getRadioPlayer();
+        mRadioPlayer.addListener(this);
     }
 
     @Override
