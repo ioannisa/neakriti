@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -84,6 +85,7 @@ import eu.anifantakis.neakriti.databinding.ActivityArticleListBinding;
 import eu.anifantakis.neakriti.utils.AppUtils;
 import eu.anifantakis.neakriti.utils.NeaKritiApp;
 import eu.anifantakis.neakriti.widget.NewsWidgetProvider;
+import eu.anifantakis.neakriti.widget.WidgetFetchArticlesService;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -267,8 +269,6 @@ public class ArticleListActivity extends AppCompatActivity implements
     @Override
     public void onArticleItemClick(int clickedItemIndex, ImageView sharedImage) {
         Log.d("RV ACTION", "ITEM CLICK");
-
-        NewsWidgetProvider.onUpdateMyView(getApplicationContext());
 
         String title = mArticlesListAdapter.getArticleAtIndex(clickedItemIndex).getTitle();
         Article article = mArticlesListAdapter.getArticleAtIndex(clickedItemIndex);

@@ -33,41 +33,35 @@ public class NewsWidgetProvider extends AppWidgetProvider {
             //setting adapter to listview of the widget
             views.setRemoteAdapter(appWidgetId, R.id.list_view_widget,
                     svcIntent);
+
+            Intent intent = new Intent(context, ArticleListActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            views.setOnClickPendingIntent(R.id.widget_logo, pendingIntent);
         }
 
         // if the list_view_widget is empty, then show the text view that contains the empty text
         views.setEmptyView(R.id.list_view_widget, R.id.list_view_empty_text);
 
-        //updateAppWidget(context,appWidgetId);
         return views;
-        /*
-
-        views.setTextViewText(R.id.tv_widget_title, "TITLE");
-
-        // open the app if someone click on either of the two textviews of the widget
-        Intent intent = new Intent(context, ArticleListActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-        views.setOnClickPendingIntent(R.id.tv_widget_title, pendingIntent);
-
-        // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetId, views);*/
-
     }
 
     private static int[] savedAppWidgetIds;
+
+    public static void updateView(Context context){
+        final int N = savedAppWidgetIds.length;
+        for (int i = 0; i < N; i++) {
+            Intent serviceIntent = new Intent(context, WidgetFetchArticlesService.class);
+            serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, savedAppWidgetIds[i]);
+            context.startService(serviceIntent);
+        }
+    }
 
     public static void onUpdateMyView(Context context) {
         final int N = savedAppWidgetIds.length;
         for (int i = 0; i < N; i++) {
             Intent serviceIntent = new Intent(context, WidgetFetchArticlesService.class);
             serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, savedAppWidgetIds[i]);
-
-            try {
-                context.startService(serviceIntent);
-            }
-            catch(IllegalStateException e){
-                e.printStackTrace();
-            }
+            context.startService(serviceIntent);
         }
     }
 

@@ -12,6 +12,7 @@ import org.simpleframework.xml.core.Persister;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import eu.anifantakis.neakriti.data.RequestInterface;
 import eu.anifantakis.neakriti.data.feed.Article;
@@ -42,7 +43,9 @@ public class WidgetFetchArticlesService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d("WIDGET FETCH SERVICE", "ON START");
         if (intent.hasExtra(AppWidgetManager.EXTRA_APPWIDGET_ID))
+            Log.d("WIDGET FETCH SERVICE", "STARTED");
             appWidgetId = intent.getIntExtra(
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);

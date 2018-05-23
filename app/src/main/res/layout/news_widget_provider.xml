@@ -6,21 +6,22 @@
     android:padding="@dimen/widget_margin">
 
     <ImageView
-        android:src="@drawable/logo_white"
+        android:id="@+id/widget_logo"
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:padding="8dp"/>
+        android:padding="8dp"
+        android:src="@drawable/logo_white"/>
 
     <TextView
         android:id="@+id/list_view_empty_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
         android:layout_gravity="center"
-        android:textAlignment="center"
         android:padding="16dp"
-        android:textSize="18sp"
         android:text="@string/widget_no_news_to_display"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
         android:visibility="gone"/>
 
     <ListView
