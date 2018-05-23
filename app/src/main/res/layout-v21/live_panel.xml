@@ -8,6 +8,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/itemselector"
         android:orientation="vertical"
+        android:elevation="4dp"
         android:padding="0dp">
 
         <LinearLayout
