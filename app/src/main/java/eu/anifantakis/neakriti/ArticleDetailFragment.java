@@ -102,7 +102,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         webSettings = mWebView.getSettings();
 
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-        webSettings.setJavaScriptEnabled(true);
+        //webSettings.setJavaScriptEnabled(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setDatabaseEnabled(true);
         webSettings.setDomStorageEnabled(true);

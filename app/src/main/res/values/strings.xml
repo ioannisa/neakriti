@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">neakriti</string>
+    <string name="app_logo">neakriti Logo</string>
     <string name="title_article_detail" translatable="false">Article Detail</string>
 
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
@@ -36,6 +37,13 @@
     <string name="dlg_no_wifi_detected_body">Επιθυμείτε να συνεχίσετε κάνοντας χρήση του δικτύου κινητής τηλεφωνίας;</string>
 
     <!-- ALERT DIALOG RADIO IS ALREADY PLAYING (Warning if we try to launch tv stream while radio stream already playing) -->
+    <string name="live_streaming" translatable="false">Live Streaming</string>
+    <string name="btn_tv_play" translatable="false">Play</string>
+    <string name="btn_tv_pause" translatable="false">Pause</string>
+
+    <string name="btn_stream_tv" translatable="false">ΚΡΗΤΗ-TV - Live Streaming</string>
+    <string name="btn_stream_radio" translatable="false">Radio-984 - Live Streaming</string>
+
     <string name="dlg_radio_playing_title">Το Ραδιόφωνο είναι ήδη ενεργό</string>
     <string name="dlg_radio_playing_body">Για να παρακολουθήσετε τηλεόραση πρέπει πρώτα να κλείσει το ραδιόφωνο.  Θέλετε να συνεχίσετε;</string>
 
@@ -59,4 +67,9 @@
 
     <!-- Widget -->
     <string name="widget_no_news_to_display">Δεν υπάρχουν ειδήσεις για προβολή</string>
+
+    <!-- Fragment menu (detail_menu.xml) -->
+    <string name="detail_menu_tts" translatable="false">Text to Speech (TTS)</string>
+    <string name="detail_menu_sharing" translatable="false">Sharing</string>
+    <string name="detail_menu_bookmark" translatable="false">Bookmark</string>
 </resources>

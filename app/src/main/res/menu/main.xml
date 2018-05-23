@@ -6,8 +6,8 @@
         android:id="@+id/action_live"
         android:orderInCategory="100"
         android:icon="@drawable/live_tv_24px"
-        android:title="live"
-        app:showAsAction="always" />
+        android:title="@string/live_streaming"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_settings"

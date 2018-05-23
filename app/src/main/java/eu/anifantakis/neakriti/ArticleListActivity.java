@@ -592,13 +592,15 @@ public class ArticleListActivity extends AppCompatActivity implements
         cachedCollection = null;
         itemTouchHelper.attachToRecyclerView(null);
 
+        /*
         if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
 
-        }
+        }else
+         */
 
-        else if (id == R.id.nav_favorite_items){
+        if (id == R.id.nav_favorite_items){
             feedType = ArticlesDBContract.DB_TYPE_FAVORITE;
             feedItems = 200;
             feedName = item.getTitle().toString();

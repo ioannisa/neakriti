@@ -8,7 +8,7 @@
 
     <application
         android:name=".utils.NeaKritiApp"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -36,12 +36,12 @@
         </activity>
         <activity android:name=".TVStreamActivity" />
 
-        <service android:name=".firebase.FBMessagingService">
+        <service android:name=".firebase.FBMessagingService" android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".firebase.FBInstanceIDService">
+        <service android:name=".firebase.FBInstanceIDService" android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>

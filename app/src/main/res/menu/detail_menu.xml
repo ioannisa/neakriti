@@ -4,32 +4,24 @@
     <item
         android:id="@+id/nav_tts"
         android:icon="@drawable/baseline_headset_24px"
-        android:title="Text to Speech"
+        android:title="@string/detail_menu_tts"
         android:orderInCategory="1"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         />
 
     <item
         android:id="@+id/nav_share_article"
         android:icon="@drawable/baseline_share_24px"
-        android:title="Text to Speech"
+        android:title="@string/detail_menu_sharing"
         android:orderInCategory="2"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         />
 
     <item
         android:id="@+id/nav_favorite"
         android:icon="@drawable/bookmark_outline_wh_48px"
-        android:title="Favorite Article"
+        android:title="@string/detail_menu_bookmark"
         android:orderInCategory="3"
-        app:showAsAction="always"
-        />
-
-    <item
-        android:id="@+id/nav_more"
-        android:icon="@drawable/baseline_share_24px"
-        android:title="Change Font Size"
-        android:orderInCategory="4"
-        app:showAsAction="never"
+        app:showAsAction="ifRoom"
         />
 </menu>

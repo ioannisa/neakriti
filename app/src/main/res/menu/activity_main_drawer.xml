@@ -55,6 +55,7 @@
             android:title="@string/nav_favorite_items" />
     </group>
 
+    <!--
     <item android:title="Communicate">
         <menu>
             <item
@@ -67,5 +68,6 @@
                 android:title="Send" />
         </menu>
     </item>
+    -->
 
 </menu>
