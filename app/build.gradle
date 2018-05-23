@@ -10,10 +10,21 @@ android {
         versionName "3.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs {
+        myconfig {
+            keyAlias 'capstone'
+            keyPassword 'udacity'
+            storeFile file('../keystore.jks')
+            storePassword 'udacity'
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.myconfig
         }
     }
     dataBinding {
