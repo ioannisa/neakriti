@@ -151,7 +151,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
                 // if movie has no accompanied backdrop image, load the "no image found" from the drawable folder
                 binding.rowIvArticleThumb.setImageResource(R.drawable.placeholder);
             }else {
-                Picasso.with(context)
+                Picasso.get()
                         .load(image)
                         .placeholder(R.drawable.placeholder)
                         .into(binding.rowIvArticleThumb, new Callback(){
@@ -161,7 +161,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
                     }
 
                     @Override
-                    public void onError() {
+                    public void onError(Exception e) {
                         imageLoaded = false;
                     }
                 });

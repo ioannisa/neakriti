@@ -70,7 +70,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
             /*
                // Now place the larger image
             if (detailActivityImage != null) {
-                Picasso.with(this)
+                Picasso.get()
                         .load(mArticle.getImgLarge())
                         .noFade()
                         //.placeholder(detailActivityImage.getDrawable())
@@ -81,7 +81,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onError() {
+                            public void onError(Exception e) {
                                 supportStartPostponedEnterTransition();
                             }
                         });
@@ -133,7 +133,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
 
         /*
         if (detailActivityImage!=null){
-            Picasso.with(this)
+            Picasso.get()
                     .load(mArticle.getImgLarge())
                     .into(detailActivityImage);
         }

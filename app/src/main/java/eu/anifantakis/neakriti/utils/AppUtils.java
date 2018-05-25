@@ -44,6 +44,9 @@ public final class AppUtils {
     public static String URL_BASE = "https://www.neakriti.gr";
     public static final String RSSFEED_BASE = "/webServices/MobileFeedAndroid_v2.aspx";
 
+    public static String RADIO_STATION_URL = "http://eco.onestreaming.com:8237/live";
+    public static String TV_STATION_URL = "http://live.cretetv.gr:1935/cretetv/myStream/playlist.m3u8";
+
     public static final String EXTRAS_ARTICLE = "ARTICLE";
     public static final String EXTRAS_LOW_RES_BITMAP = "low_res_bitmap";
     public static final String EXTRAS_ORIGIN_NOTIFICATION = "EXTRAS_ORIGIN_NOTIFICATION";

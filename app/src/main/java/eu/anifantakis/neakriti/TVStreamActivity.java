@@ -70,6 +70,7 @@ public class TVStreamActivity extends AppCompatActivity {
         videoView = (PlayerView) findViewById(R.id.video_view);
 
         // https://github.com/championswimmer/SimpleFingerGestures_Android_Library
+        // Use pinch/unpinch gestures to zoom in/out video
         SimpleFingerGestures mySfg = new SimpleFingerGestures();
         mySfg.setOnFingerGestureListener(new SimpleFingerGestures.OnFingerGestureListener() {
             @Override
