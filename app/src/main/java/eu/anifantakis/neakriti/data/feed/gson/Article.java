@@ -21,11 +21,9 @@ public class Article implements Parcelable {
 
     @SerializedName("img_thumb")
     private ArticleImg imgThumb;
-    private String imgThumbStr;
 
     @SerializedName("img_large")
     private ArticleImg imgLarge;
-    private String imgLargeStr;
 
     private String groupName;
 
@@ -86,18 +84,14 @@ public class Article implements Parcelable {
     }
 
     public String getImgThumbStr(){
-        /*
         String result = null;
         try {
-            result = img_thumb.getAttributes().getUrl();
+            result = imgThumb.getAttributes().getUrl();
             if (result == null)
                 result = "";
         }
         catch (Exception e){ result = ""; Log.e("EXCEPTION THUMB", e.getMessage()); }
-        //TODO Exception on json implementation during "SAVING" on thumbnails
         return result;
-        */
-        return imgThumb.getAttributes().getUrl();
     }
 
     public void setImgThumb(ArticleImg imgThumb) {
@@ -114,17 +108,14 @@ public class Article implements Parcelable {
     }
 
     public String getImgLargeStr(){
-        /*
         String result = null;
         try {
-            result = img_thumb.getAttributes().getUrl();
+            result = imgLarge.getAttributes().getUrl();
             if (result == null)
                 result = "";
         }
         catch (Exception e){ result = ""; }
         return result;
-        */
-        return imgLargeStr;
     }
 
     public void setImgLarge(ArticleImg imgLarge) {
@@ -169,9 +160,7 @@ public class Article implements Parcelable {
         pubDateGre = in.readString();
         enclosures = in.createStringArrayList();
         imgThumb = in.readParcelable(ArticleImg.class.getClassLoader());
-        imgThumbStr = in.readString();
         imgLarge = in.readParcelable(ArticleImg.class.getClassLoader());
-        imgLargeStr = in.readString();
         groupName = in.readString();
     }
 
@@ -186,9 +175,7 @@ public class Article implements Parcelable {
         dest.writeString(pubDateGre);
         dest.writeStringList(enclosures);
         dest.writeParcelable(imgThumb, flags);
-        dest.writeString(imgThumbStr);
         dest.writeParcelable(imgLarge, flags);
-        dest.writeString(imgLargeStr);
         dest.writeString(groupName);
     }
 

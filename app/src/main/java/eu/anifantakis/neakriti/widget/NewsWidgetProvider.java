@@ -53,7 +53,6 @@ public class NewsWidgetProvider extends AppWidgetProvider {
             Intent serviceIntent = new Intent(context, WidgetFetchArticlesService.class);
             serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, savedAppWidgetIds[i]);
             context.startService(serviceIntent);
-            //TODO UNCOMMENT ABOVE
         }
     }
 
