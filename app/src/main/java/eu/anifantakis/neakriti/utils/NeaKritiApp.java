@@ -145,8 +145,8 @@ public class NeaKritiApp extends Application {
      * Applies current configuration from firebase defaults or cloud settings
      */
     private void applyFirebaseConfiguration(){
-        AppUtils.URL_BASE = getFireBaseString("URL_BASE");
-        AppUtils.RADIO_STATION_URL = getFireBaseString("RADIO_STATION_URL");
+        //AppUtils.URL_BASE = getFireBaseString("URL_BASE");
+        //AppUtils.RADIO_STATION_URL = getFireBaseString("RADIO_STATION_URL");
         AppUtils.TV_STATION_URL = getFireBaseString("TV_STATION_URL");
 
     }

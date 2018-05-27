@@ -6,11 +6,13 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.anifantakis.neakriti.data.feed.gson.Article;
+
 public class ArticlesCollection implements Parcelable {
     private String listName;
     private int listType;
     private String listId;
-    private List<Article> articleList;
+    private ArrayList<Article> articleList;
 
     public ArticlesCollection(String listName, int listType, String listId) {
         this.listName = listName;
@@ -19,7 +21,7 @@ public class ArticlesCollection implements Parcelable {
         articleList = new ArrayList<>();
     }
 
-    public ArticlesCollection(List<Article> articlesList, String listName, int listType, String listId) {
+    public ArticlesCollection(ArrayList<Article> articlesList, String listName, int listType, String listId) {
         this.listName = listName;
         this.listType = listType;
         this.listId = listId;
@@ -45,7 +47,7 @@ public class ArticlesCollection implements Parcelable {
         return listId;
     }
 
-    public List<Article> getArticleList(){
+    public ArrayList<Article> getArticleList(){
         return articleList;
     }
 
@@ -79,7 +81,7 @@ public class ArticlesCollection implements Parcelable {
         return articleList.size();
     }
 
-    public void setArticlesList(List<Article> articlesList){
+    public void setArticlesList(ArrayList<Article> articlesList){
         this.articleList=articlesList;
     }
 

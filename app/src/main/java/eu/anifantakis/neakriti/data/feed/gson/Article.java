@@ -1,59 +1,37 @@
-package eu.anifantakis.neakriti.data.feed;
+package eu.anifantakis.neakriti.data.feed.gson;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.Root;
-import org.simpleframework.xml.core.Commit;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-@Root(name = "item", strict = false)
 public class Article implements Parcelable {
-
-    @Element(name = "guid", required = false)
     private int guid;
-
-    @Element(name = "link", required = false)
     private String link;
-
-    @Element(name = "title", required = false)
     private String title;
-
-    @Element(name = "description", required = false)
     private String description;
-
-    @Element(name = "pubDate", required = false)
-    private String pubDateStr;
-
-    @Element(name = "updated", required = false)
-    private String updatedStr;
-
-    @Element(name = "pubDateGre", required = false)
+    private String pubDate;
+    private String updated;
     private String pubDateGre;
 
     private List<String> enclosures;
 
-    @Element(name = "img_thumb", required = false)
-    private RssImgThumb imgThumbObj;
-    private String imgThumb;
+    @SerializedName("img_thumb")
+    private ArticleImg imgThumb;
+    private String imgThumbStr;
 
-    @Element(name = "img_large", required = false)
-    private RssImgThumb imgLargeObj;
-    private String imgLarge;
+    @SerializedName("img_large")
+    private ArticleImg imgLarge;
+    private String imgLargeStr;
 
     private String groupName;
 
-    @Commit
-    private void parseDates(){
-        if (imgThumbObj!=null) {
-            imgThumb = imgThumbObj.getUrl();
-            imgLarge = imgLargeObj.getUrl();
-        }
-    }
 
-    public Article(){}
+    public Article() {
+    }
 
     public int getGuid() {
         return guid;
@@ -103,20 +81,58 @@ public class Article implements Parcelable {
         this.enclosures = enclosures;
     }
 
-    public String getImgThumb() {
+    public ArticleImg getImgThumb() {
         return imgThumb;
     }
 
-    public void setImgThumb(String imgThumb) {
+    public String getImgThumbStr(){
+        /*
+        String result = null;
+        try {
+            result = img_thumb.getAttributes().getUrl();
+            if (result == null)
+                result = "";
+        }
+        catch (Exception e){ result = ""; Log.e("EXCEPTION THUMB", e.getMessage()); }
+        //TODO Exception on json implementation during "SAVING" on thumbnails
+        return result;
+        */
+        return imgThumb.getAttributes().getUrl();
+    }
+
+    public void setImgThumb(ArticleImg imgThumb) {
         this.imgThumb = imgThumb;
     }
 
-    public String getImgLarge() {
+    public void setImgThumb(String imgThumb) {
+        this.imgThumb = new ArticleImg(imgThumb);
+
+    }
+
+    public ArticleImg getImgLarge() {
         return imgLarge;
     }
 
-    public void setImgLarge(String imgLarge) {
+    public String getImgLargeStr(){
+        /*
+        String result = null;
+        try {
+            result = img_thumb.getAttributes().getUrl();
+            if (result == null)
+                result = "";
+        }
+        catch (Exception e){ result = ""; }
+        return result;
+        */
+        return imgLargeStr;
+    }
+
+    public void setImgLarge(ArticleImg imgLarge) {
         this.imgLarge = imgLarge;
+    }
+
+    public void setImgLarge(String imgLarge){
+        this.imgLarge = new ArticleImg(imgLarge);
     }
 
     public String getGroupName() {
@@ -127,20 +143,20 @@ public class Article implements Parcelable {
         this.groupName = groupName;
     }
 
-    public void setPubDateStr(String pubDateStr){
-        this.pubDateStr = pubDateStr;
+    public void setPubDateStr(String pubDateStr) {
+        this.pubDate = pubDateStr;
     }
 
-    public String getPubDateStr(){
-        return pubDateStr;
+    public String getPubDateStr() {
+        return pubDate;
     }
 
-    public void setUpdatedStr(String updatedStr){
-        this.updatedStr = updatedStr;
+    public void setUpdatedStr(String updatedStr) {
+        this.updated = updatedStr;
     }
 
-    public String getUpdatedStr(){
-        return this.updatedStr;
+    public String getUpdatedStr() {
+        return this.updated;
     }
 
     protected Article(Parcel in) {
@@ -148,12 +164,14 @@ public class Article implements Parcelable {
         link = in.readString();
         title = in.readString();
         description = in.readString();
-        pubDateStr = in.readString();
-        updatedStr = in.readString();
+        pubDate = in.readString();
+        updated = in.readString();
         pubDateGre = in.readString();
         enclosures = in.createStringArrayList();
-        imgThumb = in.readString();
-        imgLarge = in.readString();
+        imgThumb = in.readParcelable(ArticleImg.class.getClassLoader());
+        imgThumbStr = in.readString();
+        imgLarge = in.readParcelable(ArticleImg.class.getClassLoader());
+        imgLargeStr = in.readString();
         groupName = in.readString();
     }
 
@@ -163,12 +181,14 @@ public class Article implements Parcelable {
         dest.writeString(link);
         dest.writeString(title);
         dest.writeString(description);
-        dest.writeString(pubDateStr);
-        dest.writeString(updatedStr);
+        dest.writeString(pubDate);
+        dest.writeString(updated);
         dest.writeString(pubDateGre);
         dest.writeStringList(enclosures);
-        dest.writeString(imgThumb);
-        dest.writeString(imgLarge);
+        dest.writeParcelable(imgThumb, flags);
+        dest.writeString(imgThumbStr);
+        dest.writeParcelable(imgLarge, flags);
+        dest.writeString(imgLargeStr);
         dest.writeString(groupName);
     }
 
@@ -177,7 +197,7 @@ public class Article implements Parcelable {
         return 0;
     }
 
-    public static final Parcelable.Creator<Article> CREATOR = new Parcelable.Creator<Article>() {
+    public static final Creator<Article> CREATOR = new Creator<Article>() {
         @Override
         public Article createFromParcel(Parcel in) {
             return new Article(in);

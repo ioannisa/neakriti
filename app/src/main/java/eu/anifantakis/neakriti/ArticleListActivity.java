@@ -54,30 +54,27 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.squareup.picasso.Picasso;
 
-import org.simpleframework.xml.convert.AnnotationStrategy;
-import org.simpleframework.xml.core.Persister;
-
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import eu.anifantakis.neakriti.data.ArticlesListAdapter;
 import eu.anifantakis.neakriti.data.RequestInterface;
 import eu.anifantakis.neakriti.data.StorageIntentService;
 import eu.anifantakis.neakriti.data.StorageRetrievalAsyncTask;
 import eu.anifantakis.neakriti.data.db.ArticlesDBContract;
-import eu.anifantakis.neakriti.data.feed.Article;
 import eu.anifantakis.neakriti.data.feed.ArticlesCollection;
-import eu.anifantakis.neakriti.data.feed.RssFeed;
+import eu.anifantakis.neakriti.data.feed.gson.Article;
+import eu.anifantakis.neakriti.data.feed.gson.Feed;
 import eu.anifantakis.neakriti.databinding.ActivityArticleListBinding;
 import eu.anifantakis.neakriti.utils.AppUtils;
 import eu.anifantakis.neakriti.utils.NeaKritiApp;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
-import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
 import static eu.anifantakis.neakriti.utils.AppUtils.mNotificationManager;
@@ -206,7 +203,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         retrofit = new Retrofit.Builder()
                 .baseUrl(AppUtils.URL_BASE)
                 .client(new OkHttpClient())
-                .addConverterFactory(SimpleXmlConverterFactory.createNonStrict(new Persister(new AnnotationStrategy())))
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         // SETUP RECYCLER VIEW
@@ -365,7 +362,7 @@ public class ArticleListActivity extends AppCompatActivity implements
             bundle.putString(LOADER_ID, id);
             bundle.putInt(LOADER_ITEMS_COUNT, items);
 
-            Loader<RssFeed> loader = getSupportLoaderManager().getLoader(ARTICLES_FEED_LOADER);
+            Loader<Feed> loader = getSupportLoaderManager().getLoader(ARTICLES_FEED_LOADER);
             if (loader == null) {
                 getSupportLoaderManager().initLoader(ARTICLES_FEED_LOADER, bundle, this);
             } else {
@@ -395,7 +392,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         return new AsyncTaskLoader<ArticlesCollection>(this) {
             @Override
             public ArticlesCollection loadInBackground() {
-                RssFeed feed = null;
+                Feed feed = null;
                 int fetchType = bundle.getInt(LOADER_TYPE);
 
                 if (fetchType == ArticlesDBContract.DB_TYPE_FAVORITE){
@@ -440,7 +437,7 @@ public class ArticleListActivity extends AppCompatActivity implements
                 else {
                     try {
                         RequestInterface request = retrofit.create(RequestInterface.class);
-                        Call<RssFeed> call = request.getFeedByCategory(bundle.getString(LOADER_ID), bundle.getInt(LOADER_ITEMS_COUNT));
+                        Call<Feed> call = request.getFeedByCategory(bundle.getString(LOADER_ID), bundle.getInt(LOADER_ITEMS_COUNT));
                         // make a synchronous retrofit call in our async task loader
                         feed = call.execute().body();
 
@@ -449,7 +446,7 @@ public class ArticleListActivity extends AppCompatActivity implements
                         return null;
                     }
 
-                    ArticlesCollection result = new ArticlesCollection(feed.getChannel().getItemList(), bundle.getString(LOADER_TITLE), ArticlesDBContract.DB_TYPE_CATEGORY, bundle.getString(LOADER_ID));
+                    ArticlesCollection result = new ArticlesCollection(feed.getChannel().getItems(), bundle.getString(LOADER_TITLE), ArticlesDBContract.DB_TYPE_CATEGORY, bundle.getString(LOADER_ID));
                     storeForOfflineUsageCollection(result);
 
                     return result;

@@ -7,32 +7,27 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import org.simpleframework.xml.convert.AnnotationStrategy;
-import org.simpleframework.xml.core.Persister;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import eu.anifantakis.neakriti.data.RequestInterface;
-import eu.anifantakis.neakriti.data.feed.Article;
-import eu.anifantakis.neakriti.data.feed.RssFeed;
+import eu.anifantakis.neakriti.data.feed.gson.Article;
+import eu.anifantakis.neakriti.data.feed.gson.Feed;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static eu.anifantakis.neakriti.utils.AppUtils.URL_BASE;
-import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.APPWIDGET_NOITEMS;
 import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.APPWIDGET_UPDATE;
 
 // source: https://laaptu.wordpress.com/2013/07/24/populate-appwidget-listview-with-remote-datadata-from-web/
 
 public class WidgetFetchArticlesService extends Service {
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-    public static RssFeed widgetFeed = null;
+    public static Feed widgetFeed = null;
     public static ArrayList<ListProvider.ListItem> listItemList;
 
     @Nullable
@@ -63,17 +58,17 @@ public class WidgetFetchArticlesService extends Service {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(URL_BASE)
                 .client(new OkHttpClient())
-                .addConverterFactory(SimpleXmlConverterFactory.createNonStrict(new Persister(new AnnotationStrategy())))
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         RequestInterface request = retrofit.create(RequestInterface.class);
-        Call<RssFeed> call = request.getFeedByCategory("127", 5);
-        call.enqueue(new Callback<RssFeed>() {
+        Call<Feed> call = request.getFeedByCategory("127", 5);
+        call.enqueue(new Callback<Feed>() {
             @Override
-            public void onResponse(Call<RssFeed> call, Response<RssFeed> response) {
+            public void onResponse(Call<Feed> call, Response<Feed> response) {
                 widgetFeed = response.body();
 
-                List<Article> articleList = widgetFeed.getChannel().getItemList();
+                ArrayList<Article> articleList = widgetFeed.getChannel().getItems();
                 listItemList = new ArrayList<ListProvider.ListItem>();
                 int count = 0;
                 for (Article article : articleList){
@@ -83,7 +78,7 @@ public class WidgetFetchArticlesService extends Service {
                     count++;
                     ListProvider.ListItem listItem = new ListProvider.ListItem();
                     listItem.heading = article.getTitle();
-                    listItem.imageUrl = article.getImgThumb();
+                    listItem.imageUrl = article.getImgThumbStr();
                     listItemList.add(listItem);
                 }
 
@@ -91,7 +86,7 @@ public class WidgetFetchArticlesService extends Service {
             }
 
             @Override
-            public void onFailure(Call<RssFeed> call, Throwable t) {
+            public void onFailure(Call<Feed> call, Throwable t) {
                 widgetFeed = null;
                 populateWidget(false);
             }

@@ -5,8 +5,8 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 
 import eu.anifantakis.neakriti.data.db.ArticlesDBContract;
-import eu.anifantakis.neakriti.data.feed.Article;
 import eu.anifantakis.neakriti.data.feed.ArticlesCollection;
+import eu.anifantakis.neakriti.data.feed.gson.Article;
 
 public class StorageRetrievalAsyncTask extends AsyncTask<Object, Void, ArticlesCollection> {
 

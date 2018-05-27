@@ -18,25 +18,17 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import org.simpleframework.xml.convert.AnnotationStrategy;
-import org.simpleframework.xml.core.Persister;
-
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 import eu.anifantakis.neakriti.ArticleDetailActivity;
 import eu.anifantakis.neakriti.R;
 import eu.anifantakis.neakriti.data.RequestInterface;
-import eu.anifantakis.neakriti.data.feed.Article;
-import eu.anifantakis.neakriti.data.feed.RssFeed;
+import eu.anifantakis.neakriti.data.feed.gson.Article;
+import eu.anifantakis.neakriti.data.feed.gson.Feed;
 import eu.anifantakis.neakriti.utils.AppUtils;
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
 
@@ -237,17 +229,17 @@ public class FBMessagingService extends FirebaseMessagingService {
     public void sendNotification(final String title, final String messageBody, final Bitmap image, final Bitmap bigPicture, String articleId, final int notification_id) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(AppUtils.URL_BASE)
-                .addConverterFactory(SimpleXmlConverterFactory.createNonStrict(new Persister(new AnnotationStrategy())))
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         RequestInterface request = retrofit.create(RequestInterface.class);
-        Call<RssFeed> call = request.getFeedByArticleId(articleId);
+        Call<Feed> call = request.getFeedByArticleId(articleId);
 
-        call.enqueue(new Callback<RssFeed>() {
+        call.enqueue(new Callback<Feed>() {
             @Override
-            public void onResponse(Call<RssFeed> call, Response<RssFeed> response) {
+            public void onResponse(Call<Feed> call, Response<Feed> response) {
                 Log.d("RETROFIT FCM", "DATA FETCHED");
-                Article article = response.body().getChannel().getItemList().get(0);
+                Article article = response.body().getChannel().getItems().get(0);
                 Log.d("FCM ARTICLE TITLE", article.getTitle());
 
                 Intent intent = new Intent(FBMessagingService.this, ArticleDetailActivity.class);
@@ -307,7 +299,7 @@ public class FBMessagingService extends FirebaseMessagingService {
             }
 
             @Override
-            public void onFailure(Call<RssFeed> call, Throwable t) {
+            public void onFailure(Call<Feed> call, Throwable t) {
                 recycleBitmaps();
             }
         });

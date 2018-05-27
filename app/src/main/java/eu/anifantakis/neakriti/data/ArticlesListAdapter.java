@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 
 import eu.anifantakis.neakriti.R;
-import eu.anifantakis.neakriti.data.feed.Article;
+import eu.anifantakis.neakriti.data.feed.gson.Article;
 import eu.anifantakis.neakriti.data.feed.ArticlesCollection;
 import eu.anifantakis.neakriti.databinding.RowArticleListBinding;
 import eu.anifantakis.neakriti.utils.AppUtils;
@@ -87,7 +87,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
 
         ViewCompat.setTransitionName (holder.getImageView(), Integer.toString(article.getGuid()));
         holder.setTitle(article.getTitle());
-        holder.setImage(article.getImgThumb());
+        holder.setImage(article.getImgThumbStr());
         holder.setDateStr(article.getPubDateStr());
 
         holder.itemView.setTag(article.getGuid());

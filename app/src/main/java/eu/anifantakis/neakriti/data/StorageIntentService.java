@@ -10,8 +10,8 @@ import android.support.annotation.Nullable;
 import java.util.Date;
 
 import eu.anifantakis.neakriti.data.db.ArticlesDBContract;
-import eu.anifantakis.neakriti.data.feed.Article;
 import eu.anifantakis.neakriti.data.feed.ArticlesCollection;
+import eu.anifantakis.neakriti.data.feed.gson.Article;
 import eu.anifantakis.neakriti.utils.AppUtils;
 
 /**
@@ -88,16 +88,18 @@ public class StorageIntentService extends IntentService {
         contentValues.put(ArticlesDBContract.ArticleEntry.COL_PUB_DATE_STR, article.getPubDateStr());
         contentValues.put(ArticlesDBContract.ArticleEntry.COL_UPDATED_STR, article.getUpdatedStr());
         contentValues.put(ArticlesDBContract.ArticleEntry.COL_PUB_DATE_GRE, article.getPubDateGre());
-        contentValues.put(ArticlesDBContract.ArticleEntry.COL_IMG_THUMB, article.getImgThumb());
-        contentValues.put(ArticlesDBContract.ArticleEntry.COL_IMG_LARGE, article.getImgLarge());
+        contentValues.put(ArticlesDBContract.ArticleEntry.COL_IMG_THUMB, article.getImgThumbStr());
+        contentValues.put(ArticlesDBContract.ArticleEntry.COL_IMG_LARGE, article.getImgLargeStr());
 
         Date pubDate = AppUtils.feedDate(article.getPubDateStr());
         if (pubDate!=null) { contentValues.put(ArticlesDBContract.ArticleEntry.COL_PUB_DATE, pubDate.getTime()); }
         else{ contentValues.put(ArticlesDBContract.ArticleEntry.COL_PUB_DATE, 0); }
 
+        /*
         Date updated = AppUtils.feedDateUpdated(article.getUpdatedStr());
         if (updated!=null) { contentValues.put(ArticlesDBContract.ArticleEntry.COL_UPDATED, updated.getTime()); }
         else{ contentValues.put(ArticlesDBContract.ArticleEntry.COL_UPDATED, 0); }
+        */
 
         Uri uri = getContentResolver().insert(ArticlesDBContract.ArticleEntry.CONTENT_URI, contentValues);
     }

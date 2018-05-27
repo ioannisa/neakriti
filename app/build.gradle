@@ -11,10 +11,6 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
-    lintOptions {
-        disable 'DuplicatePlatformClasses'
-    }
-
     signingConfigs {
         myconfig {
             keyAlias 'capstone'
@@ -55,7 +51,8 @@ dependencies {
     //implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
 
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-simplexml:2.4.0'
+    //implementation 'com.squareup.retrofit2:converter-simplexml:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 
     implementation 'in.championswimmer:SimpleFingerGestures_Android_Library:1.2'

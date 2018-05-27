@@ -1,8 +1,6 @@
 package eu.anifantakis.neakriti;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,7 +32,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import eu.anifantakis.neakriti.data.db.ArticlesDBContract;
-import eu.anifantakis.neakriti.data.feed.Article;
+import eu.anifantakis.neakriti.data.feed.gson.Article;
 import eu.anifantakis.neakriti.utils.AppUtils;
 import eu.anifantakis.neakriti.utils.NeaKritiApp;
 
@@ -287,17 +285,18 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         contentValues.put(ArticlesDBContract.ArticleEntry.COL_PUB_DATE_STR, mArticle.getPubDateStr());
         contentValues.put(ArticlesDBContract.ArticleEntry.COL_UPDATED_STR, mArticle.getUpdatedStr());
         contentValues.put(ArticlesDBContract.ArticleEntry.COL_PUB_DATE_GRE, mArticle.getPubDateGre());
-        contentValues.put(ArticlesDBContract.ArticleEntry.COL_IMG_THUMB, mArticle.getImgThumb());
-        contentValues.put(ArticlesDBContract.ArticleEntry.COL_IMG_LARGE, mArticle.getImgLarge());
+        contentValues.put(ArticlesDBContract.ArticleEntry.COL_IMG_THUMB, mArticle.getImgThumbStr());
+        contentValues.put(ArticlesDBContract.ArticleEntry.COL_IMG_LARGE, mArticle.getImgLargeStr());
 
         Date pubDate = AppUtils.feedDate(mArticle.getPubDateStr());
         if (pubDate!=null) { contentValues.put(ArticlesDBContract.ArticleEntry.COL_PUB_DATE, pubDate.getTime()); }
         else{ contentValues.put(ArticlesDBContract.ArticleEntry.COL_PUB_DATE, 0); }
 
+        /*
         Date updated = AppUtils.feedDateUpdated(mArticle.getUpdatedStr());
         if (updated!=null) { contentValues.put(ArticlesDBContract.ArticleEntry.COL_UPDATED, updated.getTime()); }
         else{ contentValues.put(ArticlesDBContract.ArticleEntry.COL_UPDATED, 0); }
-
+        */
 
         //AsyncQueryHandler queryHandler = new AsyncQueryHandler(getContext().getContentResolver()){};
         //queryHandler.startInsert(1,null,ArticlesDBContract.ArticleEntry.CONTENT_URI, contentValues);

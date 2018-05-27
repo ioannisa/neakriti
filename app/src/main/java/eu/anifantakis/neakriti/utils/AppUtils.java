@@ -41,8 +41,8 @@ public final class AppUtils {
     // no instances of App Utils are allowed
     private AppUtils() {}
 
-    public static String URL_BASE = "https://www.neakriti.gr";
-    public static final String RSSFEED_BASE = "/webServices/MobileFeedAndroid_v2.aspx";
+    public static String URL_BASE = "https://anifantakis.eu";
+    public static final String RSSFEED_BASE = "/_anifan/articles-json.php";
 
     public static String RADIO_STATION_URL = "http://eco.onestreaming.com:8237/live";
     public static String TV_STATION_URL = "http://live.cretetv.gr:1935/cretetv/myStream/playlist.m3u8";
