@@ -10,13 +10,10 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import eu.anifantakis.neakriti.ArticleListActivity;
 import eu.anifantakis.neakriti.data.RequestInterface;
 import eu.anifantakis.neakriti.data.feed.gson.Article;
 import eu.anifantakis.neakriti.data.feed.gson.Feed;
-import eu.anifantakis.neakriti.utils.AppUtils;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,6 +26,8 @@ import static eu.anifantakis.neakriti.utils.AppUtils.PREFS_WIDGET_CATEGORY_ID;
 import static eu.anifantakis.neakriti.utils.AppUtils.PREFS_WIDGET_CATEGORY_TITLE;
 import static eu.anifantakis.neakriti.utils.AppUtils.URL_BASE;
 import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.APPWIDGET_UPDATE;
+import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.WIDGET_EXTRAS_HAS_DATA;
+import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.WIDGET_EXTRAS_CATGORY_TITLE;
 
 // source: https://laaptu.wordpress.com/2013/07/24/populate-appwidget-listview-with-remote-datadata-from-web/
 
@@ -36,6 +35,7 @@ public class WidgetFetchArticlesService extends Service {
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     public static Feed widgetFeed = null;
     public static ArrayList<ListProvider.ListItem> listItemList;
+    public static String categoryTitle = "";
 
     @Nullable
     @Override
@@ -72,10 +72,10 @@ public class WidgetFetchArticlesService extends Service {
         //category to get the info
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         final String categoryId = sharedPreferences.getString(PREFS_WIDGET_CATEGORY_ID, MAIN_CATEGORY_ID);
-        final String categoryTitle = sharedPreferences.getString(PREFS_WIDGET_CATEGORY_TITLE, "Home");
+        categoryTitle = sharedPreferences.getString(PREFS_WIDGET_CATEGORY_TITLE, "Home");
 
         RequestInterface request = retrofit.create(RequestInterface.class);
-        Call<Feed> call = request.getFeedByCategory(categoryId, 5);
+        Call<Feed> call = request.getFeedByCategory(categoryId, 10);
         call.enqueue(new Callback<Feed>() {
             @Override
             public void onResponse(Call<Feed> call, Response<Feed> response) {
@@ -85,7 +85,7 @@ public class WidgetFetchArticlesService extends Service {
                 listItemList = new ArrayList<ListProvider.ListItem>();
                 int count = 0;
                 for (Article article : articleList){
-                    if (count==5)
+                    if (count==10)
                         break;
 
                     count++;
@@ -121,7 +121,8 @@ public class WidgetFetchArticlesService extends Service {
         widgetUpdateIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 appWidgetId);
 
-        widgetUpdateIntent.putExtra("HAS_DATA", hasData);
+        widgetUpdateIntent.putExtra(WIDGET_EXTRAS_HAS_DATA, hasData);
+        widgetUpdateIntent.putExtra(WIDGET_EXTRAS_CATGORY_TITLE, categoryTitle);
 
         sendBroadcast(widgetUpdateIntent);
 

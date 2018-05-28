@@ -67,6 +67,7 @@
 
     <!-- Widget -->
     <string name="widget_no_news_to_display">Δεν υπάρχουν ειδήσεις για προβολή</string>
+    <string name="widget_reload">Ανανέωση</string>
 
     <!-- Fragment menu (detail_menu.xml) -->
     <string name="detail_menu_tts" translatable="false">Text to Speech (TTS)</string>

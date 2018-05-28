@@ -10,7 +10,6 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import eu.anifantakis.neakriti.ArticleDetailActivity;
-import eu.anifantakis.neakriti.ArticleListActivity;
 import eu.anifantakis.neakriti.R;
 
 public class NewsWidgetProvider extends AppWidgetProvider {
@@ -18,7 +17,10 @@ public class NewsWidgetProvider extends AppWidgetProvider {
     public static final String APPWIDGET_UPDATE="android.appwidget.action.APPWIDGET_UPDATE";
     public static final String APPWIDGET_NOITEMS="eu.anifantakis.neakriti.APPWIDGET_NOITEMS";
 
-    private RemoteViews updateAppWidget(Context context, int appWidgetId, boolean hasData) {
+    public static final String WIDGET_EXTRAS_HAS_DATA = "eu.anifantakis.neakriti.HAS_DATA";
+    public static final String WIDGET_EXTRAS_CATGORY_TITLE = "eu.anifantakis.neakriti.CATEGORY_TITLE";
+
+    private RemoteViews updateAppWidget(Context context, int appWidgetId, boolean hasData, CharSequence categoryTitle) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.news_widget_provider);
 
         //RemoteViews Service needed to provide adapter for ListView
@@ -35,10 +37,20 @@ public class NewsWidgetProvider extends AppWidgetProvider {
             views.setRemoteAdapter(appWidgetId, R.id.list_view_widget,
                     svcIntent);
 
+            // ListView Item Click launches the ArticleDetailActivity to display that item
             Intent intent = new Intent(context, ArticleDetailActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             views.setPendingIntentTemplate(R.id.list_view_widget, pendingIntent);
         }
+
+        // set the category title
+        views.setTextViewText(R.id.widget_title, categoryTitle);
+
+        // Reload Button
+        Intent serviceIntent = new Intent(context, WidgetFetchArticlesService.class);
+        serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        PendingIntent pendingIntent = PendingIntent.getService(context, 0, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setOnClickPendingIntent(R.id.widget_reload, pendingIntent);
 
         // if the list_view_widget is empty, then show the text view that contains the empty text
         views.setEmptyView(R.id.list_view_widget, R.id.list_view_empty_text);
@@ -100,16 +112,11 @@ public class NewsWidgetProvider extends AppWidgetProvider {
                     AppWidgetManager.INVALID_APPWIDGET_ID);
 
             boolean hasData = intent.getBooleanExtra(
-                    "HAS_DATA",
+                    WIDGET_EXTRAS_HAS_DATA,
                     true
             );
 
-            if (hasData){
-                Log.d("WIDGET RECEIVER", "HAS DATA: TRUE");
-            }
-            else{
-                Log.d("WIDGET RECEIVER", "HAS DATA: FALSE");
-            }
+            String categoryTitle = intent.getStringExtra(WIDGET_EXTRAS_CATGORY_TITLE);
 
             AppWidgetManager appWidgetManager = AppWidgetManager
                     .getInstance(context);
@@ -119,7 +126,7 @@ public class NewsWidgetProvider extends AppWidgetProvider {
             //appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
 
             //call updateAppWidget method passing the attributes
-            RemoteViews remoteViews = updateAppWidget(context, appWidgetId, hasData);
+            RemoteViews remoteViews = updateAppWidget(context, appWidgetId, hasData, categoryTitle);
             //calling this method inside listprovider to trigger populateListItem method ()
             ListProvider.setInfoData();
             //NESECCARY line of code..watch out the attributes
