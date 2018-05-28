@@ -4,9 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
@@ -14,6 +17,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -71,12 +75,16 @@ import eu.anifantakis.neakriti.data.feed.gson.Feed;
 import eu.anifantakis.neakriti.databinding.ActivityArticleListBinding;
 import eu.anifantakis.neakriti.utils.AppUtils;
 import eu.anifantakis.neakriti.utils.NeaKritiApp;
+import eu.anifantakis.neakriti.widget.NewsWidgetProvider;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
+import static eu.anifantakis.neakriti.utils.AppUtils.MAIN_CATEGORY_ID;
+import static eu.anifantakis.neakriti.utils.AppUtils.PREFS_WIDGET_CATEGORY_ID;
+import static eu.anifantakis.neakriti.utils.AppUtils.PREFS_WIDGET_CATEGORY_TITLE;
 import static eu.anifantakis.neakriti.utils.AppUtils.mNotificationManager;
 import static eu.anifantakis.neakriti.utils.AppUtils.onlineMode;
 
@@ -236,7 +244,7 @@ public class ArticleListActivity extends AppCompatActivity implements
             }
         });
 
-        feedSrvid = "127";
+        feedSrvid = MAIN_CATEGORY_ID;
         feedItems = 25;
         feedName = getString(R.string.nav_home);
         makeArticlesLoaderQuery(feedName, ArticlesDBContract.DB_TYPE_CATEGORY, feedSrvid, feedItems);
@@ -368,6 +376,21 @@ public class ArticleListActivity extends AppCompatActivity implements
             } else {
                 getSupportLoaderManager().restartLoader(ARTICLES_FEED_LOADER, bundle, this);
             }
+
+            //Upon click on categories we write inside sharedprefs the id of the category so to use it inside
+            //WidgetFetchArticleService and fetch articles of the specific category
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(PREFS_WIDGET_CATEGORY_ID, id);
+            editor.putString(PREFS_WIDGET_CATEGORY_TITLE, title);
+            editor.apply();
+
+            //We call onUpdateMyView of the widgetProvider passing the widgetId[]
+            //upon click of a category update widget
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+            int[] appWidgetId = appWidgetManager.getAppWidgetIds(new ComponentName(this, NewsWidgetProvider.class));
+
+            NewsWidgetProvider.onUpdateMyView(this,appWidgetId);
         }
         else{
             // handle offline data, fetch articles from the database for the given category

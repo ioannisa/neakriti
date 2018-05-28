@@ -14,6 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+
 import eu.anifantakis.neakriti.data.feed.gson.Article;
 import eu.anifantakis.neakriti.utils.AppUtils;
 
@@ -36,6 +39,10 @@ public class ArticleDetailActivity extends AppCompatActivity {
         // Receive the Parcelable Movie object from the extras of the intent.
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+            if (extras.containsKey(AppUtils.EXTRAS_CUSTOM_CATEGORY_TITLE)) {
+                setTitle(getIntent().getStringExtra(AppUtils.EXTRAS_CUSTOM_CATEGORY_TITLE));
+            }
+
             if (extras.containsKey(AppUtils.EXTRAS_ARTICLE)) {
                 mArticle = getIntent().getParcelableExtra(AppUtils.EXTRAS_ARTICLE);
             }
@@ -51,8 +58,20 @@ public class ArticleDetailActivity extends AppCompatActivity {
                 lowResBitmap = getIntent().getParcelableExtra(AppUtils.EXTRAS_LOW_RES_BITMAP);
                 if (lowResBitmap!=null)
                     detailActivityImage.setImageBitmap(lowResBitmap);
+
+                supportStartPostponedEnterTransition();
             }
-            supportStartPostponedEnterTransition();
+            else if (startedByNotification){
+                // we don't care about transition - continue to activity without waiting for image load
+                supportStartPostponedEnterTransition();
+
+                Picasso.get()
+                        .load(mArticle.getImgThumbStr())
+                        .noFade()
+                        //.placeholder(detailActivityImage.getDrawable())
+                        .into(detailActivityImage);
+            }
+
 
             //detailActivityImage.setImageBitmap(AppUtils.loadImageFromStorage("images", "current_thumb.jpg"));
             //supportStartPostponedEnterTransition();

@@ -10,16 +10,25 @@ import android.widget.RemoteViewsService.RemoteViewsFactory;
 import java.util.ArrayList;
 
 import eu.anifantakis.neakriti.R;
+import eu.anifantakis.neakriti.data.feed.gson.Article;
 import eu.anifantakis.neakriti.utils.AppUtils;
 
 // source: https://laaptu.wordpress.com/2013/07/19/android-app-widget-with-listview/
 public class ListProvider implements RemoteViewsFactory {
     public static class ListItem {
-        public String heading,imageUrl;
-
+        public String categoryTitle;
+        public int guid;
+        public String link;
+        public String title;
+        public String description;
+        public String pubDate;
+        public String updated;
+        public String pubDateGre;
+        public String imgThumb;
+        public String imgLarge;
     }
 
-    private ArrayList<ListItem> listItemList = new ArrayList<ListItem>();
+    private static ArrayList<ListItem> listItemList = new ArrayList<ListItem>();
     private Context context = null;
     private int appWidgetId;
 
@@ -31,7 +40,7 @@ public class ListProvider implements RemoteViewsFactory {
         populateListItem();
     }
 
-    private void populateListItem() {
+    private static void populateListItem() {
         try {
             listItemList = (ArrayList<ListItem>)
                     WidgetFetchArticlesService.listItemList
@@ -61,10 +70,28 @@ public class ListProvider implements RemoteViewsFactory {
     public RemoteViews getViewAt(int position) {
         final RemoteViews remoteView = new RemoteViews(
                 context.getPackageName(), R.layout.row_widget_list);
+
         if (listItemList!=null) {
             ListItem listItem = listItemList.get(position);
-            remoteView.setTextViewText(R.id.widget_row_heading, listItem.heading);
-            remoteView.setImageViewBitmap(R.id.widget_row_image, AppUtils.getBitmapfromUrl(listItem.imageUrl));
+            remoteView.setTextViewText(R.id.widget_row_heading, listItem.title);
+            remoteView.setImageViewBitmap(R.id.widget_row_image, AppUtils.getBitmapfromUrl(listItem.imgThumb));
+
+            Article article = new Article();
+            article.setGuid(listItem.guid);
+            article.setTitle(listItem.title);
+            article.setDescription(listItem.description);
+            article.setImgThumb(listItem.imgThumb);
+            article.setImgLarge(listItem.imgLarge);
+            article.setPubDateStr(listItem.pubDate);
+
+            Intent fillInIntent = new Intent();
+            fillInIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            fillInIntent.putExtra(AppUtils.EXTRAS_ARTICLE, article);
+            fillInIntent.putExtra(AppUtils.EXTRAS_ORIGIN_NOTIFICATION, true);
+            fillInIntent.putExtra(AppUtils.EXTRAS_CUSTOM_CATEGORY_TITLE, listItem.categoryTitle);
+
+            remoteView.setOnClickFillInIntent(R.id.widget_row_image, fillInIntent);
+            remoteView.setOnClickFillInIntent(R.id.widget_row_heading, fillInIntent);
         }
 
         return remoteView;
@@ -98,4 +125,8 @@ public class ListProvider implements RemoteViewsFactory {
     public void onDestroy() {
     }
 
+    //new method to call it brom broadcast receiver inside widgetprovider so to trigger populateListItem method
+    public static void setInfoData() {
+        populateListItem();
+    }
 }

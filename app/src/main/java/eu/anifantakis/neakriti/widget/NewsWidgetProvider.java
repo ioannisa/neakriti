@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import eu.anifantakis.neakriti.ArticleDetailActivity;
 import eu.anifantakis.neakriti.ArticleListActivity;
 import eu.anifantakis.neakriti.R;
 
@@ -34,9 +35,9 @@ public class NewsWidgetProvider extends AppWidgetProvider {
             views.setRemoteAdapter(appWidgetId, R.id.list_view_widget,
                     svcIntent);
 
-            Intent intent = new Intent(context, ArticleListActivity.class);
+            Intent intent = new Intent(context, ArticleDetailActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            views.setOnClickPendingIntent(R.id.widget_logo, pendingIntent);
+            views.setPendingIntentTemplate(R.id.list_view_widget, pendingIntent);
         }
 
         // if the list_view_widget is empty, then show the text view that contains the empty text
@@ -56,19 +57,25 @@ public class NewsWidgetProvider extends AppWidgetProvider {
         }
     }
 
-    public static void onUpdateMyView(Context context) {
-        final int N = savedAppWidgetIds.length;
-        for (int i = 0; i < N; i++) {
-            Intent serviceIntent = new Intent(context, WidgetFetchArticlesService.class);
-            serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, savedAppWidgetIds[i]);
-            context.startService(serviceIntent);
+    public static void onUpdateMyView(Context context, int[] widgetIds) {
+        // this method is called upon generation of the widget and each time we click on nav drawer buttons
+        savedAppWidgetIds = widgetIds;
+        if (savedAppWidgetIds != null){
+            final int N = savedAppWidgetIds.length;
+            for (int i = 0; i < N; i++) {
+
+                //we start the service
+                Intent serviceIntent = new Intent(context, WidgetFetchArticlesService.class);
+                serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, savedAppWidgetIds[i]);
+                context.startService(serviceIntent);
+            }
         }
     }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         savedAppWidgetIds = appWidgetIds;
-        onUpdateMyView(context);
+        onUpdateMyView(context, appWidgetIds);
 
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
@@ -80,9 +87,11 @@ public class NewsWidgetProvider extends AppWidgetProvider {
      * right now happens on ListProvider as it takes RemoteFetchService
      * listItemList as data
      */
+    //broadcast is received
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
+
         Log.d("WIDGET RECEIVER", "ON RECEIVE");
 
         if (intent.getAction().equals(APPWIDGET_UPDATE)) {
@@ -106,7 +115,16 @@ public class NewsWidgetProvider extends AppWidgetProvider {
                     .getInstance(context);
 
             Log.d("WIDGET RECEIVER", "DATA FETCHED");
+            //RemoteViews remoteViews = updateAppWidget(context, appWidgetId, hasData);
+            //appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
+
+            //call updateAppWidget method passing the attributes
             RemoteViews remoteViews = updateAppWidget(context, appWidgetId, hasData);
+            //calling this method inside listprovider to trigger populateListItem method ()
+            ListProvider.setInfoData();
+            //NESECCARY line of code..watch out the attributes
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.list_view_widget);
+            //call update at manager
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
     }
