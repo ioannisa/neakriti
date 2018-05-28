@@ -5,7 +5,7 @@
     android:installLocation="auto">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".utils.NeaKritiApp"
@@ -37,25 +37,37 @@
                 android:value="eu.anifantakis.neakriti.ArticleListActivity" />
         </activity>
         <activity android:name=".TVStreamActivity" />
+        <activity
+            android:name=".widget.WidgetConfigActivity"
+            android:label="@string/title_activity_widget_config"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
 
-        <service android:name=".firebase.FBMessagingService" android:exported="false">
+        <service
+            android:name=".firebase.FBMessagingService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".firebase.FBInstanceIDService" android:exported="false">
+        <service
+            android:name=".firebase.FBInstanceIDService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
-        <service android:name=".data.StorageIntentService"
-            android:exported="false"/>
+        <service
+            android:name=".data.StorageIntentService"
+            android:exported="false" />
 
         <provider
-            android:name="eu.anifantakis.neakriti.data.db.ArticlesContentProvider"
+            android:name=".data.db.ArticlesContentProvider"
             android:authorities="eu.anifantakis.neakriti"
-            android:exported="false"/>
+            android:exported="false" />
 
         <receiver android:name=".widget.NewsWidgetProvider">
             <intent-filter>
@@ -71,9 +83,7 @@
         <service
             android:name=".widget.WidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
-
-        <service
-            android:name=".widget.WidgetFetchArticlesService" />
+        <service android:name=".widget.WidgetFetchArticlesService" />
     </application>
 
 </manifest>

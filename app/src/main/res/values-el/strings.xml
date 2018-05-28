@@ -39,4 +39,6 @@
     <string name="dlg_no_network_body">Επιθυμείτε να συνεχίσετε σε Offline Mode;</string>
     <string name="dlg_no_network_stream_body">Δε μπορείτε να κάνετε χρήση ζωντανού προγράμματος τηλεόρασης ή ραδιοφώνου χωρίς σύνδεση στο internet.</string>
     <string name="widget_reload">Ανανέωση</string>
+    <string name="widget_settings">Ρυθμίσεις</string>
+    <string name="title_activity_widget_config">Ρυθμίσεις Widget</string>
 </resources>

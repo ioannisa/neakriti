@@ -14,17 +14,41 @@
     <string name="row.thumb_description" translatable="false">Article Thumbnail</string>
     <string name="detail.img_description" translatable="false">Article Image</string>
 
+    <!-- CATEGORIES -->
+
     <string name="nav_home">Αρχική</string>
+    <string name="nav_home_id" translatable="false">127</string>
+
     <string name="nav_crete">Κρήτη</string>
+    <string name="nav_crete_id" translatable="false">95</string>
+
     <string name="nav_views">Απόψεις</string>
+    <string name="nav_views_id" translatable="false">322</string>
+
     <string name="nav_economy">Οικονομία</string>
+    <string name="nav_economy_id" translatable="false">159</string>
+
     <string name="nav_culture">Πολιτισμός</string>
+    <string name="nav_culture_id" translatable="false">116</string>
+
     <string name="nav_pioneering">Καινοτομία</string>
+    <string name="nav_pioneering_id" translatable="false">131</string>
+
     <string name="nav_sports">Αθλητισμός</string>
+    <string name="nav_sports_id" translatable="false">225</string>
+
     <string name="nav_lifestyle">Lifestyle</string>
+    <string name="nav_lifestyle_id" translatable="false">113</string>
+
     <string name="nav_health">Υγεία</string>
+    <string name="nav_health_id" translatable="false">115</string>
+
     <string name="nav_woman">Γυναίκα</string>
+    <string name="nav_woman_id" translatable="false">128</string>
+
     <string name="nav_travel">Ταξίδια</string>
+    <string name="nav_travel_id" translatable="false">263</string>
+
     <string name="nav_favorite_items">Σελιδοδείκτες</string>
 
     <string name="unitID_bottom" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
@@ -68,9 +92,11 @@
     <!-- Widget -->
     <string name="widget_no_news_to_display">Δεν υπάρχουν ειδήσεις για προβολή</string>
     <string name="widget_reload">Ανανέωση</string>
+    <string name="widget_settings">Ρυθμίσεις</string>
 
     <!-- Fragment menu (detail_menu.xml) -->
     <string name="detail_menu_tts" translatable="false">Text to Speech (TTS)</string>
     <string name="detail_menu_sharing" translatable="false">Sharing</string>
     <string name="detail_menu_bookmark" translatable="false">Bookmark</string>
+    <string name="title_activity_widget_config">Ρυθμίσεις Widget</string>
 </resources>

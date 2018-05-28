@@ -33,4 +33,6 @@
     <string name="dlg_no_network_body">Do you wish to continue in Offline Mode?</string>
     <string name="dlg_no_network_stream_body">You cannot make use of live TV or Radio streaming without connection to the internet.</string>
     <string name="widget_reload">Reload</string>
+    <string name="widget_settings">Settings</string>
+    <string name="title_activity_widget_config">Widget Settings</string>
 </resources>

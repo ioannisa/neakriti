@@ -61,8 +61,6 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import eu.anifantakis.neakriti.data.ArticlesListAdapter;
 import eu.anifantakis.neakriti.data.RequestInterface;
@@ -82,8 +80,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
-import static eu.anifantakis.neakriti.utils.AppUtils.MAIN_CATEGORY_ID;
 import static eu.anifantakis.neakriti.utils.AppUtils.PREFS_WIDGET_CATEGORY_ID;
+import static eu.anifantakis.neakriti.utils.AppUtils.PREFS_WIDGET_CATEGORY_ORDER;
 import static eu.anifantakis.neakriti.utils.AppUtils.PREFS_WIDGET_CATEGORY_TITLE;
 import static eu.anifantakis.neakriti.utils.AppUtils.mNotificationManager;
 import static eu.anifantakis.neakriti.utils.AppUtils.onlineMode;
@@ -244,7 +242,9 @@ public class ArticleListActivity extends AppCompatActivity implements
             }
         });
 
-        feedSrvid = MAIN_CATEGORY_ID;
+        // set default selected menu category the home category
+        navigationView.setCheckedItem(R.id.nav_home);
+        feedSrvid = getString(R.string.nav_home_id);
         feedItems = 25;
         feedName = getString(R.string.nav_home);
         makeArticlesLoaderQuery(feedName, ArticlesDBContract.DB_TYPE_CATEGORY, feedSrvid, feedItems);
@@ -377,10 +377,12 @@ public class ArticleListActivity extends AppCompatActivity implements
                 getSupportLoaderManager().restartLoader(ARTICLES_FEED_LOADER, bundle, this);
             }
 
+            /*
             //Upon click on categories we write inside sharedprefs the id of the category so to use it inside
             //WidgetFetchArticleService and fetch articles of the specific category
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt(PREFS_WIDGET_CATEGORY_ORDER, 0);
             editor.putString(PREFS_WIDGET_CATEGORY_ID, id);
             editor.putString(PREFS_WIDGET_CATEGORY_TITLE, title);
             editor.apply();
@@ -391,6 +393,8 @@ public class ArticleListActivity extends AppCompatActivity implements
             int[] appWidgetId = appWidgetManager.getAppWidgetIds(new ComponentName(this, NewsWidgetProvider.class));
 
             NewsWidgetProvider.onUpdateMyView(this,appWidgetId);
+            */
+
         }
         else{
             // handle offline data, fetch articles from the database for the given category
@@ -617,17 +621,17 @@ public class ArticleListActivity extends AppCompatActivity implements
             feedItems = 25;
             feedName = item.getTitle().toString();
 
-            if (id == R.id.nav_home)            { feedSrvid = "127"; }
-            else if (id == R.id.nav_crete)      { feedSrvid = "95"; }
-            else if (id == R.id.nav_views)      { feedSrvid = "322"; }
-            else if (id == R.id.nav_economy)    { feedSrvid = "159"; }
-            else if (id == R.id.nav_culture)    { feedSrvid = "116"; }
-            else if (id == R.id.nav_pioneering) { feedSrvid = "131"; }
-            else if (id == R.id.nav_sports)     { feedSrvid = "225"; }
-            else if (id == R.id.nav_lifestyle)  { feedSrvid = "133"; }
-            else if (id == R.id.nav_health)     { feedSrvid = "115"; }
-            else if (id == R.id.nav_woman)      { feedSrvid = "128"; }
-            else if (id == R.id.nav_travel)     { feedSrvid = "263"; }
+            if (id == R.id.nav_home)            { feedSrvid = getString(R.string.nav_home_id); }
+            else if (id == R.id.nav_crete)      { feedSrvid = getString(R.string.nav_crete_id); }
+            else if (id == R.id.nav_views)      { feedSrvid = getString(R.string.nav_views_id); }
+            else if (id == R.id.nav_economy)    { feedSrvid = getString(R.string.nav_economy_id); }
+            else if (id == R.id.nav_culture)    { feedSrvid = getString(R.string.nav_culture_id); }
+            else if (id == R.id.nav_pioneering) { feedSrvid = getString(R.string.nav_pioneering_id); }
+            else if (id == R.id.nav_sports)     { feedSrvid = getString(R.string.nav_sports_id); }
+            else if (id == R.id.nav_lifestyle)  { feedSrvid = getString(R.string.nav_lifestyle_id); }
+            else if (id == R.id.nav_health)     { feedSrvid = getString(R.string.nav_health_id); }
+            else if (id == R.id.nav_woman)      { feedSrvid = getString(R.string.nav_woman_id); }
+            else if (id == R.id.nav_travel)     { feedSrvid = getString(R.string.nav_travel_id); }
 
             makeArticlesLoaderQuery(feedName, ArticlesDBContract.DB_TYPE_CATEGORY, feedSrvid, feedItems);
         }

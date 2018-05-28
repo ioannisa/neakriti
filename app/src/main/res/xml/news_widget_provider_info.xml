@@ -1,7 +1,8 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:configure="eu.anifantakis.neakriti.widget.WidgetConfigActivity"
     android:initialLayout="@layout/news_widget_provider"
     android:minHeight="180dp"
-    android:minWidth="180dp"
-    android:previewImage="@drawable/placeholder"
+    android:minWidth="240dp"
+    android:previewImage="@mipmap/widget"
     android:resizeMode="horizontal|vertical"
-    android:updatePeriodMillis="86400000"/>
+    android:updatePeriodMillis="10800000"/>

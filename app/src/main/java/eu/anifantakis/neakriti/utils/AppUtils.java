@@ -43,7 +43,6 @@ public final class AppUtils {
 
     public static String URL_BASE = "https://anifantakis.eu";
     public static final String RSSFEED_BASE = "/_anifan/articles-json.php";
-    public static String MAIN_CATEGORY_ID = "127";
 
     public static String RADIO_STATION_URL = "http://eco.onestreaming.com:8237/live";
     public static String TV_STATION_URL = "http://live.cretetv.gr:1935/cretetv/myStream/playlist.m3u8";
@@ -56,6 +55,7 @@ public final class AppUtils {
     public static final String EXTRAS_ORIGIN_NOTIFICATION = "EXTRAS_ORIGIN_NOTIFICATION";
 
     //================= Shared Prefs Constants ===========================
+    public static final String PREFS_WIDGET_CATEGORY_ORDER = "PREFS_WIDGET_CATEGORY_ORDER";
     public static final String PREFS_WIDGET_CATEGORY_ID = "PREFS_WIDGET_CATEGORY_ID";
     public static final String PREFS_WIDGET_CATEGORY_TITLE = "PREFS_WIDGET_CATEGORY_TITLE";
     //====================================================================

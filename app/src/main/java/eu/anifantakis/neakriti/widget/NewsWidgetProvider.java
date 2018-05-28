@@ -5,12 +5,18 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.RemoteViews;
 
 import eu.anifantakis.neakriti.ArticleDetailActivity;
 import eu.anifantakis.neakriti.R;
+
+import static eu.anifantakis.neakriti.utils.AppUtils.PREFS_WIDGET_CATEGORY_ID;
+import static eu.anifantakis.neakriti.utils.AppUtils.PREFS_WIDGET_CATEGORY_ORDER;
+import static eu.anifantakis.neakriti.utils.AppUtils.PREFS_WIDGET_CATEGORY_TITLE;
 
 public class NewsWidgetProvider extends AppWidgetProvider {
 
@@ -19,6 +25,11 @@ public class NewsWidgetProvider extends AppWidgetProvider {
 
     public static final String WIDGET_EXTRAS_HAS_DATA = "eu.anifantakis.neakriti.HAS_DATA";
     public static final String WIDGET_EXTRAS_CATGORY_TITLE = "eu.anifantakis.neakriti.CATEGORY_TITLE";
+    public static final String WIDGET_EXTRAS_DIRECTION = "eu.anifantakis.neakriti.DIRECTION";
+
+    public static final int WIDGET_DIRECTION_EXISTING = 0;
+    public static final int WIDGET_DIRECTION_PREVIOUS = 1;
+    public static final int WIDGET_DIRECTION_NEXT     = 2;
 
     private RemoteViews updateAppWidget(Context context, int appWidgetId, boolean hasData, CharSequence categoryTitle) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.news_widget_provider);
@@ -49,8 +60,28 @@ public class NewsWidgetProvider extends AppWidgetProvider {
         // Reload Button
         Intent serviceIntent = new Intent(context, WidgetFetchArticlesService.class);
         serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        PendingIntent pendingIntent = PendingIntent.getService(context, 0, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getService(context, WIDGET_DIRECTION_EXISTING, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.widget_reload, pendingIntent);
+
+        // Previous Button
+        Intent prvIntent = new Intent(context, WidgetFetchArticlesService.class);
+        prvIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        prvIntent.putExtra(WIDGET_EXTRAS_DIRECTION, WIDGET_DIRECTION_PREVIOUS);
+        PendingIntent prvPendingIntent = PendingIntent.getService(context, WIDGET_DIRECTION_PREVIOUS, prvIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setOnClickPendingIntent(R.id.widget_category_prv, prvPendingIntent);
+
+        // Next Button
+        Intent nextIntent = new Intent(context, WidgetFetchArticlesService.class);
+        nextIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        nextIntent.putExtra(WIDGET_EXTRAS_DIRECTION, WIDGET_DIRECTION_NEXT);
+        PendingIntent nextPendingIntent = PendingIntent.getService(context, WIDGET_DIRECTION_NEXT, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setOnClickPendingIntent(R.id.widget_category_next, nextPendingIntent);
+
+        // Settings Button
+        Intent settingsIntent = new Intent(context, WidgetConfigActivity.class);
+        settingsIntent.putExtra("WIDGET_UPDATE", true);
+        PendingIntent settingsPendingIntent = PendingIntent.getActivity(context, 10, settingsIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setOnClickPendingIntent(R.id.widget_settings, settingsPendingIntent);
 
         // if the list_view_widget is empty, then show the text view that contains the empty text
         views.setEmptyView(R.id.list_view_widget, R.id.list_view_empty_text);
@@ -104,6 +135,8 @@ public class NewsWidgetProvider extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 
+
+
         Log.d("WIDGET RECEIVER", "ON RECEIVE");
 
         if (intent.getAction().equals(APPWIDGET_UPDATE)) {
@@ -115,6 +148,8 @@ public class NewsWidgetProvider extends AppWidgetProvider {
                     WIDGET_EXTRAS_HAS_DATA,
                     true
             );
+
+
 
             String categoryTitle = intent.getStringExtra(WIDGET_EXTRAS_CATGORY_TITLE);
 
@@ -135,4 +170,6 @@ public class NewsWidgetProvider extends AppWidgetProvider {
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
     }
+
+
 }

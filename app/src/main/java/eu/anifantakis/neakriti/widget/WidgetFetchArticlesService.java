@@ -11,6 +11,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import eu.anifantakis.neakriti.R;
 import eu.anifantakis.neakriti.data.RequestInterface;
 import eu.anifantakis.neakriti.data.feed.gson.Article;
 import eu.anifantakis.neakriti.data.feed.gson.Feed;
@@ -21,11 +22,14 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static eu.anifantakis.neakriti.utils.AppUtils.MAIN_CATEGORY_ID;
 import static eu.anifantakis.neakriti.utils.AppUtils.PREFS_WIDGET_CATEGORY_ID;
+import static eu.anifantakis.neakriti.utils.AppUtils.PREFS_WIDGET_CATEGORY_ORDER;
 import static eu.anifantakis.neakriti.utils.AppUtils.PREFS_WIDGET_CATEGORY_TITLE;
 import static eu.anifantakis.neakriti.utils.AppUtils.URL_BASE;
 import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.APPWIDGET_UPDATE;
+import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.WIDGET_DIRECTION_NEXT;
+import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.WIDGET_DIRECTION_PREVIOUS;
+import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.WIDGET_EXTRAS_DIRECTION;
 import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.WIDGET_EXTRAS_HAS_DATA;
 import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.WIDGET_EXTRAS_CATGORY_TITLE;
 
@@ -43,6 +47,19 @@ public class WidgetFetchArticlesService extends Service {
         return null;
     }
 
+    class Category{
+        String id, title;
+        int drawable;
+
+        Category(String id, String title, int drawable){
+            this.id = id;
+            this.title = title;
+            this.drawable = drawable;
+        }
+    }
+
+
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("WIDGET FETCH SERVICE", "ON START");
@@ -52,9 +69,59 @@ public class WidgetFetchArticlesService extends Service {
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
 
+        Log.d("WIDGET FETCH", "SERVICE ON START");
+        if (intent.hasExtra(WIDGET_EXTRAS_DIRECTION)){
+            Log.d("WIDGET DIRECTION", "EXISTS");
+            int direction = intent.getIntExtra(WIDGET_EXTRAS_DIRECTION, 0);
+            if (direction>0){
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+                int order = sharedPreferences.getInt(PREFS_WIDGET_CATEGORY_ORDER, 0);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                Category[] categories = {
+                        new Category(getString(R.string.nav_home_id),       getString(R.string.nav_home),       R.drawable.home),
+                        new Category(getString(R.string.nav_crete_id),      getString(R.string.nav_crete),      R.drawable.map_marker),
+                        new Category(getString(R.string.nav_views_id),      getString(R.string.nav_views),      R.drawable.message_text),
+                        new Category(getString(R.string.nav_economy_id),    getString(R.string.nav_economy),    R.drawable.currency_eur),
+                        new Category(getString(R.string.nav_culture_id),    getString(R.string.nav_culture),    R.drawable.school),
+                        new Category(getString(R.string.nav_pioneering_id), getString(R.string.nav_pioneering), R.drawable.satellite_variant),
+                        new Category(getString(R.string.nav_sports),        getString(R.string.nav_sports),     R.drawable.soccer),
+                        new Category(getString(R.string.nav_lifestyle_id),  getString(R.string.nav_lifestyle),  R.drawable.tie),
+                        new Category(getString(R.string.nav_health_id),     getString(R.string.nav_health),     R.drawable.hospital),
+                        new Category(getString(R.string.nav_woman_id),      getString(R.string.nav_woman),      R.drawable.gender_female),
+                        new Category(getString(R.string.nav_travel_id),     getString(R.string.nav_travel),     R.drawable.wallet_travel)
+                };
+
+                if (direction==WIDGET_DIRECTION_PREVIOUS){
+                    Log.d("WIDGET DIRECTION", "PREVIOUS");
+                    if (order>0){
+                        order--;
+                    }
+                    else{
+                        order = categories.length-1;
+                    }
+                }
+                else if (direction==WIDGET_DIRECTION_NEXT){
+                    Log.d("WIDGET DIRECTION", "NEXT");
+                    if (order == categories.length-1){
+                        order = 0;
+                    }
+                    else{
+                        order++;
+                    }
+
+                }
+                editor.putInt(PREFS_WIDGET_CATEGORY_ORDER, order);
+                editor.putString(PREFS_WIDGET_CATEGORY_ID, categories[order].id);
+                editor.putString(PREFS_WIDGET_CATEGORY_TITLE, categories[order].title);
+                editor.apply();
+            }
+        }
+
         fetchDataFromWeb();
         return super.onStartCommand(intent, flags, startId);
     }
+
 
     /**
      * We are not in an IntentService.  So make async retrofit call, not to block the main thread
@@ -71,8 +138,10 @@ public class WidgetFetchArticlesService extends Service {
         //everytime the widget service fetches data first we get the number of the articles
         //category to get the info
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        final String categoryId = sharedPreferences.getString(PREFS_WIDGET_CATEGORY_ID, MAIN_CATEGORY_ID);
-        categoryTitle = sharedPreferences.getString(PREFS_WIDGET_CATEGORY_TITLE, "Home");
+        final String categoryId = sharedPreferences.getString(PREFS_WIDGET_CATEGORY_ID, getString(R.string.nav_home_id));
+        categoryTitle = sharedPreferences.getString(PREFS_WIDGET_CATEGORY_TITLE, getString(R.string.nav_home));
+
+
 
         RequestInterface request = retrofit.create(RequestInterface.class);
         Call<Feed> call = request.getFeedByCategory(categoryId, 10);
