@@ -41,6 +41,7 @@ public class ListProvider implements RemoteViewsFactory {
     }
 
     private static void populateListItem() {
+        /*
         try {
             listItemList = (ArrayList<ListItem>)
                     WidgetFetchArticlesService.listItemList
@@ -48,7 +49,8 @@ public class ListProvider implements RemoteViewsFactory {
         }
         catch(Exception e){
             listItemList = null;
-        }
+        }*/
+        listItemList = WidgetFetchArticlesService.listItemList;
     }
 
     @Override
@@ -129,6 +131,4 @@ public class ListProvider implements RemoteViewsFactory {
     public static void setInfoData() {
         populateListItem();
     }
-
-
 }

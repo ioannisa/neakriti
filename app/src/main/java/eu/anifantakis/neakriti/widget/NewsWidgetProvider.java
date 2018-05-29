@@ -45,7 +45,7 @@ public class NewsWidgetProvider extends AppWidgetProvider {
 
         if (hasData) {
             //setting adapter to listview of the widget
-            views.setRemoteAdapter(appWidgetId, R.id.list_view_widget,
+            views.setRemoteAdapter(R.id.list_view_widget,
                     svcIntent);
 
             // ListView Item Click launches the ArticleDetailActivity to display that item

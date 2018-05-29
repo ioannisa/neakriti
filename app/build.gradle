@@ -33,6 +33,13 @@ android {
     buildToolsVersion '27.0.3'
 }
 
+/*
+allprojects {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+    }
+}*/
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.android.support:appcompat-v7:${supportLibVersion}"
@@ -60,11 +67,11 @@ dependencies {
     implementation 'com.google.android.exoplayer:extension-okhttp:2.7.0'
 
     implementation 'com.google.android.gms:play-services-ads:15.0.1'
-    implementation 'com.google.android.gms:play-services-analytics:15.0.2'
+    implementation 'com.google.android.gms:play-services-analytics:16.0.0'
 
-    implementation 'com.google.firebase:firebase-core:15.0.2'
-    implementation 'com.google.firebase:firebase-messaging:15.0.2'
-    implementation 'com.google.firebase:firebase-config:15.0.2'
+    implementation 'com.google.firebase:firebase-core:16.0.0'
+    implementation 'com.google.firebase:firebase-messaging:17.0.0'
+    implementation 'com.google.firebase:firebase-config:16.0.0'
 
     implementation 'org.jsoup:jsoup:1.11.3'
 

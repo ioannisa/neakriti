@@ -6,8 +6,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -204,7 +206,12 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
                 mTextToSpeech.setLanguage(new Locale("el", "GR"));
                 mTextToSpeech.setSpeechRate(1);
                 mTextToSpeech.setPitch(1);
-                mTextToSpeech.speak(AppUtils.makeReadableGreekText(mArticle.getDescription()), TextToSpeech.QUEUE_FLUSH, null);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    mTextToSpeech.speak(AppUtils.makeReadableGreekText(mArticle.getDescription()), TextToSpeech.QUEUE_FLUSH, null, null);
+                } else {
+                    mTextToSpeech.speak(AppUtils.makeReadableGreekText(mArticle.getDescription()), TextToSpeech.QUEUE_FLUSH, null);
+                }
             }
             else if (langAvailability==TextToSpeech.LANG_MISSING_DATA){
                 Log.d("TTS AVAILABILITY", "MISSING INSTALLATION");
@@ -220,6 +227,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
                         })
                         .setPositiveButton(R.string.dlg_install, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                // missing data, install it
                                 Intent installTTSIntent = new Intent();
                                 installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
                                 ArrayList<String> languages = new ArrayList<String>();
@@ -346,15 +354,23 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
      */
     @Override
     public void onInit(int status) {
-        if (status == mTextToSpeech.SUCCESS) {
-            mTextToSpeech.setOnUtteranceCompletedListener(new TextToSpeech.OnUtteranceCompletedListener() {
+        if (status == TextToSpeech.SUCCESS) {
+            mTextToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                @Override
+                public void onStart(String s) {
 
-                public void onUtteranceCompleted(String utId) {
-                    // TODO Auto-generated method stub
-                    if (utId.indexOf("ok") != -1)
+                }
+
+                @Override
+                public void onDone(String s) {
+                    if (s.contains("ok"))
                         mTextToSpeech.shutdown();
                 }
 
+                @Override
+                public void onError(String s) {
+
+                }
             });
         }
     }

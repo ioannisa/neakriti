@@ -363,7 +363,13 @@ public final class AppUtils {
      */
     public static boolean isWifiConnected(Context context){
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
-        return cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected();
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null) { // connected to the internet
+            return (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI);
+        }
+        else{
+            return false;
+        }
     }
 
     public static String saveToInternalStorage(Context context, Bitmap bitmapImage, String dir, String filename){
