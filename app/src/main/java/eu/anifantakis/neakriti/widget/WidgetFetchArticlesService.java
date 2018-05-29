@@ -150,27 +150,33 @@ public class WidgetFetchArticlesService extends Service {
             public void onResponse(Call<Feed> call, Response<Feed> response) {
                 widgetFeed = response.body();
 
-                ArrayList<Article> articleList = widgetFeed.getChannel().getItems();
-                listItemList = new ArrayList<ListProvider.ListItem>();
-                int count = 0;
-                for (Article article : articleList){
-                    if (count==10)
-                        break;
-
-                    count++;
-                    ListProvider.ListItem listItem = new ListProvider.ListItem();
-                    listItem.categoryTitle = categoryTitle;
-                    listItem.guid = article.getGuid();
-                    listItem.title = article.getTitle();
-                    listItem.imgThumb = article.getImgThumbStr();
-                    listItem.imgLarge = article.getImgLargeStr();
-                    listItem.description = article.getDescription();
-                    listItem.pubDate = article.getPubDateStr();
-
-                    listItemList.add(listItem);
+                // widgetFeed will be null if server is not responding - SERVER DOWN
+                if (widgetFeed==null){
+                    populateWidget(false);
                 }
+                else {
+                    ArrayList<Article> articleList = widgetFeed.getChannel().getItems();
+                    listItemList = new ArrayList<ListProvider.ListItem>();
+                    int count = 0;
+                    for (Article article : articleList) {
+                        if (count == 10)
+                            break;
 
-                populateWidget(true);
+                        count++;
+                        ListProvider.ListItem listItem = new ListProvider.ListItem();
+                        listItem.categoryTitle = categoryTitle;
+                        listItem.guid = article.getGuid();
+                        listItem.title = article.getTitle();
+                        listItem.imgThumb = article.getImgThumbStr();
+                        listItem.imgLarge = article.getImgLargeStr();
+                        listItem.description = article.getDescription();
+                        listItem.pubDate = article.getPubDateStr();
+
+                        listItemList.add(listItem);
+                    }
+
+                    populateWidget(true);
+                }
             }
 
             @Override

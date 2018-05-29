@@ -473,10 +473,17 @@ public class ArticleListActivity extends AppCompatActivity implements
                         return null;
                     }
 
-                    ArticlesCollection result = new ArticlesCollection(feed.getChannel().getItems(), bundle.getString(LOADER_TITLE), ArticlesDBContract.DB_TYPE_CATEGORY, bundle.getString(LOADER_ID));
-                    storeForOfflineUsageCollection(result);
+                    // We have internet connection but the server is not responding (SERVER DOWN)
+                    if (feed==null){
+                        Log.d("LOADER", "SERVER NOT RESPONDING");
+                        return null;
+                    }
+                    else {
 
-                    return result;
+                        ArticlesCollection result = new ArticlesCollection(feed.getChannel().getItems(), bundle.getString(LOADER_TITLE), ArticlesDBContract.DB_TYPE_CATEGORY, bundle.getString(LOADER_ID));
+                        storeForOfflineUsageCollection(result);
+                        return result;
+                    }
                 }
                 return null;
             }
@@ -503,6 +510,23 @@ public class ArticleListActivity extends AppCompatActivity implements
 
                 cachedCollection = data;
                 mArticlesListAdapter.setCollection(data);
+
+                // if loader returned null data (aka SERVER WAS DOWN AND DIDN'T RESPOND)
+                if (data == null){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ArticleListActivity.this);
+                    builder
+                            .setTitle(R.string.dlg_server_down_title)
+                            .setMessage(R.string.dlg_server_down_body)
+                            .setIcon(R.drawable.sync_problem_48px)
+                            .setNegativeButton(R.string.dlg_close, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    finish();
+                                }
+                            });
+                    // Create the AlertDialog object and return it
+                    builder.create().show();
+                }
+
                 super.deliverResult(data);
             }
         };

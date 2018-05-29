@@ -29,8 +29,8 @@
     <string name="widget_no_news_to_display">Δεν υπάρχουν ειδήσεις για προβολή</string>
     <string name="dlg_no_tts_lang_unavailable_title">Μη Διαθέσιμη Γλώσσα</string>
     <string name="dlg_no_tts_lang_installed_title">Εγκατάσταη Ελληνική Γλώσσας</string>
-    <string name="dlg_no_tts_lang_installed_body">Για τη χρήση Κειμένου-Σε-Λόγο (TTS) πρέπει να εγκαταστήσετε δεδομένα Ελληνικής γλώσσας.\\n\\nΑπό τις Διαθέσιμες γλώσσες επιλέξτε \"Ελληνικά (Ελλάδα)\" ή \"Greek (Greece)</string>
-    <string name="dlg_no_tts_lang_unavailable_body">Λυπούμαστε, αλλά η Ελληνική γλώσσα δεν είναι διαθέσιμη ακόμα για τη συσκευή σας.\\n\\nΔοκιμάστε ξανά στο μέλλον για πιθανή διαθεσιμότητα</string>
+    <string name="dlg_no_tts_lang_installed_body">Για τη χρήση Κειμένου-Σε-Λόγο (TTS) πρέπει να εγκαταστήσετε δεδομένα Ελληνικής γλώσσας.\n\nΑπό τις Διαθέσιμες γλώσσες επιλέξτε \"Ελληνικά (Ελλάδα)\" ή \"Greek (Greece)</string>
+    <string name="dlg_no_tts_lang_unavailable_body">Λυπούμαστε, αλλά η Ελληνική γλώσσα δεν είναι διαθέσιμη ακόμα για τη συσκευή σας.\n\nΔοκιμάστε ξανά στο μέλλον για πιθανή διαθεσιμότητα</string>
     <string name="action_settings">Ρυθμίσεις</string>
     <string name="dlg_close">Κλείσιμο</string>
     <string name="dlg_exit">Έξοδος</string>
@@ -41,4 +41,8 @@
     <string name="widget_reload">Ανανέωση</string>
     <string name="widget_settings">Ρυθμίσεις</string>
     <string name="title_activity_widget_config">Ρυθμίσεις Widget</string>
+    <string name="dlg_server_down_title">Ο Server Ειδήσεων δεν ανταποκρίθηκε</string>
+    <string name="dlg_server_down_body">Ο Server Ειδήσεων αντιμετωπίσε κάποιο σφάλμα και η εφαρμογή δεν έλάβε δεδομένα  Δεν πρόκειται για σφάλμα της εφαρμογής, αλλά για σφάλμα του server.  Παρακαλούμε δοκιμάστε ξανα αργότερα.</string>
+    <string name="snack_bookmark_article_added">Προσθήκη Σελιδοδείκτη: Το άρθρο αποθηκεύτηκε</string>
+    <string name="snack_bookmark_article_removed">Αφαίρεση Σελιδοδείκτη: Το άρθρο αφαιρέθηκε</string>
 </resources>

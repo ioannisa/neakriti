@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -303,7 +304,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
 
         Uri uri = getContext().getContentResolver().insert(ArticlesDBContract.ArticleEntry.CONTENT_URI, contentValues);
         menu.findItem(R.id.nav_favorite).setIcon(R.drawable.bookmark_wh_24px);
-        //Snackbar.make(binding.detailContentLayout, R.string.favourites_add, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(getView(), getString(R.string.snack_bookmark_article_added), Snackbar.LENGTH_SHORT).show();
     }
 
     private Menu menu;
@@ -318,7 +319,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
 
         menu.findItem(R.id.nav_favorite).setIcon(R.drawable.bookmark_outline_wh_24px);
 
-        //Snackbar.make(binding.detailContentLayout, R.string.favourites_removed, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(getView(), getString(R.string.snack_bookmark_article_removed), Snackbar.LENGTH_SHORT).show();
     }
 
     /**

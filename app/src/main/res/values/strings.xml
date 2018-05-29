@@ -16,49 +16,49 @@
 
     <!-- CATEGORIES -->
 
-    <string name="nav_home">Αρχική</string>
+    <string name="nav_home">Home</string>
     <string name="nav_home_id" translatable="false">127</string>
 
-    <string name="nav_crete">Κρήτη</string>
+    <string name="nav_crete">Crete</string>
     <string name="nav_crete_id" translatable="false">95</string>
 
-    <string name="nav_views">Απόψεις</string>
+    <string name="nav_views">Opinions</string>
     <string name="nav_views_id" translatable="false">322</string>
 
-    <string name="nav_economy">Οικονομία</string>
+    <string name="nav_economy">Economy</string>
     <string name="nav_economy_id" translatable="false">159</string>
 
-    <string name="nav_culture">Πολιτισμός</string>
+    <string name="nav_culture">Culture</string>
     <string name="nav_culture_id" translatable="false">116</string>
 
-    <string name="nav_pioneering">Καινοτομία</string>
+    <string name="nav_pioneering">Innovation</string>
     <string name="nav_pioneering_id" translatable="false">131</string>
 
-    <string name="nav_sports">Αθλητισμός</string>
+    <string name="nav_sports">Sports</string>
     <string name="nav_sports_id" translatable="false">225</string>
 
     <string name="nav_lifestyle">Lifestyle</string>
     <string name="nav_lifestyle_id" translatable="false">113</string>
 
-    <string name="nav_health">Υγεία</string>
+    <string name="nav_health">Health</string>
     <string name="nav_health_id" translatable="false">115</string>
 
-    <string name="nav_woman">Γυναίκα</string>
+    <string name="nav_woman">Woman</string>
     <string name="nav_woman_id" translatable="false">128</string>
 
-    <string name="nav_travel">Ταξίδια</string>
+    <string name="nav_travel">Trips</string>
     <string name="nav_travel_id" translatable="false">263</string>
 
-    <string name="nav_favorite_items">Σελιδοδείκτες</string>
+    <string name="nav_favorite_items">Bookmarks</string>
 
     <string name="unitID_bottom" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
 
     <!-- Sharing Article -->
-    <string name="share_the_article">neakriti.gr - Μοιραστείτε το άρθρο</string>
+    <string name="share_the_article">neakriti.gr - Share this Article</string>
 
     <!-- ALERT DIALOG NO WIFI DETECTED -->
-    <string name="dlg_no_wifi_detected_title">Δε βρέθηκε σύνδεση WiFi</string>
-    <string name="dlg_no_wifi_detected_body">Επιθυμείτε να συνεχίσετε κάνοντας χρήση του δικτύου κινητής τηλεφωνίας;</string>
+    <string name="dlg_no_wifi_detected_title">Do you wish to continue making use of your mobile data plan?</string>
+    <string name="dlg_no_wifi_detected_body">Do you wish to continue making use of your mobile data plan?</string>
 
     <!-- ALERT DIALOG RADIO IS ALREADY PLAYING (Warning if we try to launch tv stream while radio stream already playing) -->
     <string name="live_streaming" translatable="false">Live Streaming</string>
@@ -68,35 +68,43 @@
     <string name="btn_stream_tv" translatable="false">ΚΡΗΤΗ-TV - Live Streaming</string>
     <string name="btn_stream_radio" translatable="false">Radio-984 - Live Streaming</string>
 
-    <string name="dlg_radio_playing_title">Το Ραδιόφωνο είναι ήδη ενεργό</string>
-    <string name="dlg_radio_playing_body">Για να παρακολουθήσετε τηλεόραση πρέπει πρώτα να κλείσει το ραδιόφωνο.  Θέλετε να συνεχίσετε;</string>
+    <string name="dlg_radio_playing_title">Radio is already active</string>
+    <string name="dlg_radio_playing_body">To watch TV, the Radio should be first turned off. Do you want to continue?</string>
 
-    <string name="dlg_continue">Συνέχεια</string>
-    <string name="dlg_cancel">Ακύρωση</string>
-    <string name="dlg_close">Κλείσιμο</string>
-    <string name="dlg_exit">Έξοδος</string>
-    <string name="dlg_install">Εγκατάσταση</string>
+    <string name="dlg_continue">Continue</string>
+    <string name="dlg_cancel">Cancel</string>
+    <string name="dlg_close">Close</string>
+    <string name="dlg_exit">Exit</string>
+    <string name="dlg_install">Install</string>
 
     <!-- No Network Alert Dialog -->
-    <string name="dlg_no_network_title">Δε βρέθηκε Δίκτυο</string>
-    <string name="dlg_no_network_body">Επιθυμείτε να συνεχίσετε σε Offline Mode;</string>
-    <string name="dlg_no_network_stream_body">Δε μπορείτε να κάνετε χρήση ζωντανού προγράμματος τηλεόρασης ή ραδιοφώνου χωρίς σύνδεση στο internet.</string>
+    <string name="dlg_no_network_title">No Network found</string>
+    <string name="dlg_no_network_body">Do you wish to continue in Offline Mode?</string>
+    <string name="dlg_no_network_stream_body">You cannot make use of live TV or Radio streaming without connection to the internet.</string>
     <string name="dlg_no_network_offline_mode" translatable="false">Offline Mode</string>
 
-    <string name="dlg_no_tts_lang_installed_title">Εγκατάσταη Ελληνική Γλώσσας</string>
-    <string name="dlg_no_tts_lang_installed_body">Για τη χρήση Κειμένου-Σε-Λόγο (TTS) πρέπει να εγκαταστήσετε δεδομένα Ελληνικής γλώσσας.\n\nΑπό τις Διαθέσιμες γλώσσες επιλέξτε "Ελληνικά (Ελλάδα)" ή "Greek (Greece)"</string>
+    <string name="dlg_no_tts_lang_installed_title">Greek Language Installation</string>
+    <string name="dlg_no_tts_lang_installed_body">To use Text-To-Speech (TTS) you need to install the Greek Language Data.\n\nFrom the available languages select Greek(Greece)"</string>
 
-    <string name="dlg_no_tts_lang_unavailable_title">Μη Διαθέσιμη Γλώσσα</string>
-    <string name="dlg_no_tts_lang_unavailable_body">Λυπούμαστε, αλλά η Ελληνική γλώσσα δεν είναι διαθέσιμη ακόμα για τη συσκευή σας.\n\nΔοκιμάστε ξανά στο μέλλον για πιθανή διαθεσιμότητα</string>
+    <string name="dlg_no_tts_lang_unavailable_title">Language Not Available</string>
+    <string name="dlg_no_tts_lang_unavailable_body">Unfortunatelly the Greek language is not available for your device.\n\nPlease check back again in the future for possible availability</string>
+
+    <string name="dlg_server_down_title">The News Server didn\'t Respond</string>
+    <string name="dlg_server_down_body">The News Server failed to respond and the application didn\'t receive data.\n\nThis is not an application problem, but a server problem.\n\nPlease try again later.</string>
+
+
+    <!-- Snackbar Added/Removed bookmark -->
+    <string name="snack_bookmark_article_added">Bookmark Added: Article stored for later reading</string>
+    <string name="snack_bookmark_article_removed">Bookmark Removed: Article removed from bookmarks</string>
 
     <!-- Widget -->
-    <string name="widget_no_news_to_display">Δεν υπάρχουν ειδήσεις για προβολή</string>
-    <string name="widget_reload">Ανανέωση</string>
-    <string name="widget_settings">Ρυθμίσεις</string>
+    <string name="widget_no_news_to_display">There are no articles to display</string>
+    <string name="widget_reload">Reload</string>
+    <string name="widget_settings">Settings</string>
 
     <!-- Fragment menu (detail_menu.xml) -->
     <string name="detail_menu_tts" translatable="false">Text to Speech (TTS)</string>
     <string name="detail_menu_sharing" translatable="false">Sharing</string>
     <string name="detail_menu_bookmark" translatable="false">Bookmark</string>
-    <string name="title_activity_widget_config">Ρυθμίσεις Widget</string>
+    <string name="title_activity_widget_config">Widget Settings</string>
 </resources>
