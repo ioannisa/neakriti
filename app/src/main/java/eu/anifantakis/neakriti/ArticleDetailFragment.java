@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -47,8 +48,6 @@ import eu.anifantakis.neakriti.utils.NeaKritiApp;
  */
 public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnInitListener {
     private Article mArticle;
-    private WebView mWebView;
-    private AdView adView;
     private TextToSpeech mTextToSpeech;
     private Tracker mTracker;
 
@@ -74,7 +73,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
             mArticle = getArguments().getParcelable(AppUtils.EXTRAS_ARTICLE);
 
             Activity activity = this.getActivity();
-            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+            CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
                 // using a theme with NoActionBar we would set title like that
                 //appBarLayout.setTitle(mArticle.getTitle());
@@ -88,17 +87,17 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.article_detail, container, false);
 
-        TextView detailTitle = (TextView) rootView.findViewById(R.id.detail_title);
+        TextView detailTitle = rootView.findViewById(R.id.detail_title);
         detailTitle.setText(mArticle.getTitle());
 
-        TextView detailDate = (TextView) rootView.findViewById(R.id.detail_date);
+        TextView detailDate = rootView.findViewById(R.id.detail_date);
         detailDate.setText(AppUtils.pubDateFormat(mArticle.getPubDateStr()));
 
-                mWebView = (WebView) rootView.findViewById(R.id.article_detail);
+        WebView mWebView = rootView.findViewById(R.id.article_detail);
         WebSettings webSettings;
         webSettings = mWebView.getSettings();
 
@@ -114,25 +113,25 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         if (mArticle != null) {
             Log.d("LOADING WEB VIEW", "ARTICLE IS NOT NULL");
 
-            String theStory = "";
+            String theStory;
             theStory =  mArticle.getDescription();
 
-            theStory = theStory.replace("=\"//www.", "=\"https://www.");
-            theStory = theStory.replace("src=\"//", "src=\"https://");
-            theStory = theStory.replace("=\"/", "=\"https://www.neakriti.gr/");
-            theStory.replace("with=\"620\"", "width=\"100%\"");
+            theStory = theStory.replace("=\"//www.", "=\"https://www.")
+                .replace("src=\"//", "src=\"https://")
+                .replace("=\"/", "=\"https://www.neakriti.gr/")
+                .replace("with=\"620\"", "width=\"100%\"");
             String basicWebStory = theStory.replace(Character.toString((char)10), "<br/>");
             String webStory   = "<div id='story' class='story'>"+basicWebStory+"</div>";
 
             boolean day = true;
             String dayNightStyle = "";
-            if (day = false) {
+            if (day == false) {
                 dayNightStyle = "body,p,div{background:#333333 !Important; color:#eeeeee;} a{color:#ee3333 !Important}";
             }
             webStory   = "<!DOCTYPE html><html lang='el'><head><title>"+mArticle.getTitle()+"</title> <meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\"/> <link rel='canonical' href='"+mArticle.getLink()+"'> <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,900&subset=greek,latin' rel='stylesheet' type='text/css'> <style> a{ text-decoration:none; color:#a00; font-weight:600; } body{line-height:normal; font-family:'Roboto'; padding-bottom:50px;}                  object,img,iframe,div,video,param,embed{max-width: 100%; }"+dayNightStyle+"</style></head><body>"+webStory+"</body></html>";
 
             mWebView.loadDataWithBaseURL(null, webStory, "text/html", "UTF-8", null);
-            adView = (AdView) rootView.findViewById(R.id.adView);
+            AdView adView = rootView.findViewById(R.id.adView);
 
             //((TextView) rootView.findViewById(R.id.article_detail_text)).setText(webStory);
 
@@ -197,7 +196,6 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
 
         if (mTextToSpeech.isSpeaking()) {
             mTextToSpeech.stop();
-            return;
         } else {
             // Check if TTS for the Greek Language - Greece (el_GR) is installed for the TTS Engine Running on the user's device
             int langAvailability = mTextToSpeech.isLanguageAvailable(new Locale("el", "GR"));
@@ -230,7 +228,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
                                 // missing data, install it
                                 Intent installTTSIntent = new Intent();
                                 installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-                                ArrayList<String> languages = new ArrayList<String>();
+                                ArrayList<String> languages = new ArrayList<>();
                                 languages.add("el-GR");
                                 installTTSIntent.putStringArrayListExtra(TextToSpeech.Engine.EXTRA_CHECK_VOICE_DATA_FOR,
                                         languages);
@@ -301,11 +299,9 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         if (pubDate!=null) { contentValues.put(ArticlesDBContract.ArticleEntry.COL_PUB_DATE, pubDate.getTime()); }
         else{ contentValues.put(ArticlesDBContract.ArticleEntry.COL_PUB_DATE, 0); }
 
-        /*
         Date updated = AppUtils.feedDateUpdated(mArticle.getUpdatedStr());
         if (updated!=null) { contentValues.put(ArticlesDBContract.ArticleEntry.COL_UPDATED, updated.getTime()); }
         else{ contentValues.put(ArticlesDBContract.ArticleEntry.COL_UPDATED, 0); }
-        */
 
         //AsyncQueryHandler queryHandler = new AsyncQueryHandler(getContext().getContentResolver()){};
         //queryHandler.startInsert(1,null,ArticlesDBContract.ArticleEntry.CONTENT_URI, contentValues);
@@ -350,7 +346,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
 
     /**
      * Text to Speech initialization
-     * @param status
+     * @param status Initialization Status
      */
     @Override
     public void onInit(int status) {

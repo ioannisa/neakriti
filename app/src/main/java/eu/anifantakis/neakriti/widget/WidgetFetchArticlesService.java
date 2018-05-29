@@ -167,10 +167,14 @@ public class WidgetFetchArticlesService extends Service {
                         listItem.categoryTitle = categoryTitle;
                         listItem.guid = article.getGuid();
                         listItem.title = article.getTitle();
+                        listItem.link = article.getLink();
                         listItem.imgThumb = article.getImgThumbStr();
                         listItem.imgLarge = article.getImgLargeStr();
                         listItem.description = article.getDescription();
                         listItem.pubDate = article.getPubDateStr();
+                        listItem.pubDateGre = article.getPubDateGre();
+                        listItem.updated = article.getUpdatedStr();
+
 
                         listItemList.add(listItem);
                     }

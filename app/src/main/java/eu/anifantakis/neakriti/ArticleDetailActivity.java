@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import eu.anifantakis.neakriti.data.feed.gson.Article;
@@ -25,8 +24,6 @@ public class ArticleDetailActivity extends AppCompatActivity {
     private boolean startedByNotification = false;
 
     private Article mArticle;
-    private ImageView detailActivityImage;
-    private Bitmap lowResBitmap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +31,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_article_detail);
 
         supportPostponeEnterTransition();
-        detailActivityImage = (ImageView) findViewById(R.id.detail_activity_image);
+        ImageView detailActivityImage = findViewById(R.id.detail_activity_image);
 
         // Receive the Parcelable Movie object from the extras of the intent.
         Bundle extras = getIntent().getExtras();
@@ -55,8 +52,8 @@ public class ArticleDetailActivity extends AppCompatActivity {
             // then later we will load the higher res image
 
             if (extras.containsKey(AppUtils.EXTRAS_LOW_RES_BITMAP)){
-                lowResBitmap = getIntent().getParcelableExtra(AppUtils.EXTRAS_LOW_RES_BITMAP);
-                if (lowResBitmap!=null)
+                Bitmap lowResBitmap = getIntent().getParcelableExtra(AppUtils.EXTRAS_LOW_RES_BITMAP);
+                if (lowResBitmap !=null)
                     detailActivityImage.setImageBitmap(lowResBitmap);
 
                 supportStartPostponedEnterTransition();
@@ -110,10 +107,10 @@ public class ArticleDetailActivity extends AppCompatActivity {
         }
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
+        Toolbar toolbar = findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

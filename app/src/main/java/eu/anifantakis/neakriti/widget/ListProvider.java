@@ -82,9 +82,12 @@ public class ListProvider implements RemoteViewsFactory {
             article.setGuid(listItem.guid);
             article.setTitle(listItem.title);
             article.setDescription(listItem.description);
+            article.setLink(listItem.link);
             article.setImgThumb(listItem.imgThumb);
             article.setImgLarge(listItem.imgLarge);
             article.setPubDateStr(listItem.pubDate);
+            article.setPubDateGre(listItem.pubDateGre);
+            article.setUpdatedStr(listItem.updated);
 
             Intent fillInIntent = new Intent();
             fillInIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
