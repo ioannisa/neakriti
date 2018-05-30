@@ -107,4 +107,41 @@
     <string name="detail_menu_sharing" translatable="false">Sharing</string>
     <string name="detail_menu_bookmark" translatable="false">Bookmark</string>
     <string name="title_activity_widget_config">Widget Settings</string>
+
+    <!-- Shared Preferences -->
+    <string name="pref_news_categories">Κατηγορίες Ειδήσεων</string>
+    <string name="pref_news_categories_selector">Διαθέσιμές Κατηγορίες Ειδήσεων</string>
+    <string name="pref_news_categories_home_hiding_unavailable">Δε μπορείτε να αποκρύψετε τη διαθεσιμότητα της αρχικής κατηγορίας</string>
+
+    <string name="pref_detail_screen_details_key" translatable="false">categorydetail</string>
+    <string name="pref_detail_screen_details_title">Οθόνη επιλεγμένης Είδησης</string>
+
+    <string name="pref_increased_line_distance_key" translatable="false">largelinespace</string>
+    <string name="pref_increased_line_distance_title">Μεγάλη απόσταση γραμμών</string>
+    <string name="pref_increased_line_distance_summary">Μεγάλη απόσταση γραμμώνΑυξάνει την απόσταση μεταξύ των γραμμών κατά μέγεθος μισής γραμμής ώστε να είναι πιο εύκολη η ανάγνωση μεγάλων κειμένων.</string>
+
+    <string name="pref_night_reading_key" translatable="false">nightmode</string>
+    <string name="pref_night_reading_title">Βραδυνή Ανάγνωση</string>
+    <string name="pref_night_reading_summary">Σκοτεινό θέμα για πιο εύκολη ανάγνωση χωρίς φως τη νύχτα</string>
+
+    <string name="pref_font_size_key" translatable="false">preffontsize_pbar</string>
+    <string name="pref_font_size_title">Μέγεθος Γραμματοσειράς</string>
+    <string name="pref_font_size_summary">Σας επιτρέπει να επιλέξετε πόσο μεγάλοι θα παρουσιάζονται οι χαρακτήρες του κειμένου στην ανάλυση της είδησης</string>
+
+    <string name="pref_fcm_category_key" translatable="false">cat_notifications</string>
+    <string name="pref_fcm_category_title">Αυτόματες Ειδοποιήσεις Ειδήσεων</string>
+
+    <string name="pref_fcm_key" translatable="false">pref_notifications</string>
+    <string name="pref_fcm_title">Λήψη αυτόματων ειδοποιήσεων</string>
+    <string name="pref_fcm_summary">Εδώ μπορείτε να ενεργοποιήσετε ή να απενεργοποιήσετε τη δυνατότητα αυτόματης λήψης ειδοποιήσεων στη συσκευή σας για τις πιο κρίσημες ειδήσεις</string>
+
+    <string name="pref_about_category_title">About</string>
+
+    <string name="pref_about_version_key" translatable="false">version</string>
+    <string name="pref_about_version_title">Version</string>
+
+    <string name="pref_about_author_key" translatable="false">author</string>
+    <string name="pref_about_author_title">Author</string>
+
+
 </resources>

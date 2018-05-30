@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/pref_news_categories">
+        <PreferenceScreen android:title="@string/pref_news_categories_selector">
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:enabled="false"
+                android:key="@string/nav_home_id"
+                android:summary="@string/pref_news_categories_home_hiding_unavailable"
+                android:title="@string/nav_home" />
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="@string/nav_crete_id"
+                android:title="@string/nav_crete" />
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="@string/nav_views_id"
+                android:title="@string/nav_views" />
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="@string/nav_economy_id"
+                android:title="@string/nav_economy" />
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="@string/nav_culture_id"
+                android:title="@string/nav_culture" />
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="@string/nav_pioneering_id"
+                android:title="@string/nav_pioneering" />
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="@string/nav_sports_id"
+                android:title="@string/nav_sports" />
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="@string/nav_lifestyle_id"
+                android:title="@string/nav_lifestyle" />
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="@string/nav_health_id"
+                android:title="@string/nav_health" />
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="@string/nav_woman_id"
+                android:title="@string/nav_woman" />
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="@string/nav_travel_id"
+                android:title="@string/nav_travel" />
+        </PreferenceScreen>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="@string/pref_detail_screen_details_key"
+        android:title="@string/pref_detail_screen_details_title">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/pref_increased_line_distance_key"
+            android:summary="@string/pref_increased_line_distance_summary"
+            android:title="@string/pref_increased_line_distance_title" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/pref_night_reading_key"
+            android:summary="@string/pref_night_reading_summary"
+            android:title="@string/pref_night_reading_title" />
+
+        <SeekBarPreference
+            android:defaultValue="1"
+            android:key="@string/pref_font_size_key"
+            android:max="4"
+            android:summary="@string/pref_font_size_summary"
+            android:title="@string/pref_font_size_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="@string/pref_fcm_category_key"
+        android:title="@string/pref_fcm_category_title">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/pref_fcm_key"
+            android:summary="@string/pref_fcm_summary"
+            android:title="@string/pref_fcm_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_about_category_title">
+        <Preference
+            android:key="@string/pref_about_version_key"
+            android:summary=""
+            android:title="@string/pref_about_version_title" />
+
+        <Preference
+            android:key="@string/pref_about_author_key"
+            android:summary=""
+            android:title="@string/pref_about_author_title" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
