@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -74,16 +72,12 @@ import eu.anifantakis.neakriti.databinding.ActivityArticleListBinding;
 import eu.anifantakis.neakriti.preferences.SetPrefs;
 import eu.anifantakis.neakriti.utils.AppUtils;
 import eu.anifantakis.neakriti.utils.NeaKritiApp;
-import eu.anifantakis.neakriti.widget.NewsWidgetProvider;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
-import static eu.anifantakis.neakriti.utils.AppUtils.PREFS_WIDGET_CATEGORY_ID;
-import static eu.anifantakis.neakriti.utils.AppUtils.PREFS_WIDGET_CATEGORY_ORDER;
-import static eu.anifantakis.neakriti.utils.AppUtils.PREFS_WIDGET_CATEGORY_TITLE;
 import static eu.anifantakis.neakriti.utils.AppUtils.mNotificationManager;
 import static eu.anifantakis.neakriti.utils.AppUtils.onlineMode;
 
@@ -116,6 +110,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     private ArticleDetailFragment fragment;
     private Tracker mTracker;
     private SimpleExoPlayer mRadioPlayer;
+    private NavigationView navigationView;
 
     private static final int ARTICLES_FEED_LOADER = 0;
     private static final String LOADER_TITLE = "LOADER_TITLE";
@@ -146,6 +141,8 @@ public class ArticleListActivity extends AppCompatActivity implements
         feedCategoryTitle = binding.masterView.articles.incLivePanel.feedCategoryTitle;
         btnRadio = binding.masterView.articles.incLivePanel.btnLiveRadio;
         initializeRadioExoPlayer();
+
+        navigationView = binding.navView;
 
         liveView = binding.masterView.articles.incLivePanel.liveView;
 
@@ -249,6 +246,33 @@ public class ArticleListActivity extends AppCompatActivity implements
         feedItems = 25;
         feedName = getString(R.string.nav_home);
         makeArticlesLoaderQuery(feedName, ArticlesDBContract.DB_TYPE_CATEGORY, feedSrvid, feedItems);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        setCategoryAvailabilities();
+    }
+
+    /**
+     * Show or hide the categories based on the user's preferences
+     */
+    private void setCategoryAvailabilities()
+    {
+        SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+
+        Menu menu = navigationView.getMenu();
+        menu.findItem(R.id.nav_crete).setVisible(SP.getBoolean(getString(R.string.nav_crete_id), true));
+        menu.findItem(R.id.nav_views).setVisible(SP.getBoolean(getString(R.string.nav_views_id), true));
+        menu.findItem(R.id.nav_economy).setVisible(SP.getBoolean(getString(R.string.nav_economy_id), true));
+        menu.findItem(R.id.nav_culture).setVisible(SP.getBoolean(getString(R.string.nav_culture_id), true));
+        menu.findItem(R.id.nav_pioneering).setVisible(SP.getBoolean(getString(R.string.nav_pioneering_id), true));
+        menu.findItem(R.id.nav_sports).setVisible(SP.getBoolean(getString(R.string.nav_sports_id), true));
+        menu.findItem(R.id.nav_lifestyle).setVisible(SP.getBoolean(getString(R.string.nav_lifestyle_id), true));
+        menu.findItem(R.id.nav_health).setVisible(SP.getBoolean(getString(R.string.nav_health_id), true));
+        menu.findItem(R.id.nav_woman).setVisible(SP.getBoolean(getString(R.string.nav_woman_id), true));
+        menu.findItem(R.id.nav_travel).setVisible(SP.getBoolean(getString(R.string.nav_travel_id), true));
     }
 
     /**
@@ -377,25 +401,6 @@ public class ArticleListActivity extends AppCompatActivity implements
             } else {
                 getSupportLoaderManager().restartLoader(ARTICLES_FEED_LOADER, bundle, this);
             }
-
-            /*
-            //Upon click on categories we write inside sharedprefs the id of the category so to use it inside
-            //WidgetFetchArticleService and fetch articles of the specific category
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt(PREFS_WIDGET_CATEGORY_ORDER, 0);
-            editor.putString(PREFS_WIDGET_CATEGORY_ID, id);
-            editor.putString(PREFS_WIDGET_CATEGORY_TITLE, title);
-            editor.apply();
-
-            //We call onUpdateMyView of the widgetProvider passing the widgetId[]
-            //upon click of a category update widget
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-            int[] appWidgetId = appWidgetManager.getAppWidgetIds(new ComponentName(this, NewsWidgetProvider.class));
-
-            NewsWidgetProvider.onUpdateMyView(this,appWidgetId);
-            */
-
         }
         else{
             // handle offline data, fetch articles from the database for the given category

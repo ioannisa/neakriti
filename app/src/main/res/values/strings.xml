@@ -128,7 +128,7 @@
     <string name="pref_font_size_title">Μέγεθος Γραμματοσειράς</string>
     <string name="pref_font_size_summary">Σας επιτρέπει να επιλέξετε πόσο μεγάλοι θα παρουσιάζονται οι χαρακτήρες του κειμένου στην ανάλυση της είδησης</string>
 
-    <string name="pref_fcm_category_key" translatable="false">cat_notifications</string>
+    <string name="pref_fcm_category_key">cat_notifications</string>
     <string name="pref_fcm_category_title">Αυτόματες Ειδοποιήσεις Ειδήσεων</string>
 
     <string name="pref_fcm_key" translatable="false">pref_notifications</string>
