@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -22,9 +23,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static eu.anifantakis.neakriti.preferences.SetPrefs.PREFS_WIDGET_CATEGORY_ID;
-import static eu.anifantakis.neakriti.preferences.SetPrefs.PREFS_WIDGET_CATEGORY_ORDER;
-import static eu.anifantakis.neakriti.preferences.SetPrefs.PREFS_WIDGET_CATEGORY_TITLE;
 import static eu.anifantakis.neakriti.utils.AppUtils.URL_BASE;
 import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.APPWIDGET_UPDATE;
 import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.WIDGET_DIRECTION_NEXT;
@@ -58,8 +56,6 @@ public class WidgetFetchArticlesService extends Service {
         }
     }
 
-
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("WIDGET FETCH SERVICE", "ON START");
@@ -75,7 +71,7 @@ public class WidgetFetchArticlesService extends Service {
             int direction = intent.getIntExtra(WIDGET_EXTRAS_DIRECTION, 0);
             if (direction>0){
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-                int order = sharedPreferences.getInt(PREFS_WIDGET_CATEGORY_ORDER, 0);
+                int order = sharedPreferences.getInt(getString(R.string.prefs_widget_category_order), 0);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
                 Category[] categories = {
@@ -109,11 +105,10 @@ public class WidgetFetchArticlesService extends Service {
                     else{
                         order++;
                     }
-
                 }
-                editor.putInt(PREFS_WIDGET_CATEGORY_ORDER, order);
-                editor.putString(PREFS_WIDGET_CATEGORY_ID, categories[order].id);
-                editor.putString(PREFS_WIDGET_CATEGORY_TITLE, categories[order].title);
+                editor.putInt(getString(R.string.prefs_widget_category_order), order);
+                editor.putString(getString(R.string.prefs_widget_category_id), categories[order].id);
+                editor.putString(getString(R.string.prefs_widget_category_title), categories[order].title);
                 editor.apply();
             }
         }
@@ -121,7 +116,6 @@ public class WidgetFetchArticlesService extends Service {
         fetchDataFromWeb();
         return super.onStartCommand(intent, flags, startId);
     }
-
 
     /**
      * We are not in an IntentService.  So make async retrofit call, not to block the main thread
@@ -138,16 +132,15 @@ public class WidgetFetchArticlesService extends Service {
         //everytime the widget service fetches data first we get the number of the articles
         //category to get the info
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        final String categoryId = sharedPreferences.getString(PREFS_WIDGET_CATEGORY_ID, getString(R.string.nav_home_id));
-        categoryTitle = sharedPreferences.getString(PREFS_WIDGET_CATEGORY_TITLE, getString(R.string.nav_home));
-
-
+        final String categoryId = sharedPreferences.getString(getString(R.string.prefs_widget_category_id), getString(R.string.nav_home_id));
+        categoryTitle = sharedPreferences.getString(getString(R.string.prefs_widget_category_title), getString(R.string.nav_home));
+        final int items = Integer.parseInt(sharedPreferences.getString(getString(R.string.prefs_widget_category_items), "5"));
 
         RequestInterface request = retrofit.create(RequestInterface.class);
-        Call<Feed> call = request.getFeedByCategory(categoryId, 10);
+        Call<Feed> call = request.getFeedByCategory(categoryId, items);
         call.enqueue(new Callback<Feed>() {
             @Override
-            public void onResponse(Call<Feed> call, Response<Feed> response) {
+            public void onResponse(@NonNull Call<Feed> call, @NonNull Response<Feed> response) {
                 widgetFeed = response.body();
 
                 // widgetFeed will be null if server is not responding - SERVER DOWN
@@ -156,10 +149,10 @@ public class WidgetFetchArticlesService extends Service {
                 }
                 else {
                     ArrayList<Article> articleList = widgetFeed.getChannel().getItems();
-                    listItemList = new ArrayList<ListProvider.ListItem>();
+                    listItemList = new ArrayList<>();
                     int count = 0;
                     for (Article article : articleList) {
-                        if (count == 10)
+                        if (count == items)
                             break;
 
                         count++;
@@ -175,7 +168,6 @@ public class WidgetFetchArticlesService extends Service {
                         listItem.pubDateGre = article.getPubDateGre();
                         listItem.updated = article.getUpdatedStr();
 
-
                         listItemList.add(listItem);
                     }
 
@@ -184,7 +176,7 @@ public class WidgetFetchArticlesService extends Service {
             }
 
             @Override
-            public void onFailure(Call<Feed> call, Throwable t) {
+            public void onFailure(@NonNull Call<Feed> call, @NonNull Throwable t) {
                 widgetFeed = null;
                 populateWidget(false);
             }

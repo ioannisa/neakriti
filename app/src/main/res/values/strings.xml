@@ -109,31 +109,26 @@
     <string name="title_activity_widget_config">Widget Settings</string>
 
     <!-- Shared Preferences -->
-    <string name="pref_news_categories">Κατηγορίες Ειδήσεων</string>
-    <string name="pref_news_categories_selector">Διαθέσιμές Κατηγορίες Ειδήσεων</string>
-    <string name="pref_news_categories_home_hiding_unavailable">Δε μπορείτε να αποκρύψετε τη διαθεσιμότητα της αρχικής κατηγορίας</string>
+    <string name="pref_news_categories">News Categories</string>
+    <string name="pref_news_categories_selector">Available News Categories</string>
+    <string name="pref_news_categories_home_hiding_unavailable">You cannot hide the default category</string>
 
     <string name="pref_detail_screen_details_key" translatable="false">categorydetail</string>
-    <string name="pref_detail_screen_details_title">Οθόνη επιλεγμένης Είδησης</string>
 
     <string name="pref_increased_line_distance_key" translatable="false">largelinespace</string>
-    <string name="pref_increased_line_distance_title">Μεγάλη απόσταση γραμμών</string>
-    <string name="pref_increased_line_distance_summary">Μεγάλη απόσταση γραμμώνΑυξάνει την απόσταση μεταξύ των γραμμών κατά μέγεθος μισής γραμμής ώστε να είναι πιο εύκολη η ανάγνωση μεγάλων κειμένων.</string>
+    <string name="pref_increased_line_distance_title">Greater Distance between Lines</string>
+    <string name="pref_increased_line_distance_summary">Increases the deistance between lines by half a line to make long articles reading easier.</string>
 
     <string name="pref_night_reading_key" translatable="false">nightmode</string>
-    <string name="pref_night_reading_title">Βραδυνή Ανάγνωση</string>
-    <string name="pref_night_reading_summary">Σκοτεινό θέμα για πιο εύκολη ανάγνωση χωρίς φως τη νύχτα</string>
 
     <string name="pref_font_size_key" translatable="false">preffontsize_pbar</string>
-    <string name="pref_font_size_title">Μέγεθος Γραμματοσειράς</string>
-    <string name="pref_font_size_summary">Σας επιτρέπει να επιλέξετε πόσο μεγάλοι θα παρουσιάζονται οι χαρακτήρες του κειμένου στην ανάλυση της είδησης</string>
+    <string name="pref_font_size_summary">It allows you to choose how big the characters on the text will appear inside the article detail screen</string>
 
-    <string name="pref_fcm_category_key">cat_notifications</string>
-    <string name="pref_fcm_category_title">Αυτόματες Ειδοποιήσεις Ειδήσεων</string>
+    <string name="pref_fcm_category_key" translatable="false">cat_notifications</string>
 
     <string name="pref_fcm_key" translatable="false">pref_notifications</string>
-    <string name="pref_fcm_title">Λήψη αυτόματων ειδοποιήσεων</string>
-    <string name="pref_fcm_summary">Εδώ μπορείτε να ενεργοποιήσετε ή να απενεργοποιήσετε τη δυνατότητα αυτόματης λήψης ειδοποιήσεων στη συσκευή σας για τις πιο κρίσημες ειδήσεις</string>
+    <string name="pref_fcm_title">Receive News Notification</string>
+    <string name="pref_fcm_summary">Here you can enable or disable the News Notifications Functionality for your device regarding the breaking news</string>
 
     <string name="pref_about_category_title">About</string>
 
@@ -143,4 +138,17 @@
     <string name="pref_about_author_title">Author</string>
     <string name="pref_about_author_summary">Ioannis Anifantakis\nhttps://anifantakis.eu</string>
 
+    <string name="pref_widget_items_count_title">Articles Quantity in Widget</string>
+
+    <string name="pref_detail_screen_details_title">Selected Article Screen</string>
+    <string name="pref_night_reading_title">Night Reading</string>
+    <string name="pref_night_reading_summary">Dark Theme for esier reading without ambient light during night time</string>
+    <string name="pref_font_size_title">Font Size</string>
+    <string name="pref_fcm_category_title">Automatic News Notifications</string>
+    <string name="pref_widget_category_title">Widget Category</string>
+
+    <string name="prefs_widget_category_order" translatable="false">prefs_widget_category_order</string>
+    <string name="prefs_widget_category_id" translatable="false">prefs_widget_category_id</string>
+    <string name="prefs_widget_category_title" translatable="false">prefs_widget_category_title</string>
+    <string name="prefs_widget_category_items" translatable="false">prefs_widget_category_items</string>
 </resources>

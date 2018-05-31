@@ -4,11 +4,19 @@
 
     <PreferenceCategory android:title="Widget">
         <ListPreference
-            android:key="PREFS_WIDGET_CATEGORY_ID"
-            android:title="Κατηγορία Widget"
+            android:key="@string/prefs_widget_category_id"
+            android:title="@string/pref_widget_category_title"
             android:entries="@array/widget_category_names"
             android:entryValues="@array/widget_category_ids"
             android:defaultValue="@string/nav_home_id"
+            android:summary="%s"/>
+
+        <ListPreference
+            android:key="@string/prefs_widget_category_items"
+            android:title="@string/pref_widget_items_count_title"
+            android:entries="@array/widget_items_count"
+            android:entryValues="@array/widget_items_count"
+            android:defaultValue="5"
             android:summary="%s"/>
     </PreferenceCategory>
 

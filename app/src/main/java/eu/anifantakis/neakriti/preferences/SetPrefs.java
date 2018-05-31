@@ -24,10 +24,6 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
 
     public static final String NEAKRITI_NEWS_TOPIC = "neakriti-android-news-test";
 
-    public static final String PREFS_WIDGET_CATEGORY_ORDER = "PREFS_WIDGET_CATEGORY_ORDER";
-    public static final String PREFS_WIDGET_CATEGORY_ID = "PREFS_WIDGET_CATEGORY_ID";
-    public static final String PREFS_WIDGET_CATEGORY_TITLE = "PREFS_WIDGET_CATEGORY_TITLE";
-
     private static PackageInfo pInfo;
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
@@ -87,7 +83,7 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(NEAKRITI_NEWS_TOPIC);
             }
         }
-        else if (key.equals(PREFS_WIDGET_CATEGORY_ID)) {
+        else if (key.equals(getString(R.string.prefs_widget_category_id))) {
             // set the category name as a shared preference according to the category id so that the widget displays that name as category name
 
             String[] categoryIds = getResources().getStringArray(R.array.widget_category_ids);
@@ -96,10 +92,13 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
             String selectedCategoryName = categoryNames[index];
 
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(PREFS_WIDGET_CATEGORY_TITLE, selectedCategoryName);
+            editor.putString(getString(R.string.prefs_widget_category_title), selectedCategoryName);
             editor.apply();
 
             // force widget refresh
+            refreshWidget();
+        }
+        else if (key.equals(getString(R.string.prefs_widget_category_items))){
             refreshWidget();
         }
     }

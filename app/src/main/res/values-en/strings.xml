@@ -39,4 +39,23 @@
     <string name="dlg_server_down_body">The News Server failed to respond and the application didn\'t receive data.\n\nThis is not an application problem, but a server problem.\n\nPlease try again later.</string>
     <string name="snack_bookmark_article_added">Bookmark Added: Article stored for later reading</string>
     <string name="snack_bookmark_article_removed">Bookmark Removed: Article removed from bookmarks</string>
+    <string name="pref_news_categories">News Categories</string>
+    <string name="pref_news_categories_selector">Available News Categories</string>
+    <string name="pref_news_categories_home_hiding_unavailable">You cannot hide the default category</string>
+    <string name="pref_detail_screen_details_title">Selected Article Screen</string>
+    <string name="pref_increased_line_distance_title">Greater Distance between Lines</string>
+    <string name="pref_increased_line_distance_summary">Increases the deistance between lines by half a line to make long articles reading easier.</string>
+    <string name="pref_night_reading_title">Night Reading</string>
+    <string name="pref_night_reading_summary">Dark Theme for esier reading without ambient light during night time</string>
+    <string name="pref_font_size_title">Font Size</string>
+    <string name="pref_font_size_summary">It allows you to choose how big the characters on the text will appear inside the article detail screen</string>
+    <string name="pref_fcm_category_title">Automatic News Notifications</string>
+    <string name="pref_fcm_title">Receive News Notification</string>
+    <string name="pref_fcm_summary">Here you can enable or disable the News Notifications Functionality for your device regarding the breaking news</string>
+    <string name="pref_about_category_title">About</string>
+    <string name="pref_about_version_title">Version</string>
+    <string name="pref_about_author_title">Author</string>
+    <string name="pref_widget_category_title">Widget Category</string>
+    <string name="pref_widget_items_count_title">Articles Quantity in Widget</string>
+    <string name="pref_about_author_summary">Ioannis Anifantakis\nhttps://anifantakis.eu</string>
 </resources>

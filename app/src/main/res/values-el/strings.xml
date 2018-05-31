@@ -45,4 +45,23 @@
     <string name="dlg_server_down_body">Ο Server Ειδήσεων αντιμετωπίσε κάποιο σφάλμα και η εφαρμογή δεν έλάβε δεδομένα  Δεν πρόκειται για σφάλμα της εφαρμογής, αλλά για σφάλμα του server.  Παρακαλούμε δοκιμάστε ξανα αργότερα.</string>
     <string name="snack_bookmark_article_added">Προσθήκη Σελιδοδείκτη: Το άρθρο αποθηκεύτηκε</string>
     <string name="snack_bookmark_article_removed">Αφαίρεση Σελιδοδείκτη: Το άρθρο αφαιρέθηκε</string>
+    <string name="pref_news_categories">Κατηγορίες Ειδήσεων</string>
+    <string name="pref_news_categories_selector">Διαθέσιμές Κατηγορίες Ειδήσεων</string>
+    <string name="pref_news_categories_home_hiding_unavailable">Δε μπορείτε να αποκρύψετε την αρχική κατηγορία</string>
+    <string name="pref_detail_screen_details_title">Οθόνη επιλεγμένης Είδησης</string>
+    <string name="pref_increased_line_distance_title">Μεγάλη Απόσταση Γραμμών</string>
+    <string name="pref_increased_line_distance_summary">Αυξάνει την απόσταση μεταξύ των γραμμών κατά μέγεθος μισής γραμμής ώστε να είναι πιο εύκολη η ανάγνωση μεγάλων κειμένων.</string>
+    <string name="pref_night_reading_title">Βραδυνή Ανάγνωση</string>
+    <string name="pref_night_reading_summary">Σκοτεινό θέμα για πιο εύκολη ανάγνωση χωρίς φως τη νύχτα</string>
+    <string name="pref_font_size_title">Μέγεθος Γραμματοσειράς</string>
+    <string name="pref_font_size_summary">Σας επιτρέπει να επιλέξετε πόσο μεγάλοι θα παρουσιάζονται οι χαρακτήρες του κειμένου στην ανάλυση της είδησης</string>
+    <string name="pref_fcm_category_title">Αυτόματες Ειδοποιήσεις Ειδήσεων</string>
+    <string name="pref_fcm_title">Λήψη αυτόματων ειδοποιήσεων</string>
+    <string name="pref_fcm_summary">Εδώ μπορείτε να ενεργοποιήσετε ή να απενεργοποιήσετε τη δυνατότητα αυτόματης λήψης ειδοποιήσεων στη συσκευή σας για τις πιο κρίσημες ειδήσεις</string>
+    <string name="pref_about_category_title">Σχετικά</string>
+    <string name="pref_about_version_title">Έκδοση</string>
+    <string name="pref_about_author_title">Δημιουργός</string>
+    <string name="pref_widget_category_title">Κατηγορία Widget</string>
+    <string name="pref_widget_items_count_title">Ποσότητα Άρθρων στο Widget</string>
+    <string name="pref_about_author_summary">Γιάννης Ανυφαντάκης\nhttps://anifantakis.eu</string>
 </resources>
