@@ -236,9 +236,8 @@ public final class AppUtils {
                     .build();
             Response response = client.newCall(request).execute();
             InputStream inputStream = response.body().byteStream();
-            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
-            return bitmap;
+            return BitmapFactory.decodeStream(inputStream);
         }
         catch (IOException e){
             e.printStackTrace();
@@ -251,25 +250,8 @@ public final class AppUtils {
      * @param html The html text to be converted
      * @return The textual representation of the document, that is the html with all tags removed
      */
-    public static String html2text(String html) {
+    private static String html2text(String html) {
         return Jsoup.parse(html).text();
-    }
-
-    /**
-     * Check if an application is already installed on the user's device
-     * @param uri The application URI
-     * @return true if it is installed, false otherwise
-     */
-    public static boolean isAppInstalled(Context context, String uri) {
-        PackageManager pm = context.getPackageManager();
-        boolean installed = false;
-        try {
-            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
-            installed = true;
-        } catch (PackageManager.NameNotFoundException e) {
-            installed = false;
-        }
-        return installed;
     }
 
     public static String makeReadableGreekText(String html){
@@ -355,15 +337,11 @@ public final class AppUtils {
      * Check if WiFi is connected to warn user before streaming data for possible charges
      * @return true if WiFi is connected, false othersie
      */
-    public static boolean isWifiConnected(Context context){
+    public static boolean isWifiConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        if (activeNetwork != null) { // connected to the internet
-            return (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI);
-        }
-        else{
-            return false;
-        }
+        // connected to the internet
+        return activeNetwork != null && (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI);
     }
 
     public static String saveToInternalStorage(Context context, Bitmap bitmapImage, String dir, String filename){

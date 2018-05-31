@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -37,7 +38,6 @@ import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
  */
 
 public class FBMessagingService extends FirebaseMessagingService {
-    private static final String TAG = "MyFirebaseMsgService";
 
     public Bitmap bitmap, big_picture_bitmap;
     //private RSSFeed feed = null;
@@ -46,7 +46,6 @@ public class FBMessagingService extends FirebaseMessagingService {
     String appVersion = "";
 
     int sdkVerID = Build.VERSION.SDK_INT;
-    String sdkVersion = Build.VERSION.RELEASE;
 
     final int GREATER_THAN = 1;
     final int EQUAL_TO = 2;
@@ -89,16 +88,21 @@ public class FBMessagingService extends FirebaseMessagingService {
             if (appVersioning.trim().length() > 2) {
                 String operatorStr = appVersioning.substring(0, 1);
 
-                int desiredVersion = -1;
+                int desiredVersion;
                 operation_v = -1;
 
 
-                if (operatorStr.equals(">"))
-                    operation_v = GREATER_THAN;
-                else if (operatorStr.equals("="))
-                    operation_v = EQUAL_TO;
-                else if (operatorStr.equals("<"))
-                    operation_v = LESS_THAN;
+                switch (operatorStr) {
+                    case ">":
+                        operation_v = GREATER_THAN;
+                        break;
+                    case "=":
+                        operation_v = EQUAL_TO;
+                        break;
+                    case "<":
+                        operation_v = LESS_THAN;
+                        break;
+                }
 
                 if (operation_v > 0) {
 
@@ -142,15 +146,20 @@ public class FBMessagingService extends FirebaseMessagingService {
                 String operatorStr = sdkVersion.substring(0, 1);
 
 
-                int desiredSdkVersion =-1;
+                int desiredSdkVersion;
                 operation_v = -1;
 
-                if (operatorStr.equals(">"))
-                    operation_v = GREATER_THAN;
-                else if (operatorStr.equals("="))
-                    operation_v = EQUAL_TO;
-                else if (operatorStr.equals("<"))
-                    operation_v = LESS_THAN;
+                switch (operatorStr) {
+                    case ">":
+                        operation_v = GREATER_THAN;
+                        break;
+                    case "=":
+                        operation_v = EQUAL_TO;
+                        break;
+                    case "<":
+                        operation_v = LESS_THAN;
+                        break;
+                }
 
                 if (operation_v > 0) {
                     Log.d("SDK VERSIONING", "Operation higher than zero");
@@ -237,7 +246,7 @@ public class FBMessagingService extends FirebaseMessagingService {
 
         call.enqueue(new Callback<Feed>() {
             @Override
-            public void onResponse(Call<Feed> call, Response<Feed> response) {
+            public void onResponse(@NonNull Call<Feed> call, @NonNull Response<Feed> response) {
                 Log.d("RETROFIT FCM", "DATA FETCHED");
                 Article article = response.body().getChannel().getItems().get(0);
                 Log.d("FCM ARTICLE TITLE", article.getTitle());
@@ -261,7 +270,6 @@ public class FBMessagingService extends FirebaseMessagingService {
 
                 Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-                int notificationId = 1;
                 String channelId = "channel-01";
                 String channelName = "Channel Name";
                 int importance = 0;
@@ -285,7 +293,6 @@ public class FBMessagingService extends FirebaseMessagingService {
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);
-;
 
                 if (bigPicture!=null)
                     notificationBuilder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bigPicture));
@@ -299,7 +306,7 @@ public class FBMessagingService extends FirebaseMessagingService {
             }
 
             @Override
-            public void onFailure(Call<Feed> call, Throwable t) {
+            public void onFailure(@NonNull Call<Feed> call, @NonNull Throwable t) {
                 recycleBitmaps();
             }
         });
@@ -318,7 +325,6 @@ public class FBMessagingService extends FirebaseMessagingService {
 
         NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        int notificationId = 1;
         String channelId = "channel-01";
         String channelName = "Channel Name";
         int importance = 0;
