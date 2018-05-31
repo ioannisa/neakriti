@@ -37,6 +37,7 @@
                 android:value="eu.anifantakis.neakriti.ArticleListActivity" />
         </activity>
         <activity android:name=".TVStreamActivity" />
+        <activity android:name=".preferences.SetPrefs" android:theme="@style/AppTheme.DarkActionBar" />
         <activity
             android:name=".widget.WidgetConfigActivity"
             android:label="@string/title_activity_widget_config"

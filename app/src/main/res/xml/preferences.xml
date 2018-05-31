@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:theme="@style/AppTheme.DarkActionBar">
 
     <PreferenceCategory android:title="@string/pref_news_categories">
         <PreferenceScreen android:title="@string/pref_news_categories_selector">
@@ -92,8 +93,7 @@
             android:title="@string/pref_about_version_title" />
 
         <Preference
-            android:key="@string/pref_about_author_key"
-            android:summary=""
+            android:summary="@string/pref_about_author_summary"
             android:title="@string/pref_about_author_title" />
     </PreferenceCategory>
 

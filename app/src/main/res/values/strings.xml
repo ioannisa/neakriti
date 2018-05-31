@@ -140,8 +140,7 @@
     <string name="pref_about_version_key" translatable="false">version</string>
     <string name="pref_about_version_title">Version</string>
 
-    <string name="pref_about_author_key" translatable="false">author</string>
     <string name="pref_about_author_title">Author</string>
-
+    <string name="pref_about_author_summary">Ioannis Anifantakis\nhttps://anifantakis.eu</string>
 
 </resources>

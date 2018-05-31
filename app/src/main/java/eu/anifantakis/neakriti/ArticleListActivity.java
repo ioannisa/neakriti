@@ -71,6 +71,7 @@ import eu.anifantakis.neakriti.data.feed.ArticlesCollection;
 import eu.anifantakis.neakriti.data.feed.gson.Article;
 import eu.anifantakis.neakriti.data.feed.gson.Feed;
 import eu.anifantakis.neakriti.databinding.ActivityArticleListBinding;
+import eu.anifantakis.neakriti.preferences.SetPrefs;
 import eu.anifantakis.neakriti.utils.AppUtils;
 import eu.anifantakis.neakriti.utils.NeaKritiApp;
 import eu.anifantakis.neakriti.widget.NewsWidgetProvider;
@@ -136,9 +137,9 @@ public class ArticleListActivity extends AppCompatActivity implements
         mTracker = ((NeaKritiApp) getApplication()).getDefaultTracker();
 
         FirebaseApp.initializeApp(this);
-        FirebaseMessaging.getInstance().subscribeToTopic("neakriti-android-news-test");
+        FirebaseMessaging.getInstance().subscribeToTopic(SetPrefs.NEAKRITI_NEWS_TOPIC);
 
-        Toolbar toolbar = binding.masterView.toolbar; //(Toolbar) findViewById(R.id.toolbar); // binding.masterView.toolbar;
+        Toolbar toolbar = binding.masterView.toolbar;
         setSupportActionBar(toolbar);
         //toolbar.setTitle(getTitle());
 
@@ -589,6 +590,8 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         //noinspection SimplifiableIfStatement
         else if (id == R.id.action_settings) {
+            Intent itemintent = new Intent(this, SetPrefs.class);
+            startActivity(itemintent);
             return true;
         }
 
