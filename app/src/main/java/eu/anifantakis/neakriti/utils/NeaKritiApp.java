@@ -2,6 +2,7 @@ package eu.anifantakis.neakriti.utils;
 
 import android.app.Application;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -18,13 +19,18 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.IOException;
 
 import eu.anifantakis.neakriti.BuildConfig;
 import eu.anifantakis.neakriti.R;
+import okhttp3.Cache;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Response;
 
 //import com.jakewharton.picasso.OkHttp3Downloader;
 
@@ -86,13 +92,16 @@ public class NeaKritiApp extends Application {
         return mRadioPlayer;
     }
 
+    /**
+     * Setup picasso with 2 days caching via okHttpClient for the received icons
+     */
     private void setupPicasso() {
         // Source: https://gist.github.com/iamtodor/eb7f02fc9571cc705774408a474d5dcb
         OkHttpClient okHttpClient1 = new OkHttpClient.Builder()
-                /*
+
                 .addInterceptor(new Interceptor() {
                     @Override
-                    public Response intercept(Chain chain) throws IOException {
+                    public Response intercept(@NonNull Chain chain) throws IOException {
                         Response originalResponse = chain.proceed(chain.request());
 
                         int days=2;
@@ -103,14 +112,12 @@ public class NeaKritiApp extends Application {
                     }
                 })
                 .cache(new Cache(getCacheDir(), Integer.MAX_VALUE))
-                */
                 .build();
 
         Picasso picasso = new Picasso
                 .Builder(this)
-                //.downloader(new OkHttp3Downloader(okHttpClient1))
+                .downloader(new OkHttp3Downloader(okHttpClient1))
                 .build();
-
 
         Picasso.setSingletonInstance(picasso);
 
