@@ -173,15 +173,6 @@ public class ArticleListActivity extends AppCompatActivity implements
             liveView.setVisibility(View.GONE);
         }
 
-        FloatingActionButton fab = binding.masterView.fab;
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         //if (findViewById(R.id.article_detail_container) != null) {
         if (binding.masterView.articles.articleDetailContainer != null){
             // The detail container view will be present only in the
