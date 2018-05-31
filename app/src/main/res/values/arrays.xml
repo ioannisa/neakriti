@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="widget_category_names">
+        <item name="@string/nav_home_id">@string/nav_home</item>
+        <item name="@string/nav_crete_id">@string/nav_crete</item>
+        <item name="@string/nav_views_id">@string/nav_views</item>
+        <item name="@string/nav_economy_id">@string/nav_economy</item>
+        <item name="@string/nav_culture_id">@string/nav_culture</item>
+        <item name="@string/nav_pioneering_id">@string/nav_pioneering</item>
+        <item name="@string/nav_sports_id">@string/nav_sports</item>
+        <item name="@string/nav_lifestyle_id">@string/nav_lifestyle</item>
+        <item name="@string/nav_health_id">@string/nav_health</item>
+        <item name="@string/nav_woman_id">@string/nav_woman</item>
+        <item name="@string/nav_travel_id">@string/nav_travel</item>
+    </string-array>
+
+    <string-array name="widget_category_ids">
+        <item name="@string/nav_home_id">@string/nav_home_id</item>
+        <item name="@string/nav_crete_id">@string/nav_crete_id</item>
+        <item name="@string/nav_views_id">@string/nav_views_id</item>
+        <item name="@string/nav_economy_id">@string/nav_economy_id</item>
+        <item name="@string/nav_culture_id">@string/nav_culture_id</item>
+        <item name="@string/nav_pioneering_id">@string/nav_pioneering_id</item>
+        <item name="@string/nav_sports_id">@string/nav_sports_id</item>
+        <item name="@string/nav_lifestyle_id">@string/nav_lifestyle_id</item>
+        <item name="@string/nav_health_id">@string/nav_health_id</item>
+        <item name="@string/nav_woman_id">@string/nav_woman_id</item>
+        <item name="@string/nav_travel_id">@string/nav_travel_id</item>
+    </string-array>
+
+</resources>

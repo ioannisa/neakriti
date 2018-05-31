@@ -54,12 +54,6 @@ public final class AppUtils {
     // origin notification means "originated by notification" (aka the Detail Activity was started via a notification or widget item, rather than from an article selection on the main activity)
     public static final String EXTRAS_ORIGIN_NOTIFICATION = "EXTRAS_ORIGIN_NOTIFICATION";
 
-    //================= Shared Prefs Constants ===========================
-    public static final String PREFS_WIDGET_CATEGORY_ORDER = "PREFS_WIDGET_CATEGORY_ORDER";
-    public static final String PREFS_WIDGET_CATEGORY_ID = "PREFS_WIDGET_CATEGORY_ID";
-    public static final String PREFS_WIDGET_CATEGORY_TITLE = "PREFS_WIDGET_CATEGORY_TITLE";
-    //====================================================================
-
     public static boolean onlineMode = true;
     public static NotificationManager mNotificationManager;
 

@@ -22,9 +22,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static eu.anifantakis.neakriti.utils.AppUtils.PREFS_WIDGET_CATEGORY_ID;
-import static eu.anifantakis.neakriti.utils.AppUtils.PREFS_WIDGET_CATEGORY_ORDER;
-import static eu.anifantakis.neakriti.utils.AppUtils.PREFS_WIDGET_CATEGORY_TITLE;
+import static eu.anifantakis.neakriti.preferences.SetPrefs.PREFS_WIDGET_CATEGORY_ID;
+import static eu.anifantakis.neakriti.preferences.SetPrefs.PREFS_WIDGET_CATEGORY_ORDER;
+import static eu.anifantakis.neakriti.preferences.SetPrefs.PREFS_WIDGET_CATEGORY_TITLE;
 import static eu.anifantakis.neakriti.utils.AppUtils.URL_BASE;
 import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.APPWIDGET_UPDATE;
 import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.WIDGET_DIRECTION_NEXT;

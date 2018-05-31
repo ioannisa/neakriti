@@ -2,6 +2,16 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:theme="@style/AppTheme.DarkActionBar">
 
+    <PreferenceCategory android:title="Widget">
+        <ListPreference
+            android:key="PREFS_WIDGET_CATEGORY_ID"
+            android:title="Κατηγορία Widget"
+            android:entries="@array/widget_category_names"
+            android:entryValues="@array/widget_category_ids"
+            android:defaultValue="@string/nav_home_id"
+            android:summary="%s"/>
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/pref_news_categories">
         <PreferenceScreen android:title="@string/pref_news_categories_selector">
             <CheckBoxPreference

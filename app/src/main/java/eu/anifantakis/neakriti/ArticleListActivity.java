@@ -78,6 +78,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
+import static eu.anifantakis.neakriti.preferences.SetPrefs.NEAKRITI_NEWS_TOPIC;
 import static eu.anifantakis.neakriti.utils.AppUtils.mNotificationManager;
 import static eu.anifantakis.neakriti.utils.AppUtils.onlineMode;
 
@@ -111,6 +112,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     private Tracker mTracker;
     private SimpleExoPlayer mRadioPlayer;
     private NavigationView navigationView;
+    private SharedPreferences sharedPreferences;
 
     private static final int ARTICLES_FEED_LOADER = 0;
     private static final String LOADER_TITLE = "LOADER_TITLE";
@@ -123,6 +125,9 @@ public class ArticleListActivity extends AppCompatActivity implements
     private static final String STATE_CLICKED_AN_ITEM = "STATE_CLICKED_AN_ITEM";
     private static final String STATE_FRAGMENT = "STATE_FRAGMENT";
 
+    public static final int DETAIL_ACTIVITY_REQUEST_CODE = 100;
+    public static final int PREFERENCES_REQUEST_CODE = 200;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,9 +135,11 @@ public class ArticleListActivity extends AppCompatActivity implements
         //setContentView(R.layout.activity_article_list);
 
         mTracker = ((NeaKritiApp) getApplication()).getDefaultTracker();
+        navigationView = binding.navView;
 
         FirebaseApp.initializeApp(this);
-        FirebaseMessaging.getInstance().subscribeToTopic(SetPrefs.NEAKRITI_NEWS_TOPIC);
+        // get the shared preferences and apply their settings where needed
+        applySharedPreferences(true);
 
         Toolbar toolbar = binding.masterView.toolbar;
         setSupportActionBar(toolbar);
@@ -141,8 +148,6 @@ public class ArticleListActivity extends AppCompatActivity implements
         feedCategoryTitle = binding.masterView.articles.incLivePanel.feedCategoryTitle;
         btnRadio = binding.masterView.articles.incLivePanel.btnLiveRadio;
         initializeRadioExoPlayer();
-
-        navigationView = binding.navView;
 
         liveView = binding.masterView.articles.incLivePanel.liveView;
 
@@ -248,32 +253,6 @@ public class ArticleListActivity extends AppCompatActivity implements
         makeArticlesLoaderQuery(feedName, ArticlesDBContract.DB_TYPE_CATEGORY, feedSrvid, feedItems);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        setCategoryAvailabilities();
-    }
-
-    /**
-     * Show or hide the categories based on the user's preferences
-     */
-    private void setCategoryAvailabilities()
-    {
-        SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
-
-        Menu menu = navigationView.getMenu();
-        menu.findItem(R.id.nav_crete).setVisible(SP.getBoolean(getString(R.string.nav_crete_id), true));
-        menu.findItem(R.id.nav_views).setVisible(SP.getBoolean(getString(R.string.nav_views_id), true));
-        menu.findItem(R.id.nav_economy).setVisible(SP.getBoolean(getString(R.string.nav_economy_id), true));
-        menu.findItem(R.id.nav_culture).setVisible(SP.getBoolean(getString(R.string.nav_culture_id), true));
-        menu.findItem(R.id.nav_pioneering).setVisible(SP.getBoolean(getString(R.string.nav_pioneering_id), true));
-        menu.findItem(R.id.nav_sports).setVisible(SP.getBoolean(getString(R.string.nav_sports_id), true));
-        menu.findItem(R.id.nav_lifestyle).setVisible(SP.getBoolean(getString(R.string.nav_lifestyle_id), true));
-        menu.findItem(R.id.nav_health).setVisible(SP.getBoolean(getString(R.string.nav_health_id), true));
-        menu.findItem(R.id.nav_woman).setVisible(SP.getBoolean(getString(R.string.nav_woman_id), true));
-        menu.findItem(R.id.nav_travel).setVisible(SP.getBoolean(getString(R.string.nav_travel_id), true));
-    }
 
     /**
      * Interface implementation (defined in the adapter) for the clicking of an item in the articles recycler view
@@ -331,7 +310,7 @@ public class ArticleListActivity extends AppCompatActivity implements
                         ).toBundle();
 
                 if (feedType == ArticlesDBContract.DB_TYPE_FAVORITE){
-                    ActivityCompat.startActivityForResult(this, intent, 1, bundle);
+                    ActivityCompat.startActivityForResult(this, intent, DETAIL_ACTIVITY_REQUEST_CODE, bundle);
                 }
                 else {
                     startActivity(intent, bundle);
@@ -339,7 +318,7 @@ public class ArticleListActivity extends AppCompatActivity implements
             }
             else{
                 if (feedType == ArticlesDBContract.DB_TYPE_FAVORITE) {
-                    startActivityForResult(intent, 1);
+                    startActivityForResult(intent, DETAIL_ACTIVITY_REQUEST_CODE);
                 }
                 else {
                     startActivity(intent);
@@ -352,13 +331,59 @@ public class ArticleListActivity extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // if we are back from another activity and the type is favorites, refresh because we might
         // have removed an item from the favorite list
-        if (feedType == ArticlesDBContract.DB_TYPE_FAVORITE){
+        if (requestCode==DETAIL_ACTIVITY_REQUEST_CODE && feedType == ArticlesDBContract.DB_TYPE_FAVORITE){
             cachedCollection = null;
-            makeArticlesLoaderQuery(feedName, ArticlesDBContract.DB_TYPE_FAVORITE, "0", feedItems);
+            makeArticlesLoaderQuery(feedName, ArticlesDBContract.DB_TYPE_FAVORITE, null, feedItems);
+        }
+        else if (requestCode==PREFERENCES_REQUEST_CODE) {
+            // on resume check if any preferences have changed, and if so
+            applySharedPreferences(false);
         }
     }
 
+    private void applySharedPreferences(boolean first){
+        if (sharedPreferences == null)
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+
+        if (first) {
+            // if this method is called from the onCreate method (aka the first boolean)
+            // then check if needed to subscribe to the firebase FCM topic.
+            // Any further subcribe/unsubscribe will be handled from inside the Preferences Activity
+            if (sharedPreferences.getBoolean(getString(R.string.pref_fcm_key), true)) {
+                FirebaseMessaging.getInstance().subscribeToTopic(NEAKRITI_NEWS_TOPIC);
+            }
+        }
+
+        setCategoryAvailabilities();
+    }
+
+    /**
+     * Show or hide the categories based on the user's preferences
+     */
+    private void setCategoryAvailabilities()
+    {
+        Menu menu = navigationView.getMenu();
+        menu.findItem(R.id.nav_crete).setVisible(sharedPreferences.getBoolean(getString(R.string.nav_crete_id), true));
+        menu.findItem(R.id.nav_views).setVisible(sharedPreferences.getBoolean(getString(R.string.nav_views_id), true));
+        menu.findItem(R.id.nav_economy).setVisible(sharedPreferences.getBoolean(getString(R.string.nav_economy_id), true));
+        menu.findItem(R.id.nav_culture).setVisible(sharedPreferences.getBoolean(getString(R.string.nav_culture_id), true));
+        menu.findItem(R.id.nav_pioneering).setVisible(sharedPreferences.getBoolean(getString(R.string.nav_pioneering_id), true));
+        menu.findItem(R.id.nav_sports).setVisible(sharedPreferences.getBoolean(getString(R.string.nav_sports_id), true));
+        menu.findItem(R.id.nav_lifestyle).setVisible(sharedPreferences.getBoolean(getString(R.string.nav_lifestyle_id), true));
+        menu.findItem(R.id.nav_health).setVisible(sharedPreferences.getBoolean(getString(R.string.nav_health_id), true));
+        menu.findItem(R.id.nav_woman).setVisible(sharedPreferences.getBoolean(getString(R.string.nav_woman_id), true));
+        menu.findItem(R.id.nav_travel).setVisible(sharedPreferences.getBoolean(getString(R.string.nav_travel_id), true));
+    }
+
+
     private void makeArticlesLoaderQuery(final String title, final int type, String id, int items){
+        if (id==null){
+            // if we load bookmarks, then category id is redundant
+            // There are no categories in bookmarks, they are just bookmarks
+            // so in that case where the "id" variable is set to null and we have to give just a value (we don't care what it is... just avoiding null pointers here)
+            id = "0";
+        }
+
         boolean isNetworkAvailable = AppUtils.isNetworkAvailable(this);
         // if we knew we were in online mode, but discovered that there is no network (going offline for the first time)
         if (AppUtils.onlineMode && !isNetworkAvailable){
@@ -595,8 +620,9 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         //noinspection SimplifiableIfStatement
         else if (id == R.id.action_settings) {
+            // if "settings" selected, open the Shared Preferences activity
             Intent itemintent = new Intent(this, SetPrefs.class);
-            startActivity(itemintent);
+            startActivityForResult(itemintent, PREFERENCES_REQUEST_CODE);
             return true;
         }
 

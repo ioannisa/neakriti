@@ -13,10 +13,7 @@ import android.widget.RemoteViews;
 
 import eu.anifantakis.neakriti.ArticleDetailActivity;
 import eu.anifantakis.neakriti.R;
-
-import static eu.anifantakis.neakriti.utils.AppUtils.PREFS_WIDGET_CATEGORY_ID;
-import static eu.anifantakis.neakriti.utils.AppUtils.PREFS_WIDGET_CATEGORY_ORDER;
-import static eu.anifantakis.neakriti.utils.AppUtils.PREFS_WIDGET_CATEGORY_TITLE;
+import eu.anifantakis.neakriti.preferences.SetPrefs;
 
 public class NewsWidgetProvider extends AppWidgetProvider {
 
@@ -78,7 +75,7 @@ public class NewsWidgetProvider extends AppWidgetProvider {
         views.setOnClickPendingIntent(R.id.widget_category_next, nextPendingIntent);
 
         // Settings Button
-        Intent settingsIntent = new Intent(context, WidgetConfigActivity.class);
+        Intent settingsIntent = new Intent(context, SetPrefs.class);
         settingsIntent.putExtra("WIDGET_UPDATE", true);
         PendingIntent settingsPendingIntent = PendingIntent.getActivity(context, 10, settingsIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.widget_settings, settingsPendingIntent);

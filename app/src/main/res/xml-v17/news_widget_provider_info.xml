@@ -1,5 +1,5 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:configure="eu.anifantakis.neakriti.widget.WidgetConfigActivity"
+    android:configure="eu.anifantakis.neakriti.preferences.SetPrefs"
     android:initialKeyguardLayout="@layout/news_widget_provider"
     android:initialLayout="@layout/news_widget_provider"
     android:minHeight="180dp"
