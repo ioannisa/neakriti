@@ -32,8 +32,6 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
-//import com.jakewharton.picasso.OkHttp3Downloader;
-
 public class NeaKritiApp extends Application {
     private static GoogleAnalytics sAnalytics;
     private static Tracker sTracker;

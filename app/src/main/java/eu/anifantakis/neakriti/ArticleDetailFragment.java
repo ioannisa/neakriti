@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.support.annotation.NonNull;
@@ -31,6 +33,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -50,6 +53,10 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
     private Article mArticle;
     private TextToSpeech mTextToSpeech;
     private Tracker mTracker;
+    private WebSettings webSettings;
+    private WebView mWebView;
+    private AdView adView;
+    private SharedPreferences sharedPreferences;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -97,8 +104,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         TextView detailDate = rootView.findViewById(R.id.detail_date);
         detailDate.setText(AppUtils.pubDateFormat(mArticle.getPubDateStr()));
 
-        WebView mWebView = rootView.findViewById(R.id.article_detail);
-        WebSettings webSettings;
+        mWebView = rootView.findViewById(R.id.article_detail);
         webSettings = mWebView.getSettings();
 
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
@@ -109,41 +115,76 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         mWebView.getSettings().setAllowFileAccess(true);
         webSettings.setAppCacheEnabled(true);
 
+        adView = rootView.findViewById(R.id.adView);
+
         // Show the dummy content as text in a TextView.
         if (mArticle != null) {
-            Log.d("LOADING WEB VIEW", "ARTICLE IS NOT NULL");
-
-            String theStory;
-            theStory =  mArticle.getDescription();
-
-            theStory = theStory.replace("=\"//www.", "=\"https://www.")
-                .replace("src=\"//", "src=\"https://")
-                .replace("=\"/", "=\"https://www.neakriti.gr/")
-                .replace("with=\"620\"", "width=\"100%\"");
-            String basicWebStory = theStory.replace(Character.toString((char)10), "<br/>");
-            String webStory   = "<div id='story' class='story'>"+basicWebStory+"</div>";
-
-            boolean day = true;
-            String dayNightStyle = "";
-            if (!day) {
-                dayNightStyle = "body,p,div{background:#333333 !Important; color:#eeeeee;} a{color:#ee3333 !Important}";
-            }
-            webStory   = "<!DOCTYPE html><html lang='el'><head><title>"+mArticle.getTitle()+"</title> <meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\"/> <link rel='canonical' href='"+mArticle.getLink()+"'> <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,900&subset=greek,latin' rel='stylesheet' type='text/css'> <style> a{ text-decoration:none; color:#a00; font-weight:600; } body{line-height:normal; font-family:'Roboto'; padding-bottom:50px;}                  object,img,iframe,div,video,param,embed{max-width: 100%; }"+dayNightStyle+"</style></head><body>"+webStory+"</body></html>";
-
-            mWebView.loadDataWithBaseURL(null, webStory, "text/html", "UTF-8", null);
-            AdView adView = rootView.findViewById(R.id.adView);
-
-            //((TextView) rootView.findViewById(R.id.article_detail_text)).setText(webStory);
-
-            // fetch google ads
-            AdRequest adRequest = new AdRequest.Builder()
-                    .setRequestAgent("android_studio:ad_template").build();
-            adView.loadAd(adRequest);
+            scaleFontSize();
+            displayArticle();
         }
 
         return rootView;
     }
 
+    private void displayArticle(){
+        if (sharedPreferences == null) {
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        }
+
+        String theStory;
+        theStory =  mArticle.getDescription();
+
+        theStory = theStory.replace("=\"//www.", "=\"https://www.")
+                .replace("src=\"//", "src=\"https://")
+                .replace("=\"/", "=\"https://www.neakriti.gr/")
+                .replace("with=\"620\"", "width=\"100%\"");
+        String basicWebStory = theStory.replace(Character.toString((char)10), "<br/>");
+        String articleDetail   = "<div id='story' class='story'>"+basicWebStory+"</div>";
+
+        String dayNightStyle = "";
+        if (sharedPreferences.getBoolean(getString(R.string.pref_night_reading_key), true)){
+            dayNightStyle = "body,p,div{background:#333333 !Important; color:#eeeeee;} a{color:#ee3333 !Important}";
+        }
+
+        String webStory =
+                "<!DOCTYPE html><html lang=\"el\"><head><title>{0}</title> "+
+                "<meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\"/>"+
+                "<link rel=\"canonical\" href=\"{1}\"> <link href=\"https://fonts.googleapis.com/css?family=Roboto:400,700,900&subset=greek,latin\" rel=\"stylesheet\" type=\"text/css\"> "+
+                "<style> a'{' text-decoration:none; color:#a00; font-weight:600; '}' body'{'line-height:normal; font-family:\"Roboto\"; padding-bottom:50px;{2}'}' "+
+                "object,img,iframe,div,video,param,embed'{'max-width: 100%; '}'{3}</style></head><body>{4}</body></html>";
+
+        String format;
+        if (sharedPreferences.getBoolean(getString(R.string.pref_increased_line_distance_key), true)){
+            format = "line-height:1.6";
+        }
+        else{
+            format = "";
+        }
+
+        webStory = MessageFormat.format(webStory, mArticle.getTitle(), mArticle.getLink(), format, dayNightStyle, articleDetail);
+        mWebView.loadDataWithBaseURL(null, webStory, "text/html", "utf-8", null);
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .setRequestAgent("android_studio:ad_template").build();
+        adView.loadAd(adRequest);
+    }
+
+    /**
+     * Depending on user preferences, set the font size for the article
+     */
+    private void scaleFontSize(){
+        if (sharedPreferences == null) {
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        }
+        int scaleFont = sharedPreferences.getInt(getString(R.string.pref_font_size_key), 1);
+        switch (scaleFont){
+            case 0: webSettings.setDefaultFontSize(15); break;
+            case 1: webSettings.setDefaultFontSize(18); break;
+            case 2: webSettings.setDefaultFontSize(21); break;
+            case 3: webSettings.setDefaultFontSize(23); break;
+            case 4: webSettings.setDefaultFontSize(25); break;
+        }
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
