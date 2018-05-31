@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -141,15 +139,6 @@ public class ArticleDetailActivity extends AppCompatActivity {
                     .into(detailActivityImage);
         }
         */
-    }
-
-    /**
-     * IF WE DONT MAKE USE OF THE ACTUAL ANDROID TOOLBAR
-     * Then we have a drawable arrow icon on the upper left of the poster to act as back button
-     * @param view The view corresponding to the icon that imitates the back arrow
-     */
-    public void actionUpClicked(View view) {
-        super.onBackPressed();
     }
 
     /**

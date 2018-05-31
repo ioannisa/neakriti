@@ -2,11 +2,11 @@ package eu.anifantakis.neakriti;
 
 import android.annotation.SuppressLint;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.ScaleGestureDetector;
 import android.view.Window;
 import android.view.WindowManager;
@@ -38,9 +38,6 @@ import com.google.android.exoplayer2.util.Util;
 
 import in.championswimmer.sfg.lib.SimpleFingerGestures;
 
-import static com.google.android.exoplayer2.DefaultRenderersFactory.DEFAULT_ALLOWED_VIDEO_JOINING_TIME_MS;
-import static com.google.android.exoplayer2.DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF;
-
 public class TVStreamActivity extends AppCompatActivity {
 
     private SimpleExoPlayer mExoPlayer;
@@ -67,7 +64,7 @@ public class TVStreamActivity extends AppCompatActivity {
 
         scaleGestureDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.SimpleOnScaleGestureListener());
 
-        videoView = (PlayerView) findViewById(R.id.video_view);
+        videoView = findViewById(R.id.video_view);
 
         // https://github.com/championswimmer/SimpleFingerGestures_Android_Library
         // Use pinch/unpinch gestures to zoom in/out video

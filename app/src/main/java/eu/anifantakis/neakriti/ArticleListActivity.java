@@ -17,9 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.LoaderManager;
@@ -183,6 +181,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
 
         if (mTwoPane && !clickedAtLeastOneItem){
+            assert binding.masterView.articles.articleDetailContainer != null;
             binding.masterView.articles.articleDetailContainer.setVisibility(View.GONE);
         }
 
@@ -291,7 +290,7 @@ public class ArticleListActivity extends AppCompatActivity implements
             }
 
             // bundle for the transition effect
-            Bundle bundle = null;
+            Bundle bundle;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && sharedImage!=null) {
                 bundle = ActivityOptionsCompat
                         .makeSceneTransitionAnimation(
@@ -435,13 +434,14 @@ public class ArticleListActivity extends AppCompatActivity implements
     }
 
     @SuppressLint("StaticFieldLeak")
+    @NonNull
     @Override
     public Loader<ArticlesCollection> onCreateLoader(int i, final Bundle bundle) {
         Log.d("LOADING", "ON CREATE LOADER");
         return new AsyncTaskLoader<ArticlesCollection>(this) {
             @Override
             public ArticlesCollection loadInBackground() {
-                Feed feed = null;
+                Feed feed;
                 int fetchType = bundle.getInt(LOADER_TYPE);
 
                 if (fetchType == ArticlesDBContract.DB_TYPE_FAVORITE){
@@ -573,7 +573,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
 
     @Override
-    public void onLoaderReset(Loader<ArticlesCollection> loader) {
+    public void onLoaderReset(@NonNull Loader<ArticlesCollection> loader) {
 
     }
 
@@ -710,10 +710,6 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
     }
 
-    public void actionUpClicked(View view) {
-        super.onBackPressed();
-    }
-
     private boolean checkNetworkAvailabilityBeforeStreaming(){
         boolean isNetworkAvailable = (AppUtils.isNetworkAvailable(this));
 
@@ -848,7 +844,6 @@ public class ArticleListActivity extends AppCompatActivity implements
                 }
             };
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
             new AlertDialog.Builder(this)
                     .setIcon(R.drawable.radio_48px)
                     .setTitle(getString(R.string.dlg_radio_playing_title))
@@ -886,7 +881,6 @@ public class ArticleListActivity extends AppCompatActivity implements
             }
         };
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         new AlertDialog.Builder(this)
                 .setIcon(R.drawable.signal_wifi_off_48px)
                 .setTitle(getString(R.string.dlg_no_wifi_detected_title))

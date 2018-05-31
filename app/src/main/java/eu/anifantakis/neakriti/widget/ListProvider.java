@@ -3,7 +3,6 @@ package eu.anifantakis.neakriti.widget;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService.RemoteViewsFactory;
 
@@ -28,13 +27,12 @@ public class ListProvider implements RemoteViewsFactory {
         public String imgLarge;
     }
 
-    private static ArrayList<ListItem> listItemList = new ArrayList<ListItem>();
-    private Context context = null;
-    private int appWidgetId;
+    private static ArrayList<ListItem> listItemList = new ArrayList<>();
+    private Context context;
 
-    public ListProvider(Context context, Intent intent) {
+    ListProvider(Context context, Intent intent) {
         this.context = context;
-        appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+        int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID);
 
         populateListItem();
