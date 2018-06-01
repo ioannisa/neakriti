@@ -20,11 +20,6 @@
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ArticleDetailActivity"
@@ -37,7 +32,9 @@
                 android:value="eu.anifantakis.neakriti.ArticleListActivity" />
         </activity>
         <activity android:name=".TVStreamActivity" />
-        <activity android:name=".preferences.SetPrefs" android:theme="@style/AppTheme.DarkActionBar" >
+        <activity
+            android:name=".preferences.SetPrefs"
+            android:theme="@style/AppTheme.DarkActionBar">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
@@ -81,6 +78,16 @@
             android:name=".widget.WidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
         <service android:name=".widget.WidgetFetchArticlesService" />
+
+        <activity android:name=".SplashActivity"
+            android:theme="@style/SplashTheme">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>
