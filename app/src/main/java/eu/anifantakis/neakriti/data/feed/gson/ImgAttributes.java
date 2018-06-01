@@ -4,13 +4,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class ImgAttributes implements Parcelable{
-    String url;
+    private String url;
 
-    public ImgAttributes(String url){
+    ImgAttributes(String url){
         this.url = url;
     }
 
-    protected ImgAttributes(Parcel in) {
+    private ImgAttributes(Parcel in) {
         url = in.readString();
     }
 

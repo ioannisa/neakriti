@@ -60,7 +60,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
     /**
      * Clears the file cache of old files (more than the given days old)
      */
-    public void clearOldFileCache(int days){
+    private void clearOldFileCache(int days){
         File[] files=mActivity.getCacheDir().listFiles();
         for(File f:files) {
             long lastModified = f.lastModified()/1000;
@@ -120,13 +120,11 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
 
     public class ArticleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         RowArticleListBinding binding;
-        private Context context;
         private boolean imageLoaded = false;
 
-        public ArticleViewHolder(View itemView) {
+        ArticleViewHolder(View itemView) {
             super(itemView);
             binding = DataBindingUtil.bind(itemView);
-            context = itemView.getContext();
 
             itemView.setOnClickListener(this);
         }

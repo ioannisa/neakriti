@@ -84,7 +84,7 @@ public class Article implements Parcelable {
     }
 
     public String getImgThumbStr(){
-        String result = null;
+        String result;
         try {
             result = imgThumb.getAttributes().getUrl();
             if (result == null)
@@ -108,7 +108,7 @@ public class Article implements Parcelable {
     }
 
     public String getImgLargeStr(){
-        String result = null;
+        String result;
         try {
             result = imgLarge.getAttributes().getUrl();
             if (result == null)

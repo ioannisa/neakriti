@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import eu.anifantakis.neakriti.data.feed.gson.Article;
 
@@ -28,7 +27,7 @@ public class ArticlesCollection implements Parcelable {
         articleList = articlesList;
     }
 
-    protected ArticlesCollection(Parcel in) {
+    private ArticlesCollection(Parcel in) {
         listName = in.readString();
         listType = in.readInt();
         listId = in.readString();

@@ -3,14 +3,13 @@ package eu.anifantakis.neakriti.data.feed.gson;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class ArticleImg implements Parcelable {
     @SerializedName("@attributes")
     private ImgAttributes attributes;
 
-    protected ArticleImg(Parcel in) {
+    private ArticleImg(Parcel in) {
         attributes = in.readParcelable(ImgAttributes.class.getClassLoader());
     }
 
@@ -19,7 +18,7 @@ public class ArticleImg implements Parcelable {
         dest.writeParcelable(attributes, flags);
     }
 
-    protected ArticleImg(String imgUrl) {
+    ArticleImg(String imgUrl) {
         attributes = new ImgAttributes(imgUrl);
     }
 

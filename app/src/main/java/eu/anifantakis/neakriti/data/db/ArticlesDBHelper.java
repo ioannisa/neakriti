@@ -9,7 +9,7 @@ public class ArticlesDBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "neakriti.db";
     private static final int DATABASE_VERSION = 2;
 
-    public ArticlesDBHelper(Context context){
+    ArticlesDBHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

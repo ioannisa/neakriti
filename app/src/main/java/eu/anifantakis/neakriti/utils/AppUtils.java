@@ -3,7 +3,6 @@ package eu.anifantakis.neakriti.utils;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -13,8 +12,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LayoutAnimationController;
 import android.view.animation.TranslateAnimation;
-
-import com.google.android.exoplayer2.SimpleExoPlayer;
 
 import org.jsoup.Jsoup;
 
