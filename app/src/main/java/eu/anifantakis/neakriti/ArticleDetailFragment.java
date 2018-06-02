@@ -302,35 +302,20 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
                 else{
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder
-                            .setTitle(R.string.dlg_no_tts_lang_unavailable_title)
-                            .setMessage(R.string.dlg_no_tts_lang_unavailable_body)
-                            .setIcon(R.drawable.not_interested_48px)
-                            .setNegativeButton(R.string.dlg_exit, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
+                        .setTitle(R.string.dlg_no_tts_lang_unavailable_title)
+                        .setMessage(R.string.dlg_no_tts_lang_unavailable_body)
+                        .setIcon(R.drawable.not_interested_48px)
+                        .setNegativeButton(R.string.dlg_exit, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
 
-                                }
-                            });
+                            }
+                        });
                 }
 
+                // Setting Text to Speech to null will allow it to detect the changes we did to resolve the failure
+                // as making it null mTextToSpeech will re-initialize itself on the next "speak" call
                 mTextToSpeech = null;
             }
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == 0) {
-            if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
-                Toast.makeText(getActivity(), "Already Installed", Toast.LENGTH_LONG).show();
-            } else {
-                Intent installIntent = new Intent();
-                installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-                startActivity(installIntent);
-                Toast.makeText(getActivity(), "Installed Now", Toast.LENGTH_LONG).show();
-            }
-            speak();
         }
     }
 
@@ -426,6 +411,9 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
      */
     @Override
     public void onInit(int status) {
+        if (mTextToSpeech==null)
+            mTextToSpeech = new TextToSpeech(getActivity(), this);
+
         if (status == TextToSpeech.SUCCESS) {
             mTextToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
                 @Override
