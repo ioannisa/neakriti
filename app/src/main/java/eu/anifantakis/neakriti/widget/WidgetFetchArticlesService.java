@@ -1,5 +1,6 @@
 package eu.anifantakis.neakriti.widget;
 
+import android.app.Notification;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
@@ -57,6 +58,12 @@ public class WidgetFetchArticlesService extends Service {
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        startForeground(1,new Notification());
+    }
+
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("WIDGET FETCH SERVICE", "ON START");
         if (intent.hasExtra(AppWidgetManager.EXTRA_APPWIDGET_ID))
@@ -81,7 +88,7 @@ public class WidgetFetchArticlesService extends Service {
                         new Category(getString(R.string.nav_economy_id),    getString(R.string.nav_economy),    R.drawable.currency_eur),
                         new Category(getString(R.string.nav_culture_id),    getString(R.string.nav_culture),    R.drawable.school),
                         new Category(getString(R.string.nav_pioneering_id), getString(R.string.nav_pioneering), R.drawable.satellite_variant),
-                        new Category(getString(R.string.nav_sports),        getString(R.string.nav_sports),     R.drawable.soccer),
+                        new Category(getString(R.string.nav_sports_id),        getString(R.string.nav_sports),     R.drawable.soccer),
                         new Category(getString(R.string.nav_lifestyle_id),  getString(R.string.nav_lifestyle),  R.drawable.tie),
                         new Category(getString(R.string.nav_health_id),     getString(R.string.nav_health),     R.drawable.hospital),
                         new Category(getString(R.string.nav_woman_id),      getString(R.string.nav_woman),      R.drawable.gender_female),

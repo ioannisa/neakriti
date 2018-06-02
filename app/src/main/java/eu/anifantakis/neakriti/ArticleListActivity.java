@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
@@ -953,4 +954,16 @@ public class ArticleListActivity extends AppCompatActivity implements
     public void onSeekProcessed() {
 
     }
+
+    /*
+    @Override
+    public Resources.Theme getTheme() {
+        Resources.Theme theme = super.getTheme();
+        //if(useAlternativeTheme){
+            theme.applyStyle(R.style.NightAppTheme, true);
+        //}
+        // you could also use a switch if you have many themes that could apply
+        return super.getTheme();
+    }
+    */
 }

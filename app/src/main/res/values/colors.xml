@@ -6,5 +6,10 @@
     <color name="colorAccent">#f44336</color>
     <color name="red_100">#ffcdd2</color>
     <color name="blue_gray_100">#ECEFF1</color>
+
+    <color name="colorPrimaryNight">#424242</color>
+    <color name="colorPrimaryDarkNight">#212121</color>
+    <color name="colorAccentNight">#616161</color>
+
     <color name="black">#000000</color>
 </resources>

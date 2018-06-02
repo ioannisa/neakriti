@@ -40,7 +40,17 @@
 
 
     <!-- =============================================================== -->
-    <!-- NIGHT READING THEMES -->
+    <!-- NIGHT READING THEMES --> <!-- change theme in activity like this setTheme(android.R.style.Theme); -->
     <!-- =============================================================== -->
+
+    <style name="NightAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--<item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>-->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryNight</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryNight</item>
+        <item name="colorAccent">@color/colorPrimaryNight</item>
+
+        <item name="upperlogogray">@style/upperlogogray</item>
+    </style>
 
 </resources>

@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -93,7 +94,13 @@ public class NewsWidgetProvider extends AppWidgetProvider {
                 //we start the service
                 Intent serviceIntent = new Intent(context, WidgetFetchArticlesService.class);
                 serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, savedAppWidgetId);
-                context.startService(serviceIntent);
+                //context.startService(serviceIntent);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    context.startForegroundService(serviceIntent);
+                } else {
+                    context.startService(serviceIntent);
+                }
             }
         }
     }
