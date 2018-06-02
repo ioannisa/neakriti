@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -149,6 +150,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         String dayNightStyle = "";
         if (sharedPreferences.getBoolean(getString(R.string.pref_night_reading_key), false)){
             dayNightStyle = "body,p,div{background:#333333 !Important; color:#eeeeee;} a{color:#ee3333 !Important}";
+            binding.articleNestedScrollView.setBackgroundColor(Color.parseColor("#333333"));
         }
 
         String webStory =
