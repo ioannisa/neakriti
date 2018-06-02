@@ -57,10 +57,14 @@ public class WidgetFetchArticlesService extends Service {
         }
     }
 
+    /**
+     * Fixing java.lang.IllegalStateException: Not allowed to start service Intent
+     * Source: https://stackoverflow.com/questions/46445265/android-8-0-java-lang-illegalstateexception-not-allowed-to-start-service-inten
+     */
     @Override
     public void onCreate() {
         super.onCreate();
-        startForeground(1,new Notification());
+        startForeground(1, new Notification());
     }
 
     @Override
