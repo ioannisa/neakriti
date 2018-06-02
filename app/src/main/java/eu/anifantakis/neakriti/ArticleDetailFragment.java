@@ -142,7 +142,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         String articleDetail   = "<div id='story' class='story'>"+basicWebStory+"</div>";
 
         String dayNightStyle = "";
-        if (sharedPreferences.getBoolean(getString(R.string.pref_night_reading_key), true)){
+        if (sharedPreferences.getBoolean(getString(R.string.pref_night_reading_key), false)){
             dayNightStyle = "body,p,div{background:#333333 !Important; color:#eeeeee;} a{color:#ee3333 !Important}";
         }
 
