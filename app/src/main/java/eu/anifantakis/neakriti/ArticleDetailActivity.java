@@ -1,6 +1,7 @@
 package eu.anifantakis.neakriti;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,10 +16,12 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import eu.anifantakis.neakriti.data.feed.gson.Article;
+import eu.anifantakis.neakriti.databinding.ActivityArticleDetailBinding;
 import eu.anifantakis.neakriti.utils.AppUtils;
 
 public class ArticleDetailActivity extends AppCompatActivity {
 
+    protected ActivityArticleDetailBinding binding;
     private boolean startedByNotification = false;
 
     private Article mArticle;
@@ -26,10 +29,11 @@ public class ArticleDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_article_detail);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_article_detail);
+        //setContentView(R.layout.activity_article_detail);
 
         supportPostponeEnterTransition();
-        ImageView detailActivityImage = findViewById(R.id.detail_activity_image);
+        ImageView detailActivityImage = binding.detailActivityImage;
 
         // Receive the Parcelable Movie object from the extras of the intent.
         Bundle extras = getIntent().getExtras();
@@ -100,11 +104,11 @@ public class ArticleDetailActivity extends AppCompatActivity {
             */
         }
         else{
-            findViewById(R.id.toolbar_layout).setVisibility(View.GONE);
+            binding.toolbarLayout.setVisibility(View.GONE);
             supportStartPostponedEnterTransition();
         }
 
-        Toolbar toolbar = findViewById(R.id.detail_toolbar);
+        Toolbar toolbar = binding.detailToolbar;
         setSupportActionBar(toolbar);
 
         // Show the Up button in the action bar.

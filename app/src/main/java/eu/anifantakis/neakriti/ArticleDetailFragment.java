@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,7 +28,6 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -41,6 +41,7 @@ import java.util.Locale;
 
 import eu.anifantakis.neakriti.data.db.ArticlesDBContract;
 import eu.anifantakis.neakriti.data.feed.gson.Article;
+import eu.anifantakis.neakriti.databinding.FragmentArticleDetailBinding;
 import eu.anifantakis.neakriti.utils.AppUtils;
 import eu.anifantakis.neakriti.utils.NeaKritiApp;
 
@@ -51,6 +52,7 @@ import eu.anifantakis.neakriti.utils.NeaKritiApp;
  * on handsets.
  */
 public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnInitListener {
+    private FragmentArticleDetailBinding binding;
     private Article mArticle;
     private TextToSpeech mTextToSpeech;
     private Tracker mTracker;
@@ -97,15 +99,17 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.article_detail, container, false);
 
-        TextView detailTitle = rootView.findViewById(R.id.detail_title);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_article_detail, container, false);
+        final View rootView = binding.getRoot();
+
+        TextView detailTitle = binding.detailTitle;
         detailTitle.setText(mArticle.getTitle());
 
-        TextView detailDate = rootView.findViewById(R.id.detail_date);
+        TextView detailDate = binding.detailDate;
         detailDate.setText(AppUtils.pubDateFormat(mArticle.getPubDateStr()));
 
-        mWebView = rootView.findViewById(R.id.article_detail);
+        mWebView = binding.articleDetail;
         webSettings = mWebView.getSettings();
 
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
@@ -116,7 +120,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         mWebView.getSettings().setAllowFileAccess(true);
         webSettings.setAppCacheEnabled(true);
 
-        adView = rootView.findViewById(R.id.adView);
+        adView = binding.adView;
 
         // Show the dummy content as text in a TextView.
         if (mArticle != null) {

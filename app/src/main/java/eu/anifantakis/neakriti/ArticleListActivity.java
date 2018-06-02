@@ -171,7 +171,6 @@ public class ArticleListActivity extends AppCompatActivity implements
             liveView.setVisibility(View.GONE);
         }
 
-        //if (findViewById(R.id.article_detail_container) != null) {
         if (binding.masterView.articles.articleDetailContainer != null){
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
@@ -185,16 +184,16 @@ public class ArticleListActivity extends AppCompatActivity implements
             binding.masterView.articles.articleDetailContainer.setVisibility(View.GONE);
         }
 
-        DrawerLayout drawer = binding.drawerLayout;// (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = binding.drawerLayout;
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = binding.navView;// (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = binding.navView;
         navigationView.setNavigationItemSelectedListener(this);
 
-        mSwipeRefreshLayout = binding.masterView.articles.mainLayoutSwipe; //findViewById(R.id.main_layout_swipe);
+        mSwipeRefreshLayout = binding.masterView.articles.mainLayoutSwipe;
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         // SETUP RETROFIT
@@ -206,7 +205,7 @@ public class ArticleListActivity extends AppCompatActivity implements
                 .build();
 
         // SETUP RECYCLER VIEW
-        mRecyclerView = binding.masterView.articles.articleList; //findViewById(R.id.article_list); //binding.masterView.articles.articleList;//
+        mRecyclerView = binding.masterView.articles.articleList;
         //assert mRecyclerView != null;
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -582,7 +581,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = binding.drawerLayout;// (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = binding.drawerLayout;
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -685,7 +684,7 @@ public class ArticleListActivity extends AppCompatActivity implements
             makeArticlesLoaderQuery(feedName, ArticlesDBContract.DB_TYPE_CATEGORY, feedSrvid, feedItems);
         }
 
-        DrawerLayout drawer = binding.drawerLayout;// (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = binding.drawerLayout;
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
