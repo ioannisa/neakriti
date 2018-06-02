@@ -289,7 +289,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder
                             .setTitle(R.string.dlg_no_tts_lang_unavailable_title)
-                            .setMessage(R.string.dlg_no_tts_lang_unavailable_body)
+                            .setMessage(R.string.dlg_no_tts_no_google_tts_engine_body)
                             .setIcon(R.drawable.not_interested_48px)
                             .setNegativeButton(R.string.dlg_exit, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
