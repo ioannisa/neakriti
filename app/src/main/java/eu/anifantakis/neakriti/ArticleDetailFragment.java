@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -235,6 +236,8 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         if (mTextToSpeech==null)
             mTextToSpeech = new TextToSpeech(getActivity(), this);
 
+        Log.d("Default Engine Info " , mTextToSpeech.getDefaultEngine());
+
         if (mTextToSpeech.isSpeaking()) {
             mTextToSpeech.stop();
         } else {
@@ -281,23 +284,55 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
             }
             else if (langAvailability==TextToSpeech.LANG_NOT_SUPPORTED){
                 Log.d("TTS AVAILABILITY", "LANGUAGE UNAVAILABLE");
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder
-                        .setTitle(R.string.dlg_no_tts_lang_unavailable_title)
-                        .setMessage(R.string.dlg_no_tts_lang_unavailable_body)
-                        .setIcon(R.drawable.not_interested_48px)
-                        .setNegativeButton(R.string.dlg_exit, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
 
-                            }
-                        });
-                // Create the AlertDialog object and return it
-                builder.create().show();
+                if (!mTextToSpeech.getDefaultEngine().equals("com.google.android.tts")){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder
+                            .setTitle(R.string.dlg_no_tts_lang_unavailable_title)
+                            .setMessage(R.string.dlg_no_tts_lang_unavailable_body)
+                            .setIcon(R.drawable.not_interested_48px)
+                            .setNegativeButton(R.string.dlg_exit, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+
+                                }
+                            });
+                    // Create the AlertDialog object and return it
+                    builder.create().show();
+                }
+                else{
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder
+                            .setTitle(R.string.dlg_no_tts_lang_unavailable_title)
+                            .setMessage(R.string.dlg_no_tts_lang_unavailable_body)
+                            .setIcon(R.drawable.not_interested_48px)
+                            .setNegativeButton(R.string.dlg_exit, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+
+                                }
+                            });
+                }
+
+                mTextToSpeech = null;
             }
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if(requestCode == 0) {
+            if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
+                Toast.makeText(getActivity(), "Already Installed", Toast.LENGTH_LONG).show();
+            } else {
+                Intent installIntent = new Intent();
+                installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+                startActivity(installIntent);
+                Toast.makeText(getActivity(), "Installed Now", Toast.LENGTH_LONG).show();
+            }
+            speak();
+        }
+    }
 
     /**
      * Article Sharing via implicit intent

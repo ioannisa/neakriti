@@ -22,7 +22,7 @@
 
     <!-- ALERT DIALOG RADIO IS ALREADY PLAYING (Warning if we try to launch tv stream while radio stream already playing) -->
     <string name="dlg_radio_playing_title">Το Ραδιόφωνο είναι ήδη ενεργό</string>
-    <string name="dlg_radio_playing_body">Για να παρακολουθήσετε τηλεόραση πρέπει πρώτα να κλείσει το ραδιόφωνο.  Θέλετε να συνεχίσετε;</string>
+    <string name="dlg_radio_playing_body">Για να παρακολουθήσετε τηλεόραση πρέπει πρώτα να κλείσει το ραδιόφωνο.\n\nΘέλετε να συνεχίσετε;</string>
 
     <string name="dlg_continue">Συνέχεια</string>
     <string name="dlg_cancel">Ακύρωση</string>
@@ -31,6 +31,7 @@
     <string name="dlg_no_tts_lang_installed_title">Εγκατάσταη Ελληνική Γλώσσας</string>
     <string name="dlg_no_tts_lang_installed_body">Για τη χρήση Κειμένου-Σε-Λόγο (TTS) πρέπει να εγκαταστήσετε δεδομένα Ελληνικής γλώσσας.\n\nΑπό τις Διαθέσιμες γλώσσες επιλέξτε \"Ελληνικά (Ελλάδα)\" ή \"Greek (Greece)</string>
     <string name="dlg_no_tts_lang_unavailable_body">Λυπούμαστε, αλλά η Ελληνική γλώσσα δεν είναι διαθέσιμη ακόμα για τη συσκευή σας.\n\nΔοκιμάστε ξανά στο μέλλον για πιθανή διαθεσιμότητα</string>
+    <string name="dlg_no_tts_no_google_tts_engine_body">Η ελληνική γλώσσα δεν είναι διαθέσιμη για τη συγκεκριμένη μηχανή μετατροπής κειμένου σε ομηλία.\n\nΜπορείτε να αλλάξετε τη μηχανή μετατροπής κειμένου σε αυτή της Google που είναι διαθέσιμη μέσα από τις "Ρυθμίσεις Προβασιμότητας"</string>
     <string name="action_settings">Ρυθμίσεις</string>
     <string name="dlg_close">Κλείσιμο</string>
     <string name="dlg_exit">Έξοδος</string>
@@ -42,7 +43,7 @@
     <string name="widget_settings">Ρυθμίσεις</string>
     <string name="title_activity_widget_config">Ρυθμίσεις Widget</string>
     <string name="dlg_server_down_title">Ο Server Ειδήσεων δεν ανταποκρίθηκε</string>
-    <string name="dlg_server_down_body">Ο Server Ειδήσεων αντιμετωπίσε κάποιο σφάλμα και η εφαρμογή δεν έλάβε δεδομένα  Δεν πρόκειται για σφάλμα της εφαρμογής, αλλά για σφάλμα του server.  Παρακαλούμε δοκιμάστε ξανα αργότερα.</string>
+    <string name="dlg_server_down_body">Ο Server Ειδήσεων αντιμετωπίσε κάποιο σφάλμα και η εφαρμογή δεν έλάβε δεδομένα\n\nΔεν πρόκειται για σφάλμα της εφαρμογής, αλλά για σφάλμα του server.  Παρακαλούμε δοκιμάστε ξανα αργότερα.</string>
     <string name="snack_bookmark_article_added">Προσθήκη Σελιδοδείκτη: Το άρθρο αποθηκεύτηκε</string>
     <string name="snack_bookmark_article_removed">Αφαίρεση Σελιδοδείκτη: Το άρθρο αφαιρέθηκε</string>
     <string name="pref_news_categories">Κατηγορίες Ειδήσεων</string>

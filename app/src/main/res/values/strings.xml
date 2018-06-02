@@ -88,6 +88,8 @@
 
     <string name="dlg_no_tts_lang_unavailable_title">Language Not Available</string>
     <string name="dlg_no_tts_lang_unavailable_body">Unfortunatelly the Greek language is not available for your device.\n\nPlease check back again in the future for possible availability</string>
+    <string name="dlg_no_tts_no_google_tts_engine_body">The Greek language is not available for your TTS Engine.\n\nPlease Switch to the Google TTS Engine at your device and try again</string>
+
 
     <string name="dlg_server_down_title">The News Server didn\'t Respond</string>
     <string name="dlg_server_down_body">The News Server failed to respond and the application didn\'t receive data.\n\nThis is not an application problem, but a server problem.\n\nPlease try again later.</string>
