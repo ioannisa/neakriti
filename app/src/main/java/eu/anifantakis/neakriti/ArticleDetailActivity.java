@@ -190,4 +190,18 @@ public class ArticleDetailActivity extends AppCompatActivity {
         }
         super.onBackPressed();
     }
+
+    /*
+    @Override
+    public Resources.Theme getTheme() {
+        Resources.Theme theme = super.getTheme();
+        if(isNightMode){
+            theme.applyStyle(R.style.NoActionBarNight, true);
+        }
+        else{
+            theme.applyStyle(R.style.NoActionBarDay, true);
+        }
+        return super.getTheme();
+    }
+    */
 }

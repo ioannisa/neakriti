@@ -6,7 +6,7 @@
         android:id="@+id/article_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/itemselector"
+        android:background="?rowBackgroundItem"
         android:orientation="horizontal"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
@@ -44,6 +44,7 @@
                 android:layout_marginStart="8dp"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                android:textColor="?rowTitleTextColor"
                 tools:text="TITLE Line 1\nLine 2\nLine 3\nLine 4" />
 
             <TextView
@@ -54,6 +55,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:textColor="?rowDateTextColor"
                 tools:text="DATE GOES HERE" />
         </LinearLayout>
     </LinearLayout>

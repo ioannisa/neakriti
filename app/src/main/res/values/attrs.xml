@@ -3,4 +3,8 @@
 
     <attr name="upperlogogray" format="reference" />
 
+    <attr name="rowBackgroundItem" format="reference" />
+    <attr name="rowTitleTextColor" format="reference" />
+    <attr name="rowDateTextColor" format="reference" />
+
 </resources>

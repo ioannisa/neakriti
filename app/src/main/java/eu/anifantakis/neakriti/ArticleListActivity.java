@@ -7,7 +7,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
@@ -16,7 +15,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -54,7 +52,6 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -77,9 +74,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
-import static eu.anifantakis.neakriti.preferences.SetPrefs.NEAKRITI_NEWS_TOPIC;
+import static eu.anifantakis.neakriti.utils.AppUtils.isNightMode;
 import static eu.anifantakis.neakriti.utils.AppUtils.mNotificationManager;
 import static eu.anifantakis.neakriti.utils.AppUtils.onlineMode;
+import static eu.anifantakis.neakriti.utils.NeaKritiApp.sharedPreferences;
 
 
 public class ArticleListActivity extends AppCompatActivity implements
@@ -111,7 +109,6 @@ public class ArticleListActivity extends AppCompatActivity implements
     private Tracker mTracker;
     private SimpleExoPlayer mRadioPlayer;
     private NavigationView navigationView;
-    private SharedPreferences sharedPreferences;
 
     private static final int ARTICLES_FEED_LOADER = 0;
     private static final String LOADER_TITLE = "LOADER_TITLE";
@@ -138,7 +135,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         FirebaseApp.initializeApp(this);
         // get the shared preferences and apply their settings where needed
-        applySharedPreferences(true);
+        setCategoryAvailabilities();
 
         Toolbar toolbar = binding.masterView.toolbar;
         setSupportActionBar(toolbar);
@@ -327,24 +324,11 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
         else if (requestCode==PREFERENCES_REQUEST_CODE) {
             // on resume check if any preferences have changed, and if so
-            applySharedPreferences(false);
+            setCategoryAvailabilities();
+
+            // the "recreate()" method forces new theme to be applied in case we have switched from day to night theme (or vice versa)
+            recreate();
         }
-    }
-
-    private void applySharedPreferences(boolean first){
-        if (sharedPreferences == null)
-            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
-
-        if (first) {
-            // if this method is called from the onCreate method (aka the first boolean)
-            // then check if needed to subscribe to the firebase FCM topic.
-            // Any further subcribe/unsubscribe will be handled from inside the Preferences Activity
-            if (sharedPreferences.getBoolean(getString(R.string.pref_fcm_key), true)) {
-                FirebaseMessaging.getInstance().subscribeToTopic(NEAKRITI_NEWS_TOPIC);
-            }
-        }
-
-        setCategoryAvailabilities();
     }
 
     /**
@@ -955,15 +939,15 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     }
 
-    /*
     @Override
     public Resources.Theme getTheme() {
         Resources.Theme theme = super.getTheme();
-        //if(useAlternativeTheme){
+        if(isNightMode){
             theme.applyStyle(R.style.NightAppTheme, true);
-        //}
-        // you could also use a switch if you have many themes that could apply
+        }
+        else{
+            theme.applyStyle(R.style.AppTheme, true);
+        }
         return super.getTheme();
     }
-    */
 }

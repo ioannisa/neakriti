@@ -12,15 +12,23 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
 
+        <item name="rowBackgroundItem">@drawable/itemselector</item>
+        <item name="rowTitleTextColor">@color/textColorPrimary</item>
+        <item name="rowDateTextColor">@color/textColorSecondary</item>
+
         <item name="upperlogogray">@style/upperlogogray</item>
     </style>
 
-    <style name="AppTheme.DarkActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="DarkActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
+
+        <item name="rowBackgroundItem">@drawable/itemselector</item>
+        <item name="rowTitleTextColor">@color/textColorPrimary</item>
+        <item name="rowDateTextColor">@color/textColorSecondary</item>
 
         <item name="upperlogogray">@style/upperlogogray</item>
     </style>
@@ -47,8 +55,26 @@
         <!--<item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>-->
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimaryNight</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkNight</item>
+        <item name="colorAccent">@color/colorPrimaryNight</item>
+
+        <item name="rowBackgroundItem">@drawable/itemselector_dark</item>
+        <item name="rowTitleTextColor">@color/textColorPrimaryNight</item>
+        <item name="rowDateTextColor">@color/textColorSecondaryNight</item>
+
+        <item name="upperlogogray">@style/upperlogogray</item>
+    </style>
+
+    <style name="NightDarkActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
+
+        <item name="colorPrimary">@color/colorPrimaryNight</item>
         <item name="colorPrimaryDark">@color/colorPrimaryNight</item>
         <item name="colorAccent">@color/colorPrimaryNight</item>
+
+        <item name="rowBackgroundItem">@drawable/itemselector_dark</item>
+        <item name="rowTitleTextColor">@color/textColorPrimaryNight</item>
+        <item name="rowDateTextColor">@color/textColorSecondaryNight</item>
 
         <item name="upperlogogray">@style/upperlogogray</item>
     </style>

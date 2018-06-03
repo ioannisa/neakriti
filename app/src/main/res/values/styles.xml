@@ -28,5 +28,17 @@
         <item name="android:background">@drawable/upperlogogray</item>
     </style>
 
+    <style name="row_background_dark">
+        <item name="android:paddingTop">2sp</item>
+        <item name="android:paddingBottom">2sp</item>
+        <item name="android:background">@drawable/itemselector_dark</item>
+    </style>
+
+    <style name="row_background_light">
+        <item name="android:paddingTop">2sp</item>
+        <item name="android:paddingBottom">2sp</item>
+        <item name="android:background">@drawable/itemselector</item>
+    </style>
+
 
 </resources>

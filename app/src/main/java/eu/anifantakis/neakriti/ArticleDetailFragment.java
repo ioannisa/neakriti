@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
@@ -46,6 +45,9 @@ import eu.anifantakis.neakriti.databinding.FragmentArticleDetailBinding;
 import eu.anifantakis.neakriti.utils.AppUtils;
 import eu.anifantakis.neakriti.utils.NeaKritiApp;
 
+import static eu.anifantakis.neakriti.utils.AppUtils.isNightMode;
+import static eu.anifantakis.neakriti.utils.NeaKritiApp.sharedPreferences;
+
 /**
  * A fragment representing a single Article detail screen.
  * This fragment is either contained in a {@link ArticleListActivity}
@@ -60,7 +62,6 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
     private WebSettings webSettings;
     private WebView mWebView;
     private AdView adView;
-    private SharedPreferences sharedPreferences;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -148,7 +149,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         String articleDetail   = "<div id='story' class='story'>"+basicWebStory+"</div>";
 
         String dayNightStyle = "";
-        if (sharedPreferences.getBoolean(getString(R.string.pref_night_reading_key), false)){
+        if (isNightMode){
             dayNightStyle = "body,p,div{background:#333333 !Important; color:#eeeeee;} a{color:#ee3333 !Important}";
             binding.articleNestedScrollView.setBackgroundColor(Color.parseColor("#333333"));
         }

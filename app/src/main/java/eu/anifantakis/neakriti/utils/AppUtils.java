@@ -54,6 +54,8 @@ public final class AppUtils {
     public static boolean onlineMode = true;
     public static NotificationManager mNotificationManager;
 
+    public static boolean isNightMode = false;
+
     public static Date feedDate(String strDate){
         DateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
         try {

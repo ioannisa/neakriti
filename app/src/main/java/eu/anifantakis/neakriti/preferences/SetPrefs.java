@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -15,8 +16,11 @@ import android.support.v7.app.ActionBar;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import eu.anifantakis.neakriti.R;
+import eu.anifantakis.neakriti.utils.AppUtils;
 import eu.anifantakis.neakriti.widget.NewsWidgetProvider;
 import eu.anifantakis.neakriti.widget.WidgetFetchArticlesService;
+
+import static eu.anifantakis.neakriti.utils.AppUtils.isNightMode;
 
 public class SetPrefs extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -99,6 +103,12 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
         else if (key.equals(getString(R.string.prefs_widget_category_items))){
             refreshWidget();
         }
+        else if (key.equals(getString(R.string.pref_night_reading_key))){
+            AppUtils.isNightMode = sharedPreferences.getBoolean(getString(R.string.pref_night_reading_key), false);
+
+            // the "recreate()" method forces new theme to be applied in case we have switched from day to night theme (or vice versa)
+            recreate();
+        }
     }
 
     private int getIndexOfStringArrayWhereStringIs(String[] array, String string){
@@ -155,5 +165,17 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
         if (extras != null)
             appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
+    }
+
+    @Override
+    public Resources.Theme getTheme() {
+        Resources.Theme theme = super.getTheme();
+        if(isNightMode){
+            theme.applyStyle(R.style.NightDarkActionBar, true);
+        }
+        else{
+            theme.applyStyle(R.style.DarkActionBar, true);
+        }
+        return super.getTheme();
     }
 }

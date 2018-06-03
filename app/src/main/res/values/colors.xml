@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- https://www.materialui.co/colors -->
 <resources>
+    <!-- DAY -->
     <color name="colorPrimary">#d32f2f</color>
     <color name="colorPrimaryDark">#b71c1c</color>
     <color name="colorAccent">#f44336</color>
     <color name="red_100">#ffcdd2</color>
     <color name="blue_gray_100">#ECEFF1</color>
+    <color name="textColorPrimary">#333333</color>
+    <color name="textColorSecondary">#777777</color>
 
+    <!-- NIGHT -->
     <color name="colorPrimaryNight">#424242</color>
     <color name="colorPrimaryDarkNight">#212121</color>
     <color name="colorAccentNight">#616161</color>
+    <color name="textColorPrimaryNight">#eeeeee</color>
+    <color name="textColorSecondaryNight">#aaaaaa</color>
 
     <color name="black">#000000</color>
 </resources>
