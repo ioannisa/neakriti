@@ -137,23 +137,6 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
         return index;
     }
 
-    /**
-     * This activity is launched when a widget is placed as initial settup
-     * This code is necessary to both display that widget when the activity is closed
-     * but also to force any preferences changes done on the newly placed or already existing widget
-     */
-    private void applyChangesToNewWidget(){
-        Intent intent = new Intent();
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        setResult(Activity.RESULT_OK, intent);
-
-        // start your service
-        // to fetch data from web
-        Intent serviceIntent = new Intent(this, WidgetFetchArticlesService.class);
-        serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        startService(serviceIntent);
-    }
-
     private void refreshWidget(){
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         int[] appWidgetId = appWidgetManager.getAppWidgetIds(new ComponentName(this, NewsWidgetProvider.class));
