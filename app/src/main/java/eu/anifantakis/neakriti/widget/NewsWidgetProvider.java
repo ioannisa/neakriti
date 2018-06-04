@@ -74,7 +74,7 @@ public class NewsWidgetProvider extends AppWidgetProvider {
 
         // Settings Button
         Intent settingsIntent = new Intent(context, SetPrefs.class);
-        settingsIntent.putExtra("WIDGET_UPDATE", true);
+        settingsIntent.putExtra(APPWIDGET_UPDATE, true);
         PendingIntent settingsPendingIntent = PendingIntent.getActivity(context, 10, settingsIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.widget_settings, settingsPendingIntent);
 

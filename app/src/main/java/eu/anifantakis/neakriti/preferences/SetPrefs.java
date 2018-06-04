@@ -21,6 +21,7 @@ import eu.anifantakis.neakriti.widget.NewsWidgetProvider;
 import eu.anifantakis.neakriti.widget.WidgetFetchArticlesService;
 
 import static eu.anifantakis.neakriti.utils.AppUtils.isNightMode;
+import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.APPWIDGET_UPDATE;
 
 public class SetPrefs extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -28,10 +29,16 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
 
     private static PackageInfo pInfo;
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+    private boolean initiatedByNewWidget = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null && extras.containsKey(APPWIDGET_UPDATE)){
+            initiatedByNewWidget = extras.getBoolean(APPWIDGET_UPDATE);
+        }
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getString(R.string.action_settings));
@@ -97,11 +104,13 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
             editor.putString(getString(R.string.prefs_widget_category_title), selectedCategoryName);
             editor.apply();
 
-            // force widget refresh
-            refreshWidget();
+            // force widget refresh if this is a widget update (not a new widget)
+            if (!initiatedByNewWidget)
+                refreshWidget();
         }
         else if (key.equals(getString(R.string.prefs_widget_category_items))){
-            refreshWidget();
+            if (!initiatedByNewWidget)
+                refreshWidget();
         }
         else if (key.equals(getString(R.string.pref_night_reading_key))){
             AppUtils.isNightMode = sharedPreferences.getBoolean(getString(R.string.pref_night_reading_key), false);
@@ -126,7 +135,9 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
 
     @Override
     public void onBackPressed() {
-        applyChangesToWidget();
+        if (initiatedByNewWidget) {
+            applyChangesToNewWidget();
+        }
         super.onBackPressed();
     }
 
@@ -135,7 +146,7 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
      * This code is necessary to both display that widget when the activity is closed
      * but also to force any preferences changes done on the newly placed or already existing widget
      */
-    private void applyChangesToWidget(){
+    private void applyChangesToNewWidget(){
         Intent intent = new Intent();
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         setResult(Activity.RESULT_OK, intent);
@@ -143,8 +154,7 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
         // start your service
         // to fetch data from web
         Intent serviceIntent = new Intent(this, WidgetFetchArticlesService.class);
-        serviceIntent
-                .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         startService(serviceIntent);
     }
 
