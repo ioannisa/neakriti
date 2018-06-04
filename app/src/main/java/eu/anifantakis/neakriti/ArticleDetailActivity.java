@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -111,8 +110,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
             supportStartPostponedEnterTransition();
         }
 
-        Toolbar toolbar = binding.detailToolbar;
-        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.detailToolbar);
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
@@ -133,19 +131,9 @@ public class ArticleDetailActivity extends AppCompatActivity {
                     .add(R.id.article_detail_container, fragment)
                     .commit();
         }
-    }
+        else{
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        /*
-        if (detailActivityImage!=null){
-            Picasso.get()
-                    .load(mArticle.getImgLarge())
-                    .into(detailActivityImage);
         }
-        */
     }
 
     /**

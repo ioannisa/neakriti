@@ -63,6 +63,8 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
     private WebSettings webSettings;
     private WebView mWebView;
     private AdView adView;
+    private CollapsingToolbarLayout appBarLayout;
+    private String mCategoryTitle;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -84,19 +86,30 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
             mArticle = getArguments().getParcelable(AppUtils.EXTRAS_ARTICLE);
-
-            Activity activity = this.getActivity();
-            CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
-            if (appBarLayout != null) {
-                // using a theme with NoActionBar we would set title like that
-                //appBarLayout.setTitle(mArticle.getTitle());
-                appBarLayout.setTitle(mArticle.getGroupName());
-
-                // using a theme with ActionBar we set the activity's toolbar name like that
-                //getActivity().setTitle(mArticle.getGroupName());
-            }
         }
 
+        Activity activity = this.getActivity();
+        appBarLayout = activity.findViewById(R.id.toolbar_layout);
+        if (appBarLayout != null) {
+            // using a theme with NoActionBar we would set title like that (CASE 1)
+            //appBarLayout.setTitle(mArticle.getTitle());
+
+            // using a theme with ActionBar we set the activity's toolbar name like that (CASE 2)
+            //getActivity().setTitle(mArticle.getGroupName());
+
+            // So we are applying the NoActionBar code here (aka CASE 1).
+            appBarLayout.setTitle(mArticle.getGroupName());
+        }
+    }
+
+    /**
+     * Retain Article object during device rotation
+     * @param outState the bundle to save
+     */
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putParcelable(AppUtils.EXTRAS_ARTICLE, mArticle);
+        super.onSaveInstanceState(outState);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -128,6 +141,18 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 
         adView = binding.adView;
+
+        // Handling Rotation
+        if (savedInstanceState!=null){
+            if (savedInstanceState.containsKey(AppUtils.EXTRAS_ARTICLE)) {
+                mArticle = savedInstanceState.getParcelable(AppUtils.EXTRAS_ARTICLE);
+            }
+        }
+        Activity activity = this.getActivity();
+        appBarLayout = activity.findViewById(R.id.toolbar_layout);
+        if (appBarLayout != null) {
+            appBarLayout.setTitle(mArticle.getGroupName());
+        }
 
         // Show the dummy content as text in a TextView.
         if (mArticle != null) {
