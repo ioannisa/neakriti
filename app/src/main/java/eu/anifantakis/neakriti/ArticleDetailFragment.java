@@ -237,7 +237,9 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
     @Override
     public void onDestroy(){
         super.onDestroy();
-        mTextToSpeech.shutdown();
+        if (mTextToSpeech!=null) {
+            mTextToSpeech.shutdown();
+        }
 
     }
 
@@ -449,8 +451,11 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
     public void onDestroyView() {
         super.onDestroyView();
 
-        if (mTextToSpeech.isSpeaking())
-            mTextToSpeech.stop();
+        if (mTextToSpeech!=null) {
+            if (mTextToSpeech.isSpeaking()) {
+                mTextToSpeech.stop();
+            }
             mTextToSpeech.shutdown();
+        }
     }
 }
