@@ -349,6 +349,8 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
 
                             }
                         });
+                    // Create the AlertDialog object and return it
+                    builder.create().show();
                 }
 
                 // Setting Text to Speech to null will allow it to detect the changes we did to resolve the failure
