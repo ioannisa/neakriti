@@ -131,9 +131,6 @@ public class ArticleDetailActivity extends AppCompatActivity {
                     .add(R.id.article_detail_container, fragment)
                     .commit();
         }
-        else{
-
-        }
     }
 
     /**
@@ -165,8 +162,6 @@ public class ArticleDetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
     private void startMainActivity(){
         Intent intent = new Intent(getApplicationContext(), ArticleListActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -179,6 +174,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
         if (startedByNotification) {
             startMainActivity();
         }
+        ArticleListActivity.shouldreload = startedByNotification;
         super.onBackPressed();
     }
 

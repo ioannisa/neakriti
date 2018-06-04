@@ -125,6 +125,9 @@ public class ArticleListActivity extends AppCompatActivity implements
     public static final int DETAIL_ACTIVITY_REQUEST_CODE = 100;
     public static final int PREFERENCES_REQUEST_CODE = 200;
 
+    // we need to reload everytime the activity loads onResume, except of when it occurs when coming back from Detail Activity
+    public static boolean shouldreload = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -232,12 +235,15 @@ public class ArticleListActivity extends AppCompatActivity implements
             }
         });
 
+        shouldreload = false;
+
         // set default selected menu category the home category
         navigationView.setCheckedItem(R.id.nav_home);
         feedSrvid = getString(R.string.nav_home_id);
         feedItems = 25;
         feedName = getString(R.string.nav_home);
-        makeArticlesLoaderQuery(feedName, ArticlesDBContract.DB_TYPE_CATEGORY, feedSrvid, feedItems);
+        feedType = ArticlesDBContract.DB_TYPE_CATEGORY;
+        makeArticlesLoaderQuery(feedName, feedType, feedSrvid, feedItems);
     }
 
 
@@ -669,7 +675,7 @@ public class ArticleListActivity extends AppCompatActivity implements
             else if (id == R.id.nav_woman)      { feedSrvid = getString(R.string.nav_woman_id); }
             else if (id == R.id.nav_travel)     { feedSrvid = getString(R.string.nav_travel_id); }
 
-            makeArticlesLoaderQuery(feedName, ArticlesDBContract.DB_TYPE_CATEGORY, feedSrvid, feedItems);
+            makeArticlesLoaderQuery(feedName, feedType, feedSrvid, feedItems);
         }
 
         DrawerLayout drawer = binding.drawerLayout;
@@ -680,6 +686,12 @@ public class ArticleListActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (shouldreload) {
+            Log.d("RELOAD", "FORCE RELOAD");
+            makeArticlesLoaderQuery(feedName, feedType, feedSrvid, feedItems);
+        }
+        shouldreload = true;
     }
 
     @Override

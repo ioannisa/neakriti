@@ -16,6 +16,7 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import eu.anifantakis.neakriti.ArticleListActivity;
 import eu.anifantakis.neakriti.R;
 import eu.anifantakis.neakriti.utils.AppUtils;
 import eu.anifantakis.neakriti.widget.NewsWidgetProvider;
@@ -34,6 +35,8 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ArticleListActivity.shouldreload = false;
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getString(R.string.action_settings));
@@ -62,8 +65,6 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
     @Override
     public void onNewIntent(Intent newIntent) {
         this.setIntent(newIntent);
-
-
     }
 
     public static class PrefsFragment extends PreferenceFragment {
