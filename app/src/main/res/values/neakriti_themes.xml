@@ -13,6 +13,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
 
+        <item name="sideNavBar">@drawable/side_nav_bar</item>
         <item name="rowBackgroundItem">@drawable/itemselector</item>
         <item name="rowTitleTextColor">@color/textColorPrimary</item>
         <item name="rowDateTextColor">@color/textColorSecondary</item>
@@ -28,6 +29,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
 
+        <item name="sideNavBar">@drawable/side_nav_bar</item>
         <item name="rowBackgroundItem">@drawable/itemselector</item>
         <item name="rowTitleTextColor">@color/textColorPrimary</item>
         <item name="rowDateTextColor">@color/textColorSecondary</item>
@@ -61,6 +63,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDarkNight</item>
         <item name="colorAccent">@color/colorPrimaryNight</item>
 
+        <item name="sideNavBar">@drawable/side_nav_bar_dark</item>
         <item name="rowBackgroundItem">@drawable/itemselector_dark</item>
         <item name="rowTitleTextColor">@color/textColorPrimaryNight</item>
         <item name="rowDateTextColor">@color/textColorSecondaryNight</item>
@@ -76,6 +79,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryNight</item>
         <item name="colorAccent">@color/colorPrimaryNight</item>
 
+        <item name="sideNavBar">@drawable/side_nav_bar_dark</item>
         <item name="rowBackgroundItem">@drawable/itemselector_dark</item>
         <item name="rowTitleTextColor">@color/textColorPrimaryNight</item>
         <item name="rowDateTextColor">@color/textColorSecondaryNight</item>
@@ -88,6 +92,7 @@
         <item name="windowNoTitle">true</item>
         <item name="android:background">#333333</item>
 
+        <item name="sideNavBar">@drawable/side_nav_bar_dark</item>
         <item name="collapsingColor">@color/colorPrimaryNight</item>
         <item name="colorPrimary">@color/colorPrimaryNight</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkNight</item>

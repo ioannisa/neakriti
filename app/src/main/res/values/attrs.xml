@@ -8,5 +8,6 @@
     <attr name="rowDateTextColor" format="reference" />
 
     <attr name="collapsingColor" format="reference" />
+    <attr name="sideNavBar" format="reference" />
 
 </resources>
