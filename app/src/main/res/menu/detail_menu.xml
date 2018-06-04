@@ -4,24 +4,21 @@
     <item
         android:id="@+id/nav_tts"
         android:icon="@drawable/baseline_headset_24px"
-        android:title="@string/detail_menu_tts"
         android:orderInCategory="1"
-        app:showAsAction="ifRoom"
-        />
+        android:title="@string/detail_menu_tts"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/nav_share_article"
         android:icon="@drawable/baseline_share_24px"
-        android:title="@string/detail_menu_sharing"
         android:orderInCategory="2"
-        app:showAsAction="ifRoom"
-        />
+        android:title="@string/detail_menu_sharing"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/nav_favorite"
         android:icon="@drawable/bookmark_outline_wh_48px"
-        android:title="@string/detail_menu_bookmark"
         android:orderInCategory="3"
-        app:showAsAction="ifRoom"
-        />
+        android:title="@string/detail_menu_bookmark"
+        app:showAsAction="ifRoom" />
 </menu>

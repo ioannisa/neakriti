@@ -4,15 +4,15 @@
 
     <item
         android:id="@+id/action_live"
-        android:orderInCategory="1"
         android:icon="@drawable/live_tv_24px"
+        android:orderInCategory="1"
         android:title="@string/live_streaming"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="2"
         android:icon="@drawable/settings_wh_24px"
+        android:orderInCategory="2"
         android:title="@string/action_settings"
         app:showAsAction="never" />
 </menu>
