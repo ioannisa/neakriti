@@ -12,4 +12,6 @@
     <attr name="tabletBackground" format="reference" />
     <attr name="articleBackground" format="reference" />
 
+    <attr name="itemSelector" format="reference" />
+
 </resources>

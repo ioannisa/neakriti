@@ -20,6 +20,8 @@
         <item name="rowTitleTextColor">@color/textColorPrimary</item>
         <item name="rowDateTextColor">@color/textColorSecondary</item>
 
+        <item name="itemSelector">@drawable/itemselector</item>
+
         <item name="upperlogogray">@style/upperlogogray</item>
     </style>
 
@@ -38,6 +40,8 @@
         <item name="rowBackgroundItem">@drawable/itemselector</item>
         <item name="rowTitleTextColor">@color/textColorPrimary</item>
         <item name="rowDateTextColor">@color/textColorSecondary</item>
+
+        <item name="itemSelector">@drawable/itemselector</item>
 
         <item name="upperlogogray">@style/upperlogogray</item>
     </style>
@@ -75,6 +79,8 @@
         <item name="rowTitleTextColor">@color/textColorPrimaryNight</item>
         <item name="rowDateTextColor">@color/textColorSecondaryNight</item>
 
+        <item name="itemSelector">@drawable/itemselector_dark</item>
+
         <item name="upperlogogray">@style/upperlogogray</item>
     </style>
 
@@ -93,6 +99,8 @@
         <item name="rowBackgroundItem">@drawable/itemselector_dark</item>
         <item name="rowTitleTextColor">@color/textColorPrimaryNight</item>
         <item name="rowDateTextColor">@color/textColorSecondaryNight</item>
+
+        <item name="itemSelector">@drawable/itemselector_dark</item>
 
         <item name="upperlogogray">@style/upperlogogray</item>
     </style>
