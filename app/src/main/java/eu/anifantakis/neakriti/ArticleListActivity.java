@@ -762,8 +762,8 @@ public class ArticleListActivity extends AppCompatActivity implements
                     .load(R.drawable.btn_radio_pause)
                     .into(btnRadio);
 
-            String channelId = "radio-channel";
-            String channelName = "Radio Player Notification";
+            String channelId = getString(R.string.notif_channel_radio_id);
+            String channelName = getString(R.string.notif_channel_radio_name);
             int importance = 0;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                 importance = NotificationManager.IMPORTANCE_HIGH;

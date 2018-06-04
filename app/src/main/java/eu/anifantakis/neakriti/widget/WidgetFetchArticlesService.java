@@ -1,14 +1,17 @@
 package eu.anifantakis.neakriti.widget;
 
-import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -28,9 +31,9 @@ import static eu.anifantakis.neakriti.utils.AppUtils.URL_BASE;
 import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.APPWIDGET_UPDATE;
 import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.WIDGET_DIRECTION_NEXT;
 import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.WIDGET_DIRECTION_PREVIOUS;
+import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.WIDGET_EXTRAS_CATGORY_TITLE;
 import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.WIDGET_EXTRAS_DIRECTION;
 import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.WIDGET_EXTRAS_HAS_DATA;
-import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.WIDGET_EXTRAS_CATGORY_TITLE;
 
 // source: https://laaptu.wordpress.com/2013/07/24/populate-appwidget-listview-with-remote-datadata-from-web/
 
@@ -64,7 +67,32 @@ public class WidgetFetchArticlesService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        startForeground(1, new Notification());
+
+
+        // Due to calling startForegroundService in NewsWidgetProvider.java we have follow it with a "startForeground" method.
+        // This method needs to have a mandatory Notification call.  Therefore we include this unnecessary Notification.
+
+        // This notification is useless and does not effect the app if its on or off.  We just need it to call the "startForeground" method.
+        // This is since we cannot pass "null" to the notification whatsoever.
+
+        // Hence we are using an already existing channel (Which we don't care if its active or inactive) - we will lend the news notification channel here
+
+        NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        String channelId = getString(R.string.notif_channel_news_id);
+        String channelName = getString(R.string.notif_channel_news_name);
+        int importance = 0;
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            importance = NotificationManager.IMPORTANCE_NONE;
+        }
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel mChannel = new NotificationChannel(
+                    channelId, channelName, importance);
+            notificationManager.createNotificationChannel(mChannel);
+        }
+        startForeground(1, new NotificationCompat.Builder( this, channelId).build());
     }
 
     @Override

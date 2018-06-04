@@ -128,7 +128,7 @@ public class ListProvider implements RemoteViewsFactory {
     public void onDestroy() {
     }
 
-    //new method to call it brom broadcast receiver inside widgetprovider so to trigger populateListItem method
+    //new method to call it from broadcast receiver inside widgetprovider so to trigger populateListItem method
     public static void setInfoData() {
         populateListItem();
     }

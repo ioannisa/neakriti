@@ -153,4 +153,11 @@
     <string name="prefs_widget_category_id" translatable="false">prefs_widget_category_id</string>
     <string name="prefs_widget_category_title" translatable="false">prefs_widget_category_title</string>
     <string name="prefs_widget_category_items" translatable="false">prefs_widget_category_items</string>
+
+    <!-- Notification Channels -->
+    <string name="notif_channel_news_id" translatable="false">news-channel</string>
+    <string name="notif_channel_news_name" translatable="false">News Articles</string>
+
+    <string name="notif_channel_radio_id" translatable="false">radio-channel</string>
+    <string name="notif_channel_radio_name" translatable="false">Radio Player Notification</string>
 </resources>

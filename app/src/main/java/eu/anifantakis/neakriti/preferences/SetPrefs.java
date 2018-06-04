@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -29,16 +30,10 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
 
     private static PackageInfo pInfo;
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-    private boolean initiatedByNewWidget = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Bundle extras = getIntent().getExtras();
-        if (extras != null && extras.containsKey(APPWIDGET_UPDATE)){
-            initiatedByNewWidget = extras.getBoolean(APPWIDGET_UPDATE);
-        }
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getString(R.string.action_settings));
@@ -58,6 +53,17 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Useful method to get activity intent if this activity was a result of a PendingIntent
+     * @param newIntent the incoming intent
+     */
+    @Override
+    public void onNewIntent(Intent newIntent) {
+        this.setIntent(newIntent);
+
+
     }
 
     public static class PrefsFragment extends PreferenceFragment {
@@ -105,12 +111,10 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
             editor.apply();
 
             // force widget refresh if this is a widget update (not a new widget)
-            if (!initiatedByNewWidget)
-                refreshWidget();
+            refreshWidget();
         }
         else if (key.equals(getString(R.string.prefs_widget_category_items))){
-            if (!initiatedByNewWidget)
-                refreshWidget();
+            refreshWidget();
         }
         else if (key.equals(getString(R.string.pref_night_reading_key))){
             AppUtils.isNightMode = sharedPreferences.getBoolean(getString(R.string.pref_night_reading_key), false);
@@ -131,31 +135,6 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
         }
 
         return index;
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (initiatedByNewWidget) {
-            applyChangesToNewWidget();
-        }
-        super.onBackPressed();
-    }
-
-    /**
-     * This activity is launched when a widget is placed as initial settup
-     * This code is necessary to both display that widget when the activity is closed
-     * but also to force any preferences changes done on the newly placed or already existing widget
-     */
-    private void applyChangesToNewWidget(){
-        Intent intent = new Intent();
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        setResult(Activity.RESULT_OK, intent);
-
-        // start your service
-        // to fetch data from web
-        Intent serviceIntent = new Intent(this, WidgetFetchArticlesService.class);
-        serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        startService(serviceIntent);
     }
 
     private void refreshWidget(){

@@ -75,7 +75,7 @@ public class NewsWidgetProvider extends AppWidgetProvider {
         // Settings Button
         Intent settingsIntent = new Intent(context, SetPrefs.class);
         settingsIntent.putExtra(APPWIDGET_UPDATE, true);
-        PendingIntent settingsPendingIntent = PendingIntent.getActivity(context, 10, settingsIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent settingsPendingIntent = PendingIntent.getActivity(context, 10, settingsIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         views.setOnClickPendingIntent(R.id.widget_settings, settingsPendingIntent);
 
         // if the list_view_widget is empty, then show the text view that contains the empty text
@@ -96,6 +96,8 @@ public class NewsWidgetProvider extends AppWidgetProvider {
                 serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, savedAppWidgetId);
                 //context.startService(serviceIntent);
 
+                //Fixing java.lang.IllegalStateException: Not allowed to start service Intent
+                //Source: https://stackoverflow.com/questions/46445265/android-8-0-java-lang-illegalstateexception-not-allowed-to-start-service-inten
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     context.startForegroundService(serviceIntent);
                 } else {

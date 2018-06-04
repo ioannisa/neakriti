@@ -270,8 +270,8 @@ public class FBMessagingService extends FirebaseMessagingService {
 
                 Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-                String channelId = "channel-01";
-                String channelName = "Channel Name";
+                String channelId = getString(R.string.notif_channel_news_id);
+                String channelName = getString(R.string.notif_channel_news_name);
                 int importance = 0;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                     importance = NotificationManager.IMPORTANCE_HIGH;
