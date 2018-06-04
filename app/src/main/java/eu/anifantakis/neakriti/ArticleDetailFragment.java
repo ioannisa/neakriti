@@ -181,7 +181,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         String dayNightStyle = "";
         if (isNightMode){
             dayNightStyle = "body,p,div{background:#333333 !Important; color:#eeeeee;} a{color:#ee3333 !Important}";
-            binding.articleNestedScrollView.setBackgroundColor(Color.parseColor("#333333"));
+            //binding.articleNestedScrollView.setBackgroundColor(Color.parseColor("#333333"));
         }
 
         String webStory =

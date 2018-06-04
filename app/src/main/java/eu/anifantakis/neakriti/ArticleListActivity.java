@@ -109,6 +109,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     private Tracker mTracker;
     private SimpleExoPlayer mRadioPlayer;
     private NavigationView navigationView;
+    private Menu menu;
 
     private static final int ARTICLES_FEED_LOADER = 0;
     private static final String LOADER_TITLE = "LOADER_TITLE";
@@ -195,7 +196,6 @@ public class ArticleListActivity extends AppCompatActivity implements
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         // SETUP RETROFIT
-
         retrofit = new Retrofit.Builder()
                 .baseUrl(AppUtils.URL_BASE)
                 .client(new OkHttpClient())
@@ -577,7 +577,10 @@ public class ArticleListActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        Log.d("MENU INFLATE", "DONE");
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.main, menu);
+
         return true;
     }
 
@@ -672,6 +675,11 @@ public class ArticleListActivity extends AppCompatActivity implements
         DrawerLayout drawer = binding.drawerLayout;
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
