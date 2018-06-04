@@ -1,5 +1,6 @@
 package eu.anifantakis.neakriti;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -98,6 +99,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
 
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -115,7 +117,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         webSettings = mWebView.getSettings();
 
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-        //webSettings.setJavaScriptEnabled(true);
+        webSettings.setJavaScriptEnabled(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setDatabaseEnabled(true);
         webSettings.setDomStorageEnabled(true);
