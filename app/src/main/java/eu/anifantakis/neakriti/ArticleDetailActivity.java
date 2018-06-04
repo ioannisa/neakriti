@@ -1,6 +1,7 @@
 package eu.anifantakis.neakriti;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -18,6 +19,8 @@ import com.squareup.picasso.Picasso;
 import eu.anifantakis.neakriti.data.feed.gson.Article;
 import eu.anifantakis.neakriti.databinding.ActivityArticleDetailBinding;
 import eu.anifantakis.neakriti.utils.AppUtils;
+
+import static eu.anifantakis.neakriti.utils.AppUtils.isNightMode;
 
 public class ArticleDetailActivity extends AppCompatActivity {
 
@@ -191,7 +194,6 @@ public class ArticleDetailActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    /*
     @Override
     public Resources.Theme getTheme() {
         Resources.Theme theme = super.getTheme();
@@ -199,9 +201,8 @@ public class ArticleDetailActivity extends AppCompatActivity {
             theme.applyStyle(R.style.NoActionBarNight, true);
         }
         else{
-            theme.applyStyle(R.style.NoActionBarDay, true);
+            theme.applyStyle(R.style.NoActionBar, true);
         }
         return super.getTheme();
     }
-    */
 }

@@ -8,6 +8,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!--<item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>-->
         <!-- Customize your theme here. -->
+        <item name="collapsingColor">@color/colorPrimary</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
@@ -22,6 +23,7 @@
     <style name="DarkActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
         <!-- Customize your theme here. -->
+        <item name="collapsingColor">@color/colorPrimary</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
@@ -33,12 +35,12 @@
         <item name="upperlogogray">@style/upperlogogray</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
+    <style name="NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="SplashTheme" parent="AppTheme.NoActionBar">
+    <style name="SplashTheme" parent="NoActionBar">
         <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
@@ -54,6 +56,7 @@
     <style name="NightAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!--<item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>-->
         <!-- Customize your theme here. -->
+        <item name="collapsingColor">@color/colorPrimaryNight</item>
         <item name="colorPrimary">@color/colorPrimaryNight</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkNight</item>
         <item name="colorAccent">@color/colorPrimaryNight</item>
@@ -68,6 +71,7 @@
     <style name="NightDarkActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
 
+        <item name="collapsingColor">@color/colorPrimaryNight</item>
         <item name="colorPrimary">@color/colorPrimaryNight</item>
         <item name="colorPrimaryDark">@color/colorPrimaryNight</item>
         <item name="colorAccent">@color/colorPrimaryNight</item>
@@ -77,6 +81,21 @@
         <item name="rowDateTextColor">@color/textColorSecondaryNight</item>
 
         <item name="upperlogogray">@style/upperlogogray</item>
+    </style>
+
+    <style name="NoActionBarNight" parent="NightAppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:background">#333333</item>
+
+        <item name="collapsingColor">@color/colorPrimaryNight</item>
+        <item name="colorPrimary">@color/colorPrimaryNight</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkNight</item>
+        <item name="colorAccent">@color/colorPrimaryNight</item>
+    </style>
+
+    <style name="SplashThemeNight" parent="NoActionBarNight">
+        <item name="android:windowBackground">@drawable/splash_night</item>
     </style>
 
 </resources>

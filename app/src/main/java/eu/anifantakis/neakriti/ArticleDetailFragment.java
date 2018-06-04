@@ -122,6 +122,9 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         mWebView.getSettings().setAllowFileAccess(true);
         webSettings.setAppCacheEnabled(true);
 
+        // set the webview scrollbar to be "inside" to avoid unecessary "right-side" padding space
+        mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+
         adView = binding.adView;
 
         // Show the dummy content as text in a TextView.

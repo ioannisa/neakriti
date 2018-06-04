@@ -19,6 +19,6 @@
 		android:right="5dp"/>
 
 	<corners
-		android:radius="7dp"/>
+		android:radius="0dp"/>
 
 </shape>

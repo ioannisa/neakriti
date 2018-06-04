@@ -7,4 +7,6 @@
     <attr name="rowTitleTextColor" format="reference" />
     <attr name="rowDateTextColor" format="reference" />
 
+    <attr name="collapsingColor" format="reference" />
+
 </resources>

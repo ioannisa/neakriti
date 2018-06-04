@@ -5,14 +5,13 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff"
         android:orientation="vertical">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/blue_gray_100"
+            android:background="?rowBackgroundItem"
             android:orientation="vertical"
             android:paddingBottom="8dp"
             android:paddingLeft="16dp"
@@ -26,12 +25,16 @@
                 android:layout_marginBottom="8dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:textColor="?rowTitleTextColor"
+                android:background="#07000000"
                 tools:text="ARTICLE TITILE HERE" />
 
             <TextView
                 android:id="@+id/detail_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="?rowDateTextColor"
+                android:background="#07000000"
                 tools:text="ARTICLE DATE TIME HERE" />
 
 
