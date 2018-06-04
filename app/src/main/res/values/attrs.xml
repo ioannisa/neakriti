@@ -9,5 +9,7 @@
 
     <attr name="collapsingColor" format="reference" />
     <attr name="sideNavBar" format="reference" />
+    <attr name="tabletBackground" format="reference" />
+
 
 </resources>

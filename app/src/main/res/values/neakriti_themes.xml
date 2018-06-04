@@ -6,12 +6,13 @@
     <!-- =============================================================== -->
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!--<item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>-->
-        <!-- Customize your theme here. -->
+        <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
         <item name="collapsingColor">@color/colorPrimary</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
+
+        <item name="tabletBackground">@color/tabletBackground</item>
 
         <item name="sideNavBar">@drawable/side_nav_bar</item>
         <item name="rowBackgroundItem">@drawable/itemselector</item>
@@ -28,6 +29,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
+
+        <item name="tabletBackground">@color/tabletBackground</item>
 
         <item name="sideNavBar">@drawable/side_nav_bar</item>
         <item name="rowBackgroundItem">@drawable/itemselector</item>
@@ -56,8 +59,9 @@
     <!-- =============================================================== -->
 
     <style name="NightAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!--<item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>-->
-        <!-- Customize your theme here. -->
+        <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
+        <item name="tabletBackground">@color/tabletBackgroundNight</item>
+
         <item name="collapsingColor">@color/colorPrimaryNight</item>
         <item name="colorPrimary">@color/colorPrimaryNight</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkNight</item>
@@ -73,6 +77,8 @@
 
     <style name="NightDarkActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
+
+        <item name="tabletBackground">@color/tabletBackgroundNight</item>
 
         <item name="collapsingColor">@color/colorPrimaryNight</item>
         <item name="colorPrimary">@color/colorPrimaryNight</item>
@@ -91,6 +97,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:background">#333333</item>
+        <item name="tabletBackground">@color/tabletBackgroundNight</item>
 
         <item name="sideNavBar">@drawable/side_nav_bar_dark</item>
         <item name="collapsingColor">@color/colorPrimaryNight</item>

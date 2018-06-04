@@ -4,7 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#eee"
+        android:background="?tabletBackground"
         android:baselineAligned="false"
         android:divider="?android:attr/dividerHorizontal"
         android:orientation="horizontal"
@@ -55,7 +55,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingBottom="15dp"
-            android:background="#eee">
+            android:background="?tabletBackground">
 
             <FrameLayout
                 android:id="@+id/article_detail_container"

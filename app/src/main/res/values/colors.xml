@@ -9,6 +9,8 @@
     <color name="blue_gray_100">#ECEFF1</color>
     <color name="textColorPrimary">#333333</color>
     <color name="textColorSecondary">#777777</color>
+    <color name="tabletBackground">#eeeeee</color>
+
 
     <!-- NIGHT -->
     <color name="colorPrimaryNight">#424242</color>
@@ -16,6 +18,7 @@
     <color name="colorAccentNight">#616161</color>
     <color name="textColorPrimaryNight">#eeeeee</color>
     <color name="textColorSecondaryNight">#aaaaaa</color>
+    <color name="tabletBackgroundNight">#444444</color>
 
     <color name="black">#000000</color>
 </resources>
