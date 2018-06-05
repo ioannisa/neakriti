@@ -19,7 +19,7 @@
             android:layout_height="52dp"
             android:contentDescription="@string/nav_header_desc"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
-            android:src="@drawable/logo_white" />
+            app:srcCompat="@drawable/logo_white" />
 
         <TextView
             android:layout_width="match_parent"

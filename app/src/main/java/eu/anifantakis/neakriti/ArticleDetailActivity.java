@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +32,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_article_detail);
         //setContentView(R.layout.activity_article_detail);
 

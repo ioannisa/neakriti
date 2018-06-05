@@ -27,7 +27,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="12dp"
                     android:contentDescription="@string/app_name"
-                    android:src="@drawable/logo_white" />
+                    app:srcCompat="@drawable/logo_white" />
 
 
             </android.support.v7.widget.Toolbar>

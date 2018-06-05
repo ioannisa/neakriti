@@ -8,7 +8,7 @@
         android:gravity="center"
         android:width="300dp"
         android:height="70dp"
-        android:drawable="@drawable/logo"
+        android:drawable="@drawable/btn_radio"
         tools:ignore="UnusedAttribute" />
 
 </layer-list>
