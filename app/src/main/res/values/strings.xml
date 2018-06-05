@@ -160,4 +160,9 @@
 
     <string name="notif_channel_radio_id" translatable="false">radio-channel</string>
     <string name="notif_channel_radio_name" translatable="false">Radio Player Notification</string>
+
+    <string name="three" translatable="false">3</string>
+    <string name="five" translatable="false">5</string>
+    <string name="seven" translatable="false">7</string>
+    <string name="ten" translatable="false">10</string>
 </resources>

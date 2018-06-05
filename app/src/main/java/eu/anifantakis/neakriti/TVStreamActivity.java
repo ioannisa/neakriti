@@ -111,9 +111,6 @@ public class TVStreamActivity extends AppCompatActivity {
         });
         videoView.setOnTouchListener(mySfg);
 
-
-
-
         if (savedInstanceState != null){
             position = savedInstanceState.getLong(SELECTED_POSITION, C.TIME_UNSET);
             playWhenReady = savedInstanceState.getBoolean(PLAY_WHEN_READY);
@@ -177,8 +174,6 @@ public class TVStreamActivity extends AppCompatActivity {
         mExoPlayer.setPlayWhenReady(playWhenReady);
         mExoPlayer.prepare(mediaSource);
     }
-
-
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {

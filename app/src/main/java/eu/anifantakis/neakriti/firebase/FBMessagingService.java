@@ -19,12 +19,15 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Collections;
+
 import eu.anifantakis.neakriti.ArticleDetailActivity;
 import eu.anifantakis.neakriti.R;
 import eu.anifantakis.neakriti.data.RequestInterface;
 import eu.anifantakis.neakriti.data.feed.gson.Article;
 import eu.anifantakis.neakriti.data.feed.gson.Feed;
 import eu.anifantakis.neakriti.utils.AppUtils;
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,6 +35,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
+import static eu.anifantakis.neakriti.utils.AppUtils.spec;
 
 /**
  * http://srv.neakriti.gr/firebase/fcm-form.php
@@ -238,6 +242,7 @@ public class FBMessagingService extends FirebaseMessagingService {
     public void sendNotification(final String title, final String messageBody, final Bitmap image, final Bitmap bigPicture, String articleId, final int notification_id) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(AppUtils.URL_BASE)
+                .client(new OkHttpClient.Builder().connectionSpecs(Collections.singletonList(spec)).build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

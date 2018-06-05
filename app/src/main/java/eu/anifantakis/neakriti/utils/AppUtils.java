@@ -28,9 +28,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import okhttp3.CipherSuite;
+import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.TlsVersion;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
 
@@ -55,6 +58,29 @@ public final class AppUtils {
     public static NotificationManager mNotificationManager;
 
     public static boolean isNightMode = false;
+
+    /**
+     * Retrofit2 problem in KitKat and bellow have problem dealing with TLS protocol, so we need the ConnectionSpec bellow for these cases
+     * javax.net.ssl.SSLProtocolException: SSL handshake aborted: ssl=0xb8dd7610: Failure in SSL library, usually a protocol error
+     * https://stackoverflow.com/questions/29916962/javax-net-ssl-sslhandshakeexception-javax-net-ssl-sslprotocolexception-ssl-han
+     */
+    public static ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS)
+            .supportsTlsExtensions(true)
+            .tlsVersions(TlsVersion.TLS_1_2, TlsVersion.TLS_1_1, TlsVersion.TLS_1_0)
+            .cipherSuites(
+                    CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+                    CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+                    CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,
+                    CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
+                    CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
+                    CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
+                    CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+                    CipherSuite.TLS_ECDHE_ECDSA_WITH_RC4_128_SHA,
+                    CipherSuite.TLS_ECDHE_RSA_WITH_RC4_128_SHA,
+                    CipherSuite.TLS_DHE_RSA_WITH_AES_128_CBC_SHA,
+                    CipherSuite.TLS_DHE_DSS_WITH_AES_128_CBC_SHA,
+                    CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA)
+            .build();
 
     public static Date feedDate(String strDate){
         DateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);

@@ -55,6 +55,7 @@ import com.google.firebase.FirebaseApp;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import eu.anifantakis.neakriti.data.ArticlesListAdapter;
 import eu.anifantakis.neakriti.data.RequestInterface;
@@ -77,6 +78,7 @@ import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
 import static eu.anifantakis.neakriti.utils.AppUtils.isNightMode;
 import static eu.anifantakis.neakriti.utils.AppUtils.mNotificationManager;
 import static eu.anifantakis.neakriti.utils.AppUtils.onlineMode;
+import static eu.anifantakis.neakriti.utils.AppUtils.spec;
 import static eu.anifantakis.neakriti.utils.NeaKritiApp.sharedPreferences;
 
 
@@ -201,7 +203,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         // SETUP RETROFIT
         retrofit = new Retrofit.Builder()
                 .baseUrl(AppUtils.URL_BASE)
-                .client(new OkHttpClient())
+                .client(new OkHttpClient.Builder().connectionSpecs(Collections.singletonList(spec)).build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -481,6 +483,7 @@ public class ArticleListActivity extends AppCompatActivity implements
                         feed = call.execute().body();
 
                     } catch (IOException e) {
+                        Log.e("LOG EXCEPTION", "RETROFIT CALL");
                         e.printStackTrace();
                         return null;
                     }

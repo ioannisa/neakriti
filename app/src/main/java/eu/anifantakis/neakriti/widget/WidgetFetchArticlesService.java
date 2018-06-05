@@ -15,6 +15,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import eu.anifantakis.neakriti.R;
 import eu.anifantakis.neakriti.data.RequestInterface;
@@ -28,6 +29,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static eu.anifantakis.neakriti.utils.AppUtils.URL_BASE;
+import static eu.anifantakis.neakriti.utils.AppUtils.spec;
 import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.APPWIDGET_UPDATE;
 import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.WIDGET_DIRECTION_NEXT;
 import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.WIDGET_DIRECTION_PREVIOUS;
@@ -164,7 +166,7 @@ public class WidgetFetchArticlesService extends Service {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(URL_BASE)
-                .client(new OkHttpClient())
+                .client(new OkHttpClient.Builder().connectionSpecs(Collections.singletonList(spec)).build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
