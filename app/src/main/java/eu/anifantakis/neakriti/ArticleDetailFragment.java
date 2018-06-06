@@ -64,7 +64,6 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
     private WebView mWebView;
     private AdView adView;
     private CollapsingToolbarLayout appBarLayout;
-    private String mCategoryTitle;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -79,7 +78,6 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         setHasOptionsMenu(true);
 
         mTracker = ((NeaKritiApp) getActivity().getApplication()).getDefaultTracker();
-        mTextToSpeech = new TextToSpeech(getActivity(), this);
 
         if (getArguments().containsKey(AppUtils.EXTRAS_ARTICLE)) {
             // Load the dummy content specified by the fragment
