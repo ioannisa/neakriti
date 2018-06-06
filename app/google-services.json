@@ -29,6 +29,10 @@
         {
           "client_id": "538065719385-t0j0ogc5qgqhae86bv47dbq1blvuf32q.apps.googleusercontent.com",
           "client_type": 3
+        },
+        {
+          "client_id": "538065719385-t0j0ogc5qgqhae86bv47dbq1blvuf32q.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [
@@ -75,6 +79,10 @@
         },
         {
           "client_id": "538065719385-r5797tdh533q8elflugu0cchbab3s93p.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "538065719385-t0j0ogc5qgqhae86bv47dbq1blvuf32q.apps.googleusercontent.com",
           "client_type": 3
         },
         {

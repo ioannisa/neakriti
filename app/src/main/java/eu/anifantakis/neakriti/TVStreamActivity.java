@@ -38,6 +38,8 @@ import com.google.android.exoplayer2.util.Util;
 
 import in.championswimmer.sfg.lib.SimpleFingerGestures;
 
+import static eu.anifantakis.neakriti.utils.AppUtils.TV_STATION_URL;
+
 public class TVStreamActivity extends AppCompatActivity {
 
     private SimpleExoPlayer mExoPlayer;
@@ -163,7 +165,7 @@ public class TVStreamActivity extends AppCompatActivity {
                 true);
 
 
-        Uri url = Uri.parse("http://live.cretetv.gr:1935/cretetv/myStream/playlist.m3u8");
+        Uri url = Uri.parse(TV_STATION_URL);
         HlsMediaSource mediaSource = new HlsMediaSource.Factory(dataSourceFactory)
                 .setAllowChunklessPreparation(true)
                 .createMediaSource(url, mHandler, null);

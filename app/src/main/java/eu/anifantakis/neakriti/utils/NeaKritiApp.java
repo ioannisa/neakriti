@@ -20,15 +20,12 @@ import com.google.android.exoplayer2.util.Util;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
 
-import eu.anifantakis.neakriti.BuildConfig;
 import eu.anifantakis.neakriti.R;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
@@ -48,9 +45,6 @@ public class NeaKritiApp extends Application {
         super.onCreate();
 
         initSharedPrefs();
-
-        initFirebaseRemoteConfig();
-        applyFirebaseConfiguration();
 
         sAnalytics = GoogleAnalytics.getInstance(this);
         setupPicasso();
@@ -143,35 +137,5 @@ public class NeaKritiApp extends Application {
 
         // indicator for checking picasso caching - need to comment out on release
         //picasso.setIndicatorsEnabled(true);
-    }
-
-    public FirebaseRemoteConfig mFirebaseRemoteConfig;
-
-    /**
-     * Initializations to the firebase remote configuration and application of the "actual"  configuration to the application
-     */
-    private void initFirebaseRemoteConfig(){
-        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(BuildConfig.DEBUG)
-                .build();
-        mFirebaseRemoteConfig.setConfigSettings(configSettings);
-        mFirebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
-    }
-
-    private String getFireBaseString(String field){
-        String value = mFirebaseRemoteConfig.getString(field);
-        value = value.replace("&amp;", "&");
-        return value;
-    }
-
-    /**
-     * Applies current configuration from firebase defaults or cloud settings
-     */
-    private void applyFirebaseConfiguration(){
-        //AppUtils.URL_BASE = getFireBaseString("URL_BASE");
-        //AppUtils.RADIO_STATION_URL = getFireBaseString("RADIO_STATION_URL");
-        AppUtils.TV_STATION_URL = getFireBaseString("TV_STATION_URL");
-
     }
 }

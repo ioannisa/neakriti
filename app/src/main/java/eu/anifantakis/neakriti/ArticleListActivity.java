@@ -52,11 +52,16 @@ import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.concurrent.Executor;
 
 import eu.anifantakis.neakriti.data.ArticlesListAdapter;
 import eu.anifantakis.neakriti.data.RequestInterface;
@@ -240,6 +245,8 @@ public class ArticleListActivity extends AppCompatActivity implements
         });
 
         shouldreload = false;
+
+
 
         // set default selected menu category the home category
         navigationView.setCheckedItem(R.id.nav_home);
