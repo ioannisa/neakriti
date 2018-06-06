@@ -20,13 +20,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
-        // Start home activity
-        startActivity(new Intent(SplashActivity.this, ArticleListActivity.class));
-        // close splash activity
-
         initFirebaseRemoteConfig();
-        // apply default or last fetched configuration
-        applyFirebaseConfiguration();
 
         // fetch new configuration for next use
         fetchFirebaseRemoteConfigFromCloud();
@@ -76,14 +70,13 @@ public class SplashActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             mFirebaseRemoteConfig.activateFetched();
-                            //Toast.makeText(MainActivity.this, "fetched new settings successfully", Toast.LENGTH_LONG).show();
-                            applyFirebaseConfiguration();
                         }
-                        else{
-                            applyFirebaseConfiguration();
-                        }
+                        applyFirebaseConfiguration();
+
+                        // Start home activity
+                        startActivity(new Intent(SplashActivity.this, ArticleListActivity.class));
                         finish();
                     }
                 });
