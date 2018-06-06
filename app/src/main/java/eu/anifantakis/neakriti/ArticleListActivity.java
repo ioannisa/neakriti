@@ -529,7 +529,7 @@ public class ArticleListActivity extends AppCompatActivity implements
                 mArticlesListAdapter.setCollection(data);
 
                 // if loader returned null data (aka SERVER WAS DOWN AND DIDN'T RESPOND)
-                if (data == null){
+                if (data == null && feedType!=ArticlesDBContract.DB_TYPE_FAVORITE){
                     AlertDialog.Builder builder = new AlertDialog.Builder(ArticleListActivity.this);
                     builder
                             .setTitle(R.string.dlg_server_down_title)
