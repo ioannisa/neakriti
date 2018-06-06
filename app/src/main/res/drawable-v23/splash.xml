@@ -8,6 +8,6 @@
         android:gravity="center"
         android:width="300dp"
         android:height="70dp"
-        android:drawable="@drawable/btn_radio" />
+        android:drawable="@drawable/logo" />
 
 </layer-list>
