@@ -5,10 +5,17 @@
     <item android:drawable="@android:color/white" />
 
     <item
-        android:gravity="center"
-        android:width="300dp"
-        android:height="70dp"
-        android:drawable="@drawable/btn_radio"
-        tools:ignore="UnusedAttribute" />
+        android:left="16dp"
+        android:right="16dp"
+        android:top="16dp"
+        android:bottom="16dp"
+        >
+
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/logo_raster"/>
+
+    </item>
+
 
 </layer-list>
