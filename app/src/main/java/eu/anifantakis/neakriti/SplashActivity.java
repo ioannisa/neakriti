@@ -26,9 +26,7 @@ public class SplashActivity extends AppCompatActivity {
         fetchFirebaseRemoteConfigFromCloud();
     }
 
-
-
-    public FirebaseRemoteConfig mFirebaseRemoteConfig;
+    private FirebaseRemoteConfig mFirebaseRemoteConfig;
 
     /**
      * Initializations to the firebase remote configuration and application of the "actual"  configuration to the application
@@ -55,7 +53,6 @@ public class SplashActivity extends AppCompatActivity {
         AppUtils.URL_BASE = getFireBaseString("URL_BASE_V2");
         AppUtils.RADIO_STATION_URL = getFireBaseString("RADIO_STATION_URL");
         AppUtils.TV_STATION_URL = getFireBaseString("TV_STATION_URL");
-
     }
 
     /**
