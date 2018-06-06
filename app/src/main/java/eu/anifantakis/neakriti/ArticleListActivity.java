@@ -809,7 +809,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
             NotificationCompat.Builder builder =
                     new NotificationCompat.Builder(getApplicationContext(), channelId)
-                            .setSmallIcon(R.drawable.play_circle_outline_wh_24px)
+                            .setSmallIcon(R.drawable.play_circle_outline_white)
                             .setContentTitle("Radio 984")
                             .setVisibility(VISIBILITY_PUBLIC)
                             .setAutoCancel(false)
