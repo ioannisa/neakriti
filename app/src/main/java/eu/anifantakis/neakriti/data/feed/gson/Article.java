@@ -90,7 +90,7 @@ public class Article implements Parcelable {
             if (result == null)
                 result = "";
         }
-        catch (Exception e){ result = ""; Log.e("EXCEPTION THUMB", e.getMessage()); }
+        catch (Exception e){ result = ""; }
         return result;
     }
 
