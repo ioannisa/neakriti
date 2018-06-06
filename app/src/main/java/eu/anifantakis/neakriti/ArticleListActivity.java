@@ -177,8 +177,19 @@ public class ArticleListActivity extends AppCompatActivity implements
             if (savedInstanceState.containsKey(STATE_FRAGMENT)){
                 fragment = (ArticleDetailFragment) getSupportFragmentManager().getFragment(savedInstanceState, STATE_FRAGMENT);
             }
+
+            feedSrvid = savedInstanceState.getString(STATE_FEED_SRVID);
+            feedItems = savedInstanceState.getInt(STATE_FEED_ITEMS);
+            feedName = savedInstanceState.getString(STATE_FEED_NAME);
+            feedType = savedInstanceState.getInt(STATE_FEED_TYPE);
         }
         else{
+            // set default selected menu category the home category
+            navigationView.setCheckedItem(R.id.nav_home);
+            feedSrvid = getString(R.string.nav_home_id);
+            feedItems = 25;
+            feedName = getString(R.string.nav_home);
+            feedType = ArticlesDBContract.DB_TYPE_CATEGORY;
             liveView.setVisibility(View.GONE);
         }
 
@@ -248,12 +259,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
 
 
-        // set default selected menu category the home category
-        navigationView.setCheckedItem(R.id.nav_home);
-        feedSrvid = getString(R.string.nav_home_id);
-        feedItems = 25;
-        feedName = getString(R.string.nav_home);
-        feedType = ArticlesDBContract.DB_TYPE_CATEGORY;
+
         makeArticlesLoaderQuery(feedName, feedType, feedSrvid, feedItems);
     }
 
@@ -644,10 +650,15 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
     }
 
-    private static int feedType = -1;
-    private static String feedName = "";
-    private static String feedSrvid = "";
-    private static int feedItems = 0;
+    private int feedType = -1;
+    private String feedName = "";
+    private String feedSrvid = "";
+    private int feedItems = 0;
+
+    private static final String STATE_FEED_TYPE = "STATE_FEED_TYPE";
+    private static final String STATE_FEED_NAME = "STATE_FEED_NAME";
+    private static final String STATE_FEED_SRVID = "STATE_FEED_SRVID";
+    private static final String STATE_FEED_ITEMS = "STATE_FEED_ITEMS";
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -722,6 +733,11 @@ public class ArticleListActivity extends AppCompatActivity implements
         outState.putInt(LIVE_PANEL_VISIBILITY, liveView.getVisibility());
         outState.putBoolean(STATE_EXO_PLAYER_RADIO_PLAYING, exoPlayerIsPlaying);
         outState.putBoolean(STATE_CLICKED_AN_ITEM, clickedAtLeastOneItem);
+
+        outState.putString(STATE_FEED_SRVID, feedSrvid);
+        outState.putInt(STATE_FEED_ITEMS, feedItems);
+        outState.putString(STATE_FEED_NAME, feedName);
+        outState.putInt(STATE_FEED_TYPE, feedType);
 
         if (fragment!=null) {
             getSupportFragmentManager().putFragment(outState, STATE_FRAGMENT, fragment);
