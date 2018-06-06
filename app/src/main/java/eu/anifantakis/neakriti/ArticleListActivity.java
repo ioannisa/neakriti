@@ -438,6 +438,7 @@ public class ArticleListActivity extends AppCompatActivity implements
                 Feed feed;
                 int fetchType = bundle.getInt(LOADER_TYPE);
 
+                // Here in favorites we combine Loader with Content Provider to fetch data from the SQLite Database
                 if (fetchType == ArticlesDBContract.DB_TYPE_FAVORITE){
                     Cursor cursor = getContentResolver().query(ArticlesDBContract.ArticleEntry.CONTENT_URI,
                             null,
@@ -478,10 +479,11 @@ public class ArticleListActivity extends AppCompatActivity implements
                     }
                 }
                 else {
+                    // Here we combine Loader with Retrofit call to fetch data from the web
                     try {
                         RequestInterface request = retrofit.create(RequestInterface.class);
                         Call<Feed> call = request.getFeedByCategory(bundle.getString(LOADER_ID), bundle.getInt(LOADER_ITEMS_COUNT));
-                        // make a synchronous retrofit call in our async task loader
+                        // make a synchronous retrofit call since we are already outside main thread in loader (AsyncTaskLoader), so async in async doesn't make much sense.
                         feed = call.execute().body();
 
                     } catch (IOException e) {
