@@ -39,7 +39,11 @@
         <activity android:name=".TVStreamActivity" />
         <activity
             android:name=".preferences.SetPrefs"
-            android:theme="@style/DarkActionBar">
+            android:theme="@style/DarkActionBar"
+            android:parentActivityName=".ArticleListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ArticleListActivity" />
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>

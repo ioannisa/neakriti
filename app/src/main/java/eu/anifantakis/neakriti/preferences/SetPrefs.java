@@ -1,6 +1,5 @@
 package eu.anifantakis.neakriti.preferences;
 
-import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -11,8 +10,10 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -20,10 +21,8 @@ import eu.anifantakis.neakriti.ArticleListActivity;
 import eu.anifantakis.neakriti.R;
 import eu.anifantakis.neakriti.utils.AppUtils;
 import eu.anifantakis.neakriti.widget.NewsWidgetProvider;
-import eu.anifantakis.neakriti.widget.WidgetFetchArticlesService;
 
 import static eu.anifantakis.neakriti.utils.AppUtils.isNightMode;
-import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.APPWIDGET_UPDATE;
 
 public class SetPrefs extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -155,6 +154,24 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
         if (extras != null)
             appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
+    }
+
+    /**
+     * This method is required for Lollipop and Bellow (API 22 and lower) for the back button of the
+     * Preferences Activity to be functional
+     * Source: https://stackoverflow.com/questions/37222879/add-action-bar-with-back-button-in-preference-activity
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
