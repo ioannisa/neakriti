@@ -41,7 +41,9 @@ public final class AppUtils {
     // no instances of App Utils are allowed
     private AppUtils() {}
 
-    public static String URL_BASE = "";
+    // URL_BASE will have its value changed via REMOTE CONFIG, but useful default value here for widget if we "reinstall app" while widget already exists
+    // in that case the widget will be called before actual remote config is initialized, thus we need a predefined copy of the default remote config default value
+    public static String URL_BASE = "https://anifantakis.eu";
     public static final String RSSFEED_BASE = "/_anifan/articles-json.php";
 
     public static String RADIO_STATION_URL = "";
