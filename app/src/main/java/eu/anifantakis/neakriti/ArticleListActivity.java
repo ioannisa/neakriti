@@ -81,6 +81,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
+import static eu.anifantakis.neakriti.utils.AppUtils.URL_BASE;
 import static eu.anifantakis.neakriti.utils.AppUtils.isNightMode;
 import static eu.anifantakis.neakriti.utils.AppUtils.mNotificationManager;
 import static eu.anifantakis.neakriti.utils.AppUtils.onlineMode;
@@ -218,9 +219,11 @@ public class ArticleListActivity extends AppCompatActivity implements
         mSwipeRefreshLayout = binding.masterView.articles.mainLayoutSwipe;
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
+        Log.d("ARTICLES FETCH", "FETCH DATA FROM " + URL_BASE);
+
         // SETUP RETROFIT
         retrofit = new Retrofit.Builder()
-                .baseUrl(AppUtils.URL_BASE)
+                .baseUrl(URL_BASE)
                 .client(new OkHttpClient.Builder().connectionSpecs(Collections.singletonList(spec)).build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

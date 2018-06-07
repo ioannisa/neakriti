@@ -41,11 +41,11 @@ public final class AppUtils {
     // no instances of App Utils are allowed
     private AppUtils() {}
 
-    public static String URL_BASE = "";//  "https://anifantakis.eu";
+    public static String URL_BASE = "";
     public static final String RSSFEED_BASE = "/_anifan/articles-json.php";
 
-    public static String RADIO_STATION_URL = "";// "http://eco.onestreaming.com:8237/live";
-    public static String TV_STATION_URL = "";// "http://live.cretetv.gr:1935/cretetv/myStream/playlist.m3u8";
+    public static String RADIO_STATION_URL = "";
+    public static String TV_STATION_URL =  "";
 
     public static final String EXTRAS_ARTICLE = "ARTICLE";
     public static final String EXTRAS_LOW_RES_BITMAP = "low_res_bitmap";

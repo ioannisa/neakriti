@@ -13,6 +13,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <!-- WIDGETS HAVE PROBLEM RENDERING VIA "app:srcCompat" in ImageViews
+             We need to use the old traditional "android:src" instead even though it shows wrong -->
+
         <ImageView
             android:id="@+id/widget_logo"
             android:layout_width="130dp"
@@ -21,7 +24,7 @@
             android:layout_alignParentStart="true"
             android:contentDescription="@string/app_logo"
             android:padding="8dp"
-            app:srcCompat="@drawable/logo_white" />
+            android:src="@drawable/logo_white" />
 
         <ImageView
             android:id="@+id/widget_reload"
@@ -31,7 +34,7 @@
             android:layout_toStartOf="@id/widget_settings"
             android:contentDescription="@string/widget_reload"
             android:padding="12dp"
-            app:srcCompat="@drawable/loop_wh_24px" />
+            android:src="@drawable/loop_wh_24px" />
 
         <ImageView
             android:id="@+id/widget_settings"
@@ -41,7 +44,7 @@
             android:layout_alignParentRight="true"
             android:contentDescription="@string/widget_reload"
             android:padding="12dp"
-            app:srcCompat="@drawable/settings_wh_24px" />
+            android:src="@drawable/settings_wh_24px" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -68,7 +71,7 @@
             android:layout_alignParentStart="true"
             android:contentDescription="@string/widget_reload"
             android:padding="12dp"
-            app:srcCompat="@drawable/chevron_left_wh_24px" />
+            android:src="@drawable/chevron_left_wh_24px" />
 
         <ImageView
             android:id="@+id/widget_category_next"
@@ -78,7 +81,7 @@
             android:layout_alignParentRight="true"
             android:contentDescription="@string/widget_reload"
             android:padding="12dp"
-            app:srcCompat="@drawable/chevron_right_wh_24px" />
+            android:src="@drawable/chevron_right_wh_24px" />
 
     </RelativeLayout>
 
