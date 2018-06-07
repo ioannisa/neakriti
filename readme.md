@@ -5,12 +5,12 @@
 NeaKriti Android News App is a news application based on the neakriti.gr news agency network.
 [https://www.neakriti.gr](https://www.neakriti.gr)
 
-##Intended User
+## Intended User
 
 The app is intended for the average greek news reader, giving him the ability to explore local news from the neakriti.gr news agency.
 
 
-##Features
+## Features
 
 * Displays news Articles (html formatted) in a WebView via downloaded Feeds
 * Allows Users to save favorite news articles for later reading
@@ -30,7 +30,7 @@ The app is intended for the average greek news reader, giving him the ability to
 * At the end of each article there will be an AdMob horizontal banner
 
 
-##Accessibility
+## Accessibility
 
 There are some accessibility features (included in the above features list) that will help certain user groups.
 
@@ -38,25 +38,22 @@ There are some accessibility features (included in the above features list) that
 * Variable Font sizes (specified inside the preferences fragment) will allow users to change the font size for the content of the articles to allow more comfort while reading.
 * The availability of day and night themes will also provide some extra comfort to the users and the dark theme may be more relaxing for people sensitive to bright lights.
 
-##Screenshots
+## Screenshots
 
-####Transition from Day to Night Theme
-![Transition from Day to Night Theme](https://services.anifantakis.eu/github/neakriti/screenshots/day_night.gif "Transition from Day to Night Theme")
+#### Transition from Day to Night Theme
+![Transition from Day to Night Theme](https://services.anifantakis.eu/github/neakriti/screenshots/day_night.gif"Transition from Day to Night Theme")
 
-####Opening Live Streaming Panel
+#### Opening Live Streaming Panel
 ![Opening Live Streaming Panel](https://services.anifantakis.eu/github/neakriti/screenshots/live.gif "Opening Live Streaming Panel")
 
-####Drawer Menu
+#### Drawer Menu
 ![Drawer Menu](https://services.anifantakis.eu/github/neakriti/screenshots/menu.gif "Drawer Menu")
 
-####Shared Element Transitions
+#### Shared Element Transitions
 ![Shared Element Transitions](https://services.anifantakis.eu/github/neakriti/screenshots/transition.gif "Shared Element Transitions")
 
-####Article Scrolling with Parallax
-![Article Scrolling with Parallax](https://services.anifantakis.eu/github/neakriti/screenshots/scrolling.gif "Article Scrolling with Parallax")
-
-####Firebase Cloud Messaging (FCM) Notifications
+#### Firebase Cloud Messaging (FCM) Notifications
 ![Firebase Cloud Messaging (FCM) Notifications](https://services.anifantakis.eu/github/neakriti/screenshots/notification.png "Firebase Cloud Messaging (FCM) Notifications")
 
-####Main Screen Widget
+#### Main Screen Widget
 ![Main Screen Widget](https://services.anifantakis.eu/github/neakriti/screenshots/widget.png "Main Screen Widget")
