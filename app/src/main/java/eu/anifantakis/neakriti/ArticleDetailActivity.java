@@ -56,7 +56,6 @@ public class ArticleDetailActivity extends AppCompatActivity {
 
             // place directly the low res image from the main activity so there are no delays in the Transition
             // then later we will load the higher res image
-
             if (extras.containsKey(AppUtils.EXTRAS_LOW_RES_BITMAP)){
                 Bitmap lowResBitmap = getIntent().getParcelableExtra(AppUtils.EXTRAS_LOW_RES_BITMAP);
                 if (lowResBitmap !=null)
@@ -71,13 +70,8 @@ public class ArticleDetailActivity extends AppCompatActivity {
                 Picasso.get()
                         .load(mArticle.getImgThumbStr())
                         .noFade()
-                        //.placeholder(detailActivityImage.getDrawable())
                         .into(detailActivityImage);
             }
-
-
-            //detailActivityImage.setImageBitmap(AppUtils.loadImageFromStorage("images", "current_thumb.jpg"));
-            //supportStartPostponedEnterTransition();
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -85,29 +79,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
             Log.d("TRANSITION RECEIVED", Integer.toString(mArticle.getGuid()));
         }
 
-        if (mArticle.getImgThumb()!=null) {
-            /*
-               // Now place the larger image
-            if (detailActivityImage != null) {
-                Picasso.get()
-                        .load(mArticle.getImgLarge())
-                        .noFade()
-                        //.placeholder(detailActivityImage.getDrawable())
-                        .into(detailActivityImage, new Callback() {
-                            @Override
-                            public void onSuccess() {
-                                supportStartPostponedEnterTransition();
-                            }
-
-                            @Override
-                            public void onError(Exception e) {
-                                supportStartPostponedEnterTransition();
-                            }
-                        });
-            }
-            */
-        }
-        else{
+        if (mArticle.getImgThumb()==null) {
             binding.toolbarLayout.setVisibility(View.GONE);
             supportStartPostponedEnterTransition();
         }

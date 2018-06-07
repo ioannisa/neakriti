@@ -1,7 +1,6 @@
 package eu.anifantakis.neakriti.data;
 
 import android.app.Activity;
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
@@ -18,8 +17,8 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 
 import eu.anifantakis.neakriti.R;
-import eu.anifantakis.neakriti.data.feed.gson.Article;
 import eu.anifantakis.neakriti.data.feed.ArticlesCollection;
+import eu.anifantakis.neakriti.data.feed.gson.Article;
 import eu.anifantakis.neakriti.databinding.RowArticleListBinding;
 import eu.anifantakis.neakriti.utils.AppUtils;
 
