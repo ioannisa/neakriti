@@ -30,7 +30,7 @@
     <string name="dlg_no_tts_lang_unavailable_title">Μη Διαθέσιμη Γλώσσα</string>
     <string name="dlg_no_tts_lang_installed_title">Εγκατάσταη Ελληνική Γλώσσας</string>
     <string name="dlg_no_tts_lang_installed_body">Για τη χρήση Κειμένου-Σε-Λόγο (TTS) πρέπει να εγκαταστήσετε δεδομένα Ελληνικής γλώσσας.\n\nΑπό τις Διαθέσιμες γλώσσες επιλέξτε \"Ελληνικά (Ελλάδα)\" ή \"Greek (Greece)</string>
-    <string name="dlg_no_tts_lang_unavailable_body">Λυπούμαστε, αλλά η Ελληνική γλώσσα δεν είναι διαθέσιμη ακόμα για τη συσκευή σας.\n\nΔοκιμάστε ξανά στο μέλλον για πιθανή διαθεσιμότητα</string>
+    <string name="dlg_no_tts_lang_unavailable_body">Μη διαθεσιμότητα Ελληνικής Γλώσσας.\n\nΕλέγξτε στις ρυθμίσεις προσβασιμότητας για ελληνικά ή επιλέξτε τη μηχανή Κειμένου Σε Ομιλία της Google και επιλέξτε "ελληνικά"</string>
     <string name="dlg_no_tts_no_google_tts_engine_body">Η ελληνική γλώσσα δεν είναι διαθέσιμη για τη συγκεκριμένη μηχανή μετατροπής κειμένου σε ομηλία.\n\nΜπορείτε να αλλάξετε τη μηχανή μετατροπής κειμένου σε αυτή της Google που είναι διαθέσιμη μέσα από τις "Ρυθμίσεις Προβασιμότητας"</string>
     <string name="action_settings">Ρυθμίσεις</string>
     <string name="dlg_close">Κλείσιμο</string>

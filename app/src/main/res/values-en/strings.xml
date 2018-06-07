@@ -24,7 +24,7 @@
     <string name="dlg_no_tts_lang_unavailable_title">Language Not Available</string>
     <string name="dlg_no_tts_lang_installed_title">Greek Language Installation</string>
     <string name="dlg_no_tts_lang_installed_body">To use Text-To-Speech (TTS) you need to install the Greek Language Data.\n\nFrom the available languages select Greek(Greece)</string>
-    <string name="dlg_no_tts_lang_unavailable_body">Unfortunatelly the Greek language is not available for your device.\n\nPlease check back again in the future for possible availability</string>
+    <string name="dlg_no_tts_lang_unavailable_body">The Greek language is not available.\n\nPlease check accessibility settings for Greek in your TTS engine or change to Google Engine and choose Greek</string>
     <string name="dlg_no_tts_no_google_tts_engine_body">The Greek language is not available for your TTS Engine.\n\nPlease Switch to the Google TTS Engine at your device and try again</string>
     <string name="action_settings">Settings</string>
     <string name="dlg_close">Close</string>

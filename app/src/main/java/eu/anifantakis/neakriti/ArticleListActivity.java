@@ -449,7 +449,7 @@ public class ArticleListActivity extends AppCompatActivity implements
                 Feed feed;
                 int fetchType = bundle.getInt(LOADER_TYPE);
 
-                // Here in favorites we combine Loader with Content Provider to fetch data from the SQLite Database
+                // Here in bookmarks we combine Loader with Content Provider to fetch data from the SQLite Database
                 if (fetchType == ArticlesDBContract.DB_TYPE_FAVORITE){
                     Cursor cursor = getContentResolver().query(ArticlesDBContract.ArticleEntry.CONTENT_URI,
                             null,

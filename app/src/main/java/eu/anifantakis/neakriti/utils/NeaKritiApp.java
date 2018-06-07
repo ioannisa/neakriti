@@ -74,7 +74,6 @@ public class NeaKritiApp extends Application {
     }
 
     public SimpleExoPlayer getRadioPlayer(){
-        // TODO: Add MediaPlayer to support Radio stream on devices running API level 15.
         if (mRadioPlayer == null){
             TrackSelector trackSelector = new DefaultTrackSelector(
                     new AdaptiveTrackSelection.Factory(
