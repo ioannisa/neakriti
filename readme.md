@@ -41,7 +41,7 @@ There are some accessibility features (included in the above features list) that
 ## Screenshots
 
 #### Transition from Day to Night Theme
-![Transition from Day to Night Theme](https://services.anifantakis.eu/github/neakriti/screenshots/day_night.gif"Transition from Day to Night Theme")
+![Transition from Day to Night Theme](https://services.anifantakis.eu/github/neakriti/screenshots/day_night.gif "Transition from Day to Night Theme")
 
 #### Opening Live Streaming Panel
 ![Opening Live Streaming Panel](https://services.anifantakis.eu/github/neakriti/screenshots/live.gif "Opening Live Streaming Panel")
