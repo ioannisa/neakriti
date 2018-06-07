@@ -162,7 +162,7 @@ public class WidgetFetchArticlesService extends Service {
      * We are not in an IntentService.  So make async retrofit call, not to block the main thread
      */
     private void fetchDataFromWeb() {
-        Log.d("WIDGET FETCH SERVICE", "FETCH DATA FROM: " + URL_BASE);
+        Log.d("WIDGET FETCH SERVICE", "FETCH DATA FROM " + URL_BASE);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(URL_BASE)

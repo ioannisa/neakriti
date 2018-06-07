@@ -408,7 +408,9 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
 
         Uri uri = getContext().getContentResolver().insert(ArticlesDBContract.ArticleEntry.CONTENT_URI, contentValues);
         menu.findItem(R.id.nav_favorite).setIcon(R.drawable.bookmark_wh_24px);
-        Snackbar.make(getView(), getString(R.string.snack_bookmark_article_added), Snackbar.LENGTH_SHORT).show();
+        try {
+            Snackbar.make(getView(), getString(R.string.snack_bookmark_article_added), Snackbar.LENGTH_SHORT).show();
+        }catch (Exception e){}
     }
 
     private Menu menu;
@@ -423,7 +425,9 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
 
         menu.findItem(R.id.nav_favorite).setIcon(R.drawable.bookmark_outline_wh_24px);
 
-        Snackbar.make(getView(), getString(R.string.snack_bookmark_article_removed), Snackbar.LENGTH_SHORT).show();
+        try {
+            Snackbar.make(getView(), getString(R.string.snack_bookmark_article_removed), Snackbar.LENGTH_SHORT).show();
+        }catch (Exception e){}
     }
 
     /**
