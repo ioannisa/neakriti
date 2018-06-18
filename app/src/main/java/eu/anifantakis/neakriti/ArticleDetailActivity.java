@@ -57,9 +57,11 @@ public class ArticleDetailActivity extends AppCompatActivity {
             // place directly the low res image from the main activity so there are no delays in the Transition
             // then later we will load the higher res image
             if (extras.containsKey(AppUtils.EXTRAS_LOW_RES_BITMAP)){
-                Bitmap lowResBitmap = getIntent().getParcelableExtra(AppUtils.EXTRAS_LOW_RES_BITMAP);
-                if (lowResBitmap !=null)
-                    detailActivityImage.setImageBitmap(lowResBitmap);
+                detailActivityImage.setImageBitmap(ArticleListActivity.bm);
+
+                //Bitmap lowResBitmap = getIntent().getParcelableExtra(AppUtils.EXTRAS_LOW_RES_BITMAP);
+                //if (lowResBitmap !=null)
+                //    detailActivityImage.setImageBitmap(lowResBitmap);
 
                 supportStartPostponedEnterTransition();
             }

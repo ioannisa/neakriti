@@ -129,6 +129,8 @@ public class ArticleListActivity extends AppCompatActivity implements
     public static final int DETAIL_ACTIVITY_REQUEST_CODE = 100;
     public static final int PREFERENCES_REQUEST_CODE = 200;
 
+    public static Bitmap bm;
+
     // we need to reload everytime the activity loads onResume, except of when it occurs when coming back from Detail Activity
     public static boolean shouldreload = false;
 
@@ -303,8 +305,8 @@ public class ArticleListActivity extends AppCompatActivity implements
                     Log.d("TRANSITION NAME", ViewCompat.getTransitionName(sharedImage));
                 }
 
-                Bitmap bm = ((BitmapDrawable) sharedImage.getDrawable()).getBitmap();
-                intent.putExtra(AppUtils.EXTRAS_LOW_RES_BITMAP, bm);
+                bm = ((BitmapDrawable) sharedImage.getDrawable()).getBitmap();
+                intent.putExtra(AppUtils.EXTRAS_LOW_RES_BITMAP, true);
             }
 
             // bundle for the transition effect
