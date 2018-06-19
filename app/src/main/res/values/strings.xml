@@ -117,6 +117,10 @@
 
     <string name="pref_detail_screen_details_key" translatable="false">categorydetail</string>
 
+    <string name="pref_list_or_card_key" translatable="false">list_or_card</string>
+    <string name="pref_list_or_card_title">Display Articles as List</string>
+    <string name="pref_list_or_card_summary">If checked the articles will be displayed as List, otherwise as Cards</string>
+
     <string name="pref_increased_line_distance_key" translatable="false">largelinespace</string>
     <string name="pref_increased_line_distance_title">Greater Distance between Lines</string>
     <string name="pref_increased_line_distance_summary">Increases the deistance between lines by half a line to make long articles reading easier.</string>

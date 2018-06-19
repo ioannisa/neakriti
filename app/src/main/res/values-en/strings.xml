@@ -59,4 +59,6 @@
     <string name="pref_widget_category_title">Widget Category</string>
     <string name="pref_widget_items_count_title">Articles Quantity in Widget</string>
     <string name="pref_about_author_summary">Ioannis Anifantakis\nhttps://anifantakis.eu</string>
+    <string name="pref_list_or_card_summary">If checked the articles will be displayed as List, otherwise as Cards</string>
+    <string name="pref_list_or_card_title">Display Articles as List</string>
 </resources>

@@ -65,4 +65,6 @@
     <string name="pref_widget_category_title">Κατηγορία Widget</string>
     <string name="pref_widget_items_count_title">Ποσότητα Άρθρων στο Widget</string>
     <string name="pref_about_author_summary">Γιάννης Ανυφαντάκης\nhttps://anifantakis.eu</string>
+    <string name="pref_list_or_card_summary">Όταν είναι τσεκαρισμένο τα άρθρα θα παρουσιάζονται σαν Λίστα, διαφορετικά σαν Καρτέλες</string>
+    <string name="pref_list_or_card_title">Προβολή Άρθρων σαν Λίστα</string>
 </resources>

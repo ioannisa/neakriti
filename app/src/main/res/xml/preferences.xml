@@ -76,6 +76,13 @@
         android:title="@string/pref_detail_screen_details_title">
         <CheckBoxPreference
             android:defaultValue="true"
+            android:key="@string/pref_list_or_card_key"
+            android:summary="@string/pref_list_or_card_summary"
+            android:title="@string/pref_list_or_card_title" />
+
+
+        <CheckBoxPreference
+            android:defaultValue="true"
             android:key="@string/pref_increased_line_distance_key"
             android:summary="@string/pref_increased_line_distance_summary"
             android:title="@string/pref_increased_line_distance_title" />

@@ -2,6 +2,7 @@ package eu.anifantakis.neakriti.data;
 
 import android.app.Activity;
 import android.databinding.DataBindingUtil;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +20,7 @@ import java.io.File;
 import eu.anifantakis.neakriti.R;
 import eu.anifantakis.neakriti.data.feed.ArticlesCollection;
 import eu.anifantakis.neakriti.data.feed.gson.Article;
+import eu.anifantakis.neakriti.databinding.RowArticleCardBinding;
 import eu.anifantakis.neakriti.databinding.RowArticleListBinding;
 import eu.anifantakis.neakriti.utils.AppUtils;
 
@@ -26,6 +28,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
     private ArticlesCollection collection;
     private Activity mActivity;
     private int selectedPosition = -1;
+    private boolean isListView = true;
 
     final private ArticleItemClickListener mOnClickListener;
 
@@ -37,12 +40,16 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
         this.mOnClickListener = mOnClickListener;
         mActivity = (Activity) mOnClickListener;
 
+        isListView = PreferenceManager.getDefaultSharedPreferences(mActivity).getBoolean(mActivity.getString(R.string.pref_list_or_card_key), isListView);
+
         clearOldFileCache(2);
     }
 
     public ArticlesListAdapter(ArticleItemClickListener mOnClickListener, Activity activity) {
         this.mOnClickListener = mOnClickListener;
         mActivity = activity;
+
+        isListView = PreferenceManager.getDefaultSharedPreferences(mActivity).getBoolean(mActivity.getString(R.string.pref_list_or_card_key), isListView);
 
         clearOldFileCache(2);
     }
@@ -76,22 +83,38 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
     @Override
     public ArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        RowArticleListBinding binding = DataBindingUtil.inflate(inflater, R.layout.row_article_list, parent, false);
-        return new ArticleViewHolder(binding.getRoot());
+
+        if (isListView){
+            RowArticleListBinding binding = DataBindingUtil.inflate(inflater, R.layout.row_article_list, parent, false);
+            return new ArticleViewHolder(binding.getRoot());
+        }
+        else {
+            RowArticleCardBinding binding = DataBindingUtil.inflate(inflater, R.layout.row_article_card, parent, false);
+            return new ArticleViewHolder(binding.getRoot());
+        }
+
     }
 
     @Override
     public void onBindViewHolder(@NonNull ArticleViewHolder holder, int position) {
         Article article = collection.getArticle(position);
 
-        ViewCompat.setTransitionName (holder.getImageView(), Integer.toString(article.getGuid()));
-        holder.setTitle(article.getTitle());
-        holder.setImage(article.getImgThumbStr());
-        holder.setDateStr(article.getPubDateStr());
-
-        holder.itemView.setTag(article.getGuid());
-
-        holder.binding.articleRow.setSelected((position==selectedPosition));
+        if (isListView) {
+            ViewCompat.setTransitionName(holder.getListImageView(), Integer.toString(article.getGuid()));
+            holder.setListTitle(article.getTitle());
+            holder.setListImage(article.getImgThumbStr());
+            holder.setListDateStr(article.getPubDateStr());
+            holder.itemView.setTag(article.getGuid());
+            holder.bindingList.articleRow.setSelected((position == selectedPosition));
+        }
+        else{
+            ViewCompat.setTransitionName(holder.getCardImageView(), Integer.toString(article.getGuid()));
+            holder.setCardTitle(article.getTitle());
+            holder.setCardImage(article.getImgThumbStr());
+            holder.setCardDateStr(article.getPubDateStr());
+            holder.itemView.setTag(article.getGuid());
+            holder.bindingCard.articleRow.setSelected((position == selectedPosition));
+        }
     }
 
     @Override
@@ -118,12 +141,18 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
     }
 
     public class ArticleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        RowArticleListBinding binding;
+        RowArticleListBinding bindingList;
+        RowArticleCardBinding bindingCard;
         private boolean imageLoaded = false;
 
         ArticleViewHolder(View itemView) {
             super(itemView);
-            binding = DataBindingUtil.bind(itemView);
+            if (isListView) {
+                bindingList = DataBindingUtil.bind(itemView);
+            }
+            else{
+                bindingCard = DataBindingUtil.bind(itemView);
+            }
 
             itemView.setOnClickListener(this);
         }
@@ -133,8 +162,11 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
          *
          * @param title The Article title
          */
-        void setTitle(String title) {
-            binding.content.setText(title);
+        void setListTitle(String title) {
+            bindingList.content.setText(title);
+        }
+        void setCardTitle(String title) {
+            bindingCard.content.setText(title);
         }
 
         /**
@@ -142,42 +174,78 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
          *
          * @param image The image thumbnail
          */
-        void setImage(String image) {
+        void setCardImage(String image) {
             imageLoaded = false;
             if (image==null || image.isEmpty()){
                 // if movie has no accompanied backdrop image, load the "no image found" from the drawable folder
-                binding.rowIvArticleThumb.setImageResource(R.drawable.placeholder);
+                bindingCard.rowIvArticleThumb.setImageResource(R.drawable.placeholder);
             }else {
                 Picasso.get()
                         .load(image)
                         .placeholder(R.drawable.placeholder)
-                        .into(binding.rowIvArticleThumb, new Callback(){
-                    @Override
-                    public void onSuccess() {
-                        imageLoaded = true;
-                    }
+                        .into(bindingCard.rowIvArticleThumb, new Callback(){
+                            @Override
+                            public void onSuccess() {
+                                imageLoaded = true;
+                            }
 
-                    @Override
-                    public void onError(Exception e) {
-                        imageLoaded = false;
-                    }
-                });
+                            @Override
+                            public void onError(Exception e) {
+                                imageLoaded = false;
+                            }
+                        });
             }
         }
 
-        ImageView getImageView(){
-            return binding.rowIvArticleThumb;
+        void setListImage(String image) {
+            imageLoaded = false;
+            if (image==null || image.isEmpty()){
+                // if movie has no accompanied backdrop image, load the "no image found" from the drawable folder
+                bindingList.rowIvArticleThumb.setImageResource(R.drawable.placeholder);
+            }else {
+                Picasso.get()
+                        .load(image)
+                        .placeholder(R.drawable.placeholder)
+                        .into(bindingList.rowIvArticleThumb, new Callback(){
+                            @Override
+                            public void onSuccess() {
+                                imageLoaded = true;
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                imageLoaded = false;
+                            }
+                        });
+            }
         }
 
-        void setDateStr(String dateStr){
-            binding.listDate.setText(AppUtils.pubDateFormat(dateStr));
+        ImageView getCardImageView(){
+            return bindingCard.rowIvArticleThumb;
+        }
+
+        ImageView getListImageView(){
+            return bindingList.rowIvArticleThumb;
+        }
+
+        void setCardDateStr(String dateStr){
+            bindingCard.listDate.setText(AppUtils.pubDateFormat(dateStr));
+        }
+
+        void setListDateStr(String dateStr){
+            bindingList.listDate.setText(AppUtils.pubDateFormat(dateStr));
         }
 
         @Override
         public void onClick(View view) {
             selectedPosition = getAdapterPosition();
             if (imageLoaded) {
-                mOnClickListener.onArticleItemClick(selectedPosition, binding.rowIvArticleThumb);
+                if (isListView) {
+                    mOnClickListener.onArticleItemClick(selectedPosition, bindingList.rowIvArticleThumb);
+                }
+                else{
+                    mOnClickListener.onArticleItemClick(selectedPosition, bindingCard.rowIvArticleThumb);
+                }
             }
             else{
                 mOnClickListener.onArticleItemClick(selectedPosition, null);
