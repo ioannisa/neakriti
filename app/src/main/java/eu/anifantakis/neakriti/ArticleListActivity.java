@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
@@ -159,7 +160,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         liveView = binding.masterView.articles.incLivePanel.liveView;
 
         if (savedInstanceState!=null){
-            cachedCollection = savedInstanceState.getParcelable(CACHED_COLLECTION);
+            //cachedCollection = savedInstanceState.getParcelable(CACHED_COLLECTION);
             liveView.setVisibility(savedInstanceState.getInt(LIVE_PANEL_VISIBILITY));
 
             if (savedInstanceState.containsKey(STATE_EXO_PLAYER_RADIO_PLAYING)) {
@@ -197,6 +198,10 @@ public class ArticleListActivity extends AppCompatActivity implements
             // If this view is present, then the
             // activity should be in two-pane mode.
             mTwoPane = true;
+        }
+        else{
+            // in phone edition we just want portrait mode
+            this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
         if (mTwoPane && !clickedAtLeastOneItem){
@@ -729,7 +734,7 @@ public class ArticleListActivity extends AppCompatActivity implements
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putParcelable(CACHED_COLLECTION, cachedCollection);
+        //outState.putParcelable(CACHED_COLLECTION, cachedCollection);
         outState.putInt(LIVE_PANEL_VISIBILITY, liveView.getVisibility());
         outState.putBoolean(STATE_EXO_PLAYER_RADIO_PLAYING, exoPlayerIsPlaying);
         outState.putBoolean(STATE_CLICKED_AN_ITEM, clickedAtLeastOneItem);
