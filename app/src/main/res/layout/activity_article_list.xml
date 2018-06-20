@@ -4,10 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <FrameLayout
+        android:id="@+id/activity_article_list_Frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
+            android:id="@+id/activity_article_list_logo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="64dp"

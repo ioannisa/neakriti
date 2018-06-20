@@ -12,6 +12,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -540,6 +541,8 @@ public class ArticleListActivity extends AppCompatActivity implements
 
             @Override
             public void deliverResult(ArticlesCollection data) {
+                binding.activityArticleListLogo.setVisibility(View.GONE);
+
                 if (cachedCollection == null) {
                     mArticlesListAdapter.notifyDataSetChanged();
                     mRecyclerView.smoothScrollToPosition(0);
@@ -716,6 +719,15 @@ public class ArticleListActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (isNightMode) {
+            binding.activityArticleListLogo.setImageResource(R.drawable.logo_white);
+            binding.activityArticleListFrame.setBackgroundColor(Color.parseColor("#333333"));
+        }
+        else {
+            binding.activityArticleListLogo.setImageResource(R.drawable.logo);
+            binding.activityArticleListFrame.setBackgroundColor(Color.WHITE);
+        }
 
         if (shouldreload) {
             Log.d("RELOAD", "FORCE RELOAD");
