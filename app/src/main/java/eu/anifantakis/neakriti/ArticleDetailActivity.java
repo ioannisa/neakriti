@@ -3,7 +3,6 @@ package eu.anifantakis.neakriti;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -126,6 +125,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
                 else {
                     supportFinishAfterTransition();
                 }
+                ArticleListActivity.shouldreload = startedByNotification;
                 super.onBackPressed();
                 return true;
             }

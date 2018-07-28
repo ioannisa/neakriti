@@ -115,14 +115,12 @@ public class ArticleListActivity extends AppCompatActivity implements
     private Tracker mTracker;
     private SimpleExoPlayer mRadioPlayer;
     private NavigationView navigationView;
-    private Menu menu;
 
     private static final int ARTICLES_FEED_LOADER = 0;
     private static final String LOADER_TITLE = "LOADER_TITLE";
     private static final String LOADER_TYPE = "LOADER_TYPE";
     private static final String LOADER_ID = "LOADER_ID";
     private static final String LOADER_ITEMS_COUNT = "LOADER_ITEMS_COUNT";
-    private static final String CACHED_COLLECTION = "CACHED_COLLECTION";
     private static final String LIVE_PANEL_VISIBILITY = "LIVE_PANEL_VISIBILITY";
     private static final String STATE_EXO_PLAYER_RADIO_PLAYING = "exo_player_radio_playing";
     private static final String STATE_CLICKED_AN_ITEM = "STATE_CLICKED_AN_ITEM";
@@ -257,7 +255,11 @@ public class ArticleListActivity extends AppCompatActivity implements
                 getContentResolver().delete(uri, null, null);
 
                 cachedCollection = null;
-                makeArticlesLoaderQuery(feedName, ArticlesDBContract.DB_TYPE_FAVORITE, "0", 200);
+
+                // prepare global values to be loaded when "onResume" is called
+                feedType = ArticlesDBContract.DB_TYPE_FAVORITE;
+                feedSrvid = "0";
+                feedItems = 200;
             }
         });
 
@@ -391,16 +393,10 @@ public class ArticleListActivity extends AppCompatActivity implements
                     .setTitle(R.string.dlg_no_network_title)
                     .setMessage(R.string.dlg_no_network_body)
                     .setIcon(R.drawable.cloud_off_48px)
-                    .setNegativeButton(R.string.dlg_no_network_offline_mode, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
+                    .setNegativeButton(R.string.dlg_no_network_offline_mode, (dialog, id1) -> {
 
-                        }
                     })
-                    .setPositiveButton(R.string.dlg_exit, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            finish();
-                        }
-                    });
+                    .setPositiveButton(R.string.dlg_exit, (dialog, id12) -> finish());
             // Create the AlertDialog object and return it
             builder.create().show();
         }
@@ -428,16 +424,13 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
         else{
             // handle offline data, fetch articles from the database for the given category
-            new StorageRetrievalAsyncTask(new StorageRetrievalAsyncTask.TaskCompleteListener() {
-                @Override
-                public void onTaskComplete(ArticlesCollection collection) {
-                    mSwipeRefreshLayout.setRefreshing(false);
-                    cachedCollection = collection;
-                    mArticlesListAdapter.setCollection(collection);
-                    mArticlesListAdapter.notifyDataSetChanged();
-                    mRecyclerView.smoothScrollToPosition(0);
-                    Log.d("ASYNC TASK", "FETCHING DATABASE DATA");
-                }
+            new StorageRetrievalAsyncTask(collection -> {
+                mSwipeRefreshLayout.setRefreshing(false);
+                cachedCollection = collection;
+                mArticlesListAdapter.setCollection(collection);
+                mArticlesListAdapter.notifyDataSetChanged();
+                mRecyclerView.smoothScrollToPosition(0);
+                Log.d("ASYNC TASK", "FETCHING DATABASE DATA");
             }).execute(this, id, title, type);
         }
     }
@@ -554,11 +547,7 @@ public class ArticleListActivity extends AppCompatActivity implements
                             .setTitle(R.string.dlg_server_down_title)
                             .setMessage(R.string.dlg_server_down_body)
                             .setIcon(R.drawable.sync_problem_48px)
-                            .setNegativeButton(R.string.dlg_close, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    finish();
-                                }
-                            });
+                            .setNegativeButton(R.string.dlg_close, (dialog, id) -> finish());
                     // Create the AlertDialog object and return it
                     builder.create().show();
                 }
@@ -608,7 +597,6 @@ public class ArticleListActivity extends AppCompatActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         Log.d("MENU INFLATE", "DONE");
-        this.menu = menu;
         getMenuInflater().inflate(R.menu.main, menu);
 
         return true;
@@ -767,10 +755,8 @@ public class ArticleListActivity extends AppCompatActivity implements
                     .setTitle(R.string.dlg_no_network_title)
                     .setMessage(R.string.dlg_no_network_stream_body)
                     .setIcon(R.drawable.cloud_off_48px)
-                    .setNegativeButton(R.string.dlg_close, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
+                    .setNegativeButton(R.string.dlg_close, (dialog, id) -> {
 
-                        }
                     });
             // Create the AlertDialog object and return it
             builder.create().show();
@@ -877,18 +863,16 @@ public class ArticleListActivity extends AppCompatActivity implements
     private void streamTV(){
         // If radio is currently playing, ask the user to stop radio, or continue listening
         if (exoPlayerIsPlaying){
-            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    switch (which) {
-                        case DialogInterface.BUTTON_POSITIVE:
-                            streamRadioOnOff();
-                            Intent intent = new Intent(ArticleListActivity.this, TVStreamActivity.class);
-                            startActivity(intent);
-                            break;
+            DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        streamRadioOnOff();
+                        Intent intent = new Intent(ArticleListActivity.this, TVStreamActivity.class);
+                        startActivity(intent);
+                        break;
 
-                        case DialogInterface.BUTTON_NEGATIVE:
-                            break;
-                    }
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
                 }
             };
 
@@ -911,21 +895,19 @@ public class ArticleListActivity extends AppCompatActivity implements
      * @param forRadio if true, alerts and starts radio stream, if false alerts and starts tv stream
      */
     private void alertForStream(final boolean forRadio){
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case DialogInterface.BUTTON_POSITIVE:
-                        if (forRadio) {
-                            streamRadioOnOff();
-                        }
-                        else{
-                            streamTV();
-                        }
-                        break;
+        DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+            switch (which) {
+                case DialogInterface.BUTTON_POSITIVE:
+                    if (forRadio) {
+                        streamRadioOnOff();
+                    }
+                    else{
+                        streamTV();
+                    }
+                    break;
 
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        break;
-                }
+                case DialogInterface.BUTTON_NEGATIVE:
+                    break;
             }
         };
 
