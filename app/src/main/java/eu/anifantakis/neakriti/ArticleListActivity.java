@@ -262,10 +262,6 @@ public class ArticleListActivity extends AppCompatActivity implements
         });
 
         shouldreload = false;
-
-
-
-
         makeArticlesLoaderQuery(feedName, feedType, feedSrvid, feedItems);
     }
 
@@ -731,6 +727,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         if (shouldreload) {
             Log.d("RELOAD", "FORCE RELOAD");
+            cachedCollection = null;
             makeArticlesLoaderQuery(feedName, feedType, feedSrvid, feedItems);
         }
         shouldreload = true;
