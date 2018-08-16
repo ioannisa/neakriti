@@ -95,7 +95,7 @@ public class StorageIntentService extends IntentService {
         if (pubDate!=null) { contentValues.put(ArticlesDBContract.ArticleEntry.COL_PUB_DATE, pubDate.getTime()); }
         else{ contentValues.put(ArticlesDBContract.ArticleEntry.COL_PUB_DATE, 0); }
 
-        Date updated = AppUtils.feedDateUpdated(article.getUpdatedStr());
+        Date updated = AppUtils.feedDate(article.getUpdatedStr());
         if (updated!=null) { contentValues.put(ArticlesDBContract.ArticleEntry.COL_UPDATED, updated.getTime()); }
         else{ contentValues.put(ArticlesDBContract.ArticleEntry.COL_UPDATED, 0); }
 
