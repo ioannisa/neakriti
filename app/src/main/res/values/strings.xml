@@ -117,10 +117,6 @@
 
     <string name="pref_detail_screen_details_key" translatable="false">categorydetail</string>
 
-    <string name="pref_list_or_card_key" translatable="false">list_or_card</string>
-    <string name="pref_list_or_card_title">Display Articles as List</string>
-    <string name="pref_list_or_card_summary">If checked the articles will be displayed as List, otherwise as Cards</string>
-
     <string name="pref_increased_line_distance_key" translatable="false">largelinespace</string>
     <string name="pref_increased_line_distance_title">Greater Distance between Lines</string>
     <string name="pref_increased_line_distance_summary">Increases the deistance between lines by half a line to make long articles reading easier.</string>
@@ -157,6 +153,18 @@
     <string name="prefs_widget_category_id" translatable="false">prefs_widget_category_id</string>
     <string name="prefs_widget_category_title" translatable="false">prefs_widget_category_title</string>
     <string name="prefs_widget_category_items" translatable="false">prefs_widget_category_items</string>
+
+    <string name="pref_list_article_row_appearance" translatable="false">list_article_row_appearance</string>
+    <string name="pref_list_article_row_appearance_title">Display Articles as</string>
+
+
+    <string name="row_type_list">List</string>
+    <string name="row_type_list_details">List with details</string>
+    <string name="row_type_card">Card</string>
+
+    <string name="row_type_list_id" translatable="false">1</string>
+    <string name="row_type_list_details_id" translatable="false">2</string>
+    <string name="row_type_card_id" translatable="false">3</string>
 
     <!-- Notification Channels -->
     <string name="notif_channel_news_id" translatable="false">news-channel</string>

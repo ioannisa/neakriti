@@ -35,4 +35,16 @@
         <item>@string/seven</item>
         <item>@string/ten</item>
     </string-array>
+
+    <string-array name="list_article_row_appearance_types">
+        <item>@string/row_type_list</item>
+        <item>@string/row_type_list_details</item>
+        <item>@string/row_type_card</item>
+    </string-array>
+
+    <string-array name="list_article_row_appearance_ids">
+        <item>@string/row_type_list_id</item>
+        <item>@string/row_type_list_details_id</item>
+        <item>@string/row_type_card_id</item>
+    </string-array>
 </resources>

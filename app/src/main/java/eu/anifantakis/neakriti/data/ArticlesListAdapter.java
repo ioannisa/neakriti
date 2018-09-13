@@ -11,9 +11,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.w3c.dom.Text;
 
 import java.io.File;
 
@@ -22,13 +29,15 @@ import eu.anifantakis.neakriti.data.feed.ArticlesCollection;
 import eu.anifantakis.neakriti.data.feed.gson.Article;
 import eu.anifantakis.neakriti.databinding.RowArticleCardBinding;
 import eu.anifantakis.neakriti.databinding.RowArticleListBinding;
+import eu.anifantakis.neakriti.databinding.RowArticleListDetailsBinding;
 import eu.anifantakis.neakriti.utils.AppUtils;
 
 public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapter.ArticleViewHolder> {
     private ArticlesCollection collection;
     private Activity mActivity;
     private int selectedPosition = -1;
-    private boolean isListView = true;
+
+    private int listType;
 
     final private ArticleItemClickListener mOnClickListener;
 
@@ -40,7 +49,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
         this.mOnClickListener = mOnClickListener;
         mActivity = (Activity) mOnClickListener;
 
-        isListView = PreferenceManager.getDefaultSharedPreferences(mActivity).getBoolean(mActivity.getString(R.string.pref_list_or_card_key), isListView);
+        listType = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(mActivity).getString(mActivity.getString(R.string.pref_list_article_row_appearance),mActivity.getString(R.string.row_type_list_details_id)));
 
         clearOldFileCache(2);
     }
@@ -49,7 +58,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
         this.mOnClickListener = mOnClickListener;
         mActivity = activity;
 
-        isListView = PreferenceManager.getDefaultSharedPreferences(mActivity).getBoolean(mActivity.getString(R.string.pref_list_or_card_key), isListView);
+        listType = PreferenceManager.getDefaultSharedPreferences(mActivity).getInt(mActivity.getString(R.string.pref_list_article_row_appearance),1); //R.string.row_type_list_details_id
 
         clearOldFileCache(2);
     }
@@ -84,35 +93,57 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
     public ArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        if (isListView){
+        //if (listType==2) {
+        //  listType=1;
+        //}
+
+
+        if (listType==1){
             RowArticleListBinding binding = DataBindingUtil.inflate(inflater, R.layout.row_article_list, parent, false);
+            return new ArticleViewHolder(binding.getRoot());
+        }
+        else if (listType==2){
+            RowArticleListDetailsBinding binding = DataBindingUtil.inflate(inflater, R.layout.row_article_list_details, parent, false);
             return new ArticleViewHolder(binding.getRoot());
         }
         else {
             RowArticleCardBinding binding = DataBindingUtil.inflate(inflater, R.layout.row_article_card, parent, false);
             return new ArticleViewHolder(binding.getRoot());
         }
-
     }
 
     @Override
     public void onBindViewHolder(@NonNull ArticleViewHolder holder, int position) {
         Article article = collection.getArticle(position);
 
-        if (isListView) {
-            ViewCompat.setTransitionName(holder.getListImageView(), Integer.toString(article.getGuid()));
-            holder.setListTitle(article.getTitle());
-            holder.setListImage(article.getImgThumbStr());
-            holder.setListDateStr(article.getPubDateStr());
-            holder.itemView.setTag(article.getGuid());
+        holder.setTitle(article.getTitle());
+        holder.setImage(article.getImgThumbStr());
+        holder.setDateStr(article.getPubDateStr());
+        holder.itemView.setTag(article.getGuid());
+
+        if (listType==1){
+            ViewCompat.setTransitionName(holder.getImageView(), Integer.toString(article.getGuid()));
             holder.bindingList.articleRow.setSelected((position == selectedPosition));
         }
-        else{
-            ViewCompat.setTransitionName(holder.getCardImageView(), Integer.toString(article.getGuid()));
-            holder.setCardTitle(article.getTitle());
-            holder.setCardImage(article.getImgThumbStr());
-            holder.setCardDateStr(article.getPubDateStr());
-            holder.itemView.setTag(article.getGuid());
+        else if (listType==2){
+            ViewCompat.setTransitionName(holder.getImageView(), Integer.toString(article.getGuid()));
+            holder.bindingListDetails.articleRow.setSelected((position == selectedPosition));
+
+
+            // set the preview text
+            Document doc = Jsoup.parse(article.getDescription());
+            Element firstParagraph = doc.selectFirst("p");
+
+            String previewText = "";
+            if (firstParagraph!=null)
+                previewText = firstParagraph.text().trim();
+
+            holder.bindingListDetails.articlePreview.setText(previewText);
+            holder.bindingListDetails.articlePreview.setMaxLines(4); // 4 max line of preview paragraph text
+
+        }
+        else if (listType==3){
+            ViewCompat.setTransitionName(holder.getImageView(), Integer.toString(article.getGuid()));
             holder.bindingCard.articleRow.setSelected((position == selectedPosition));
         }
     }
@@ -142,17 +173,16 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
 
     public class ArticleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         RowArticleListBinding bindingList;
+        RowArticleListDetailsBinding bindingListDetails;
         RowArticleCardBinding bindingCard;
         private boolean imageLoaded = false;
 
         ArticleViewHolder(View itemView) {
             super(itemView);
-            if (isListView) {
-                bindingList = DataBindingUtil.bind(itemView);
-            }
-            else{
-                bindingCard = DataBindingUtil.bind(itemView);
-            }
+
+            if (listType==1) bindingList = DataBindingUtil.bind(itemView); else
+            if (listType==2) bindingListDetails = DataBindingUtil.bind(itemView); else
+            if (listType==3) bindingCard = DataBindingUtil.bind(itemView);
 
             itemView.setOnClickListener(this);
         }
@@ -162,11 +192,10 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
          *
          * @param title The Article title
          */
-        void setListTitle(String title) {
-            bindingList.content.setText(title);
-        }
-        void setCardTitle(String title) {
-            bindingCard.content.setText(title);
+        void setTitle(String title) {
+            if (listType==1) bindingList.content.setText(title); else
+            if (listType==2) bindingListDetails.content.setText(title); else
+            if (listType==3) bindingCard.content.setText(title);
         }
 
         /**
@@ -174,16 +203,23 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
          *
          * @param image The image thumbnail
          */
-        void setCardImage(String image) {
+        void setImage(String image) {
             imageLoaded = false;
+
+            ImageView target;
+            if (listType==1) target = bindingList.rowIvArticleThumb; else
+            if (listType==2) target = bindingListDetails.rowIvArticleThumb; else
+            target = bindingCard.rowIvArticleThumb;
+
             if (image==null || image.isEmpty()){
                 // if movie has no accompanied backdrop image, load the "no image found" from the drawable folder
-                bindingCard.rowIvArticleThumb.setImageResource(R.drawable.placeholder);
+                target.setImageResource(R.drawable.placeholder);
             }else {
                 Picasso.get()
                         .load(image)
                         .placeholder(R.drawable.placeholder)
-                        .into(bindingCard.rowIvArticleThumb, new Callback(){
+
+                        .into(target, new Callback(){
                             @Override
                             public void onSuccess() {
                                 imageLoaded = true;
@@ -197,55 +233,31 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
             }
         }
 
-        void setListImage(String image) {
-            imageLoaded = false;
-            if (image==null || image.isEmpty()){
-                // if movie has no accompanied backdrop image, load the "no image found" from the drawable folder
-                bindingList.rowIvArticleThumb.setImageResource(R.drawable.placeholder);
-            }else {
-                Picasso.get()
-                        .load(image)
-                        .placeholder(R.drawable.placeholder)
-                        .into(bindingList.rowIvArticleThumb, new Callback(){
-                            @Override
-                            public void onSuccess() {
-                                imageLoaded = true;
-                            }
+        ImageView getImageView(){
+            ImageView target;
+            if (listType==1) target = bindingList.rowIvArticleThumb; else
+            if (listType==2) target = bindingListDetails.rowIvArticleThumb; else
+            target = bindingCard.rowIvArticleThumb;
 
-                            @Override
-                            public void onError(Exception e) {
-                                imageLoaded = false;
-                            }
-                        });
-            }
+            return target;
         }
 
-        ImageView getCardImageView(){
-            return bindingCard.rowIvArticleThumb;
-        }
+        void setDateStr(String dateStr){
+            TextView target;
+            if (listType==1) target = bindingList.listDate; else
+            if (listType==2) target = bindingListDetails.listDate; else
+            target = bindingCard.listDate;
 
-        ImageView getListImageView(){
-            return bindingList.rowIvArticleThumb;
-        }
-
-        void setCardDateStr(String dateStr){
-            bindingCard.listDate.setText(AppUtils.pubDateFormat(dateStr));
-        }
-
-        void setListDateStr(String dateStr){
-            bindingList.listDate.setText(AppUtils.pubDateFormat(dateStr));
+            target.setText(AppUtils.pubDateFormat(dateStr));
         }
 
         @Override
         public void onClick(View view) {
             selectedPosition = getAdapterPosition();
             if (imageLoaded) {
-                if (isListView) {
-                    mOnClickListener.onArticleItemClick(selectedPosition, bindingList.rowIvArticleThumb);
-                }
-                else{
-                    mOnClickListener.onArticleItemClick(selectedPosition, bindingCard.rowIvArticleThumb);
-                }
+                if (listType==1) mOnClickListener.onArticleItemClick(selectedPosition, bindingList.rowIvArticleThumb); else
+                if (listType==2) mOnClickListener.onArticleItemClick(selectedPosition, bindingListDetails.rowIvArticleThumb); else
+                if (listType==3) mOnClickListener.onArticleItemClick(selectedPosition, bindingCard.rowIvArticleThumb);
             }
             else{
                 mOnClickListener.onArticleItemClick(selectedPosition, null);
