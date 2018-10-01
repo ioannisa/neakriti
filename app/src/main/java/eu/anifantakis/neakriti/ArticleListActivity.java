@@ -1,6 +1,7 @@
 package eu.anifantakis.neakriti;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -59,6 +60,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Objects;
 
 import eu.anifantakis.neakriti.data.ArticlesListAdapter;
 import eu.anifantakis.neakriti.data.RequestInterface;
@@ -200,7 +202,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
         else{
             // in phone edition we just want portrait mode
-            this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            //this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
         if (mTwoPane && !clickedAtLeastOneItem){
@@ -242,12 +244,12 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
 
             @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int id = (int) viewHolder.itemView.getTag();
 
                 Uri uri = ArticlesDBContract.ArticleEntry.FAVORITE_CONTENT_URI;
@@ -320,34 +322,47 @@ public class ArticleListActivity extends AppCompatActivity implements
                         .makeSceneTransitionAnimation(
                                 this,
                                 sharedImage,
-                                ViewCompat.getTransitionName(sharedImage) //sharedImage.getTransitionName()
+                                Objects.requireNonNull(ViewCompat.getTransitionName(sharedImage)) //sharedImage.getTransitionName()
                         ).toBundle();
 
-                if (feedType == ArticlesDBContract.DB_TYPE_FAVORITE){
+                //if (feedType == ArticlesDBContract.DB_TYPE_FAVORITE){
                     ActivityCompat.startActivityForResult(this, intent, DETAIL_ACTIVITY_REQUEST_CODE, bundle);
-                }
-                else {
-                    startActivity(intent, bundle);
-                }
+                //}
+                //else {
+                //    startActivity(intent, bundle);
+                //}
             }
             else{
-                if (feedType == ArticlesDBContract.DB_TYPE_FAVORITE) {
+                //if (feedType == ArticlesDBContract.DB_TYPE_FAVORITE) {
                     startActivityForResult(intent, DETAIL_ACTIVITY_REQUEST_CODE);
-                }
-                else {
-                    startActivity(intent);
-                }
+                //}
+                //else {
+                //    startActivity(intent);
+                //}
             }
         }
     }
 
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // if the theme has changed from day to night (or vice versa) but this activity uses the opposite theme, then recreate.
+        if (resultCode == Activity.RESULT_OK) {
+            if (data.getBooleanExtra("REPAINT", true)) {
+                Log.d("REPAINT", "YES!");
+                recreate();
+            }
+        }
+
         // if we are back from another activity and the type is favorites, refresh because we might
         // have removed an item from the favorite list
-        if (requestCode==DETAIL_ACTIVITY_REQUEST_CODE && feedType == ArticlesDBContract.DB_TYPE_FAVORITE){
-            cachedCollection = null;
-            makeArticlesLoaderQuery(feedName, ArticlesDBContract.DB_TYPE_FAVORITE, null, feedItems);
+        if (requestCode==DETAIL_ACTIVITY_REQUEST_CODE){
+            if (feedType == ArticlesDBContract.DB_TYPE_FAVORITE){
+                cachedCollection = null;
+                makeArticlesLoaderQuery(feedName, ArticlesDBContract.DB_TYPE_FAVORITE, null, feedItems);
+            }
         }
         else if (requestCode==PREFERENCES_REQUEST_CODE) {
             // on resume check if any preferences have changed, and if so

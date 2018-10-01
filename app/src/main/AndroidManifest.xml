@@ -31,7 +31,7 @@
             android:label="@string/title_article_detail"
             android:parentActivityName=".ArticleListActivity"
             android:theme="@style/NoActionBar"
-            android:screenOrientation="portrait"
+
             tools:targetApi="jelly_bean">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

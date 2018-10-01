@@ -1,6 +1,8 @@
 package eu.anifantakis.neakriti;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
@@ -8,9 +10,11 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
@@ -20,23 +24,44 @@ import eu.anifantakis.neakriti.databinding.ActivityArticleDetailBinding;
 import eu.anifantakis.neakriti.utils.AppUtils;
 
 import static eu.anifantakis.neakriti.utils.AppUtils.isNightMode;
+import static eu.anifantakis.neakriti.utils.NeaKritiApp.sharedPreferences;
 
 public class ArticleDetailActivity extends AppCompatActivity {
 
-    protected ActivityArticleDetailBinding binding;
+    public ActivityArticleDetailBinding binding;
+    public boolean initializatioin = true;
     private boolean startedByNotification = false;
+    private static boolean recreated = false;
 
     private Article mArticle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_article_detail);
         //setContentView(R.layout.activity_article_detail);
 
         supportPostponeEnterTransition();
         ImageView detailActivityImage = binding.detailActivityImage;
+
+        AppCompatCheckBox ckboxNightMode = binding.incQuickSettings.ckboxNightmode;
+        ckboxNightMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (!initializatioin) {
+                    SharedPreferences.Editor editor1 = sharedPreferences.edit();
+                    editor1.putBoolean(getString(R.string.pref_night_reading_key), isChecked);
+                    editor1.apply();
+
+                    isNightMode = isChecked;
+
+                    recreated = true;
+                    recreate();
+                }
+            }
+        });
 
         // Receive the Parcelable Movie object from the extras of the intent.
         Bundle extras = getIntent().getExtras();
@@ -106,7 +131,18 @@ public class ArticleDetailActivity extends AppCompatActivity {
                     .add(R.id.article_detail_container, fragment)
                     .commit();
         }
+
+        // recreate is called when we need to repaint the theme from day to night or vice versa.
+        if (recreated){
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("REPAINT", true);
+            setResult(Activity.RESULT_OK, resultIntent);
+        }
+
+        recreated = false;
     }
+
+
 
     /**
      * IF WE MAKE USE OF THE ACTUAL ANDROID TOOLBAR...

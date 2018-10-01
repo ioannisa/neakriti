@@ -69,4 +69,7 @@
     <string name="row_type_list">Λίστα</string>
     <string name="row_type_list_details">Λίστα με Κείμενο</string>
     <string name="row_type_card">Καρτέλα</string>
+    <string name="detail_menu_quick_settings">Σύντομες Ρυθμίσεις</string>
+    <string name="detail_menu_browser">Άνοιγμα Άρθρου στον Browser</string>
+    <string name="pref_increased_line_distance_title_short" translatable="false">Μεγάλα Κενά</string>
 </resources>

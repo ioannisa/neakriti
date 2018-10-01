@@ -2,23 +2,37 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/nav_tts"
-        android:icon="@drawable/baseline_headset_24px"
-        android:orderInCategory="1"
-        android:title="@string/detail_menu_tts"
-        app:showAsAction="ifRoom" />
-
-    <item
         android:id="@+id/nav_share_article"
         android:icon="@drawable/baseline_share_24px"
-        android:orderInCategory="2"
+        android:orderInCategory="1"
         android:title="@string/detail_menu_sharing"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/nav_favorite"
         android:icon="@drawable/bookmark_outline_wh_48px"
-        android:orderInCategory="3"
+        android:orderInCategory="2"
         android:title="@string/detail_menu_bookmark"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/nav_tts"
+        android:icon="@drawable/baseline_headset_24px"
+        android:orderInCategory="3"
+        android:title="@string/detail_menu_tts"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/nav_browser"
+        android:icon="@drawable/ic_language_wh_24px"
+        android:orderInCategory="4"
+        android:title="@string/detail_menu_browser"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/settings_wh_24px"
+        android:orderInCategory="5"
+        android:title="@string/detail_menu_quick_settings"
         app:showAsAction="ifRoom" />
 </menu>

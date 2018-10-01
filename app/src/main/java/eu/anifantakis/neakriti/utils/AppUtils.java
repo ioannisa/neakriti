@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -240,6 +242,7 @@ public final class AppUtils {
                 .url(url)
                 .build();
         Response response = client.newCall(request).execute();
+        assert response.body() != null;
         return response.body().string();
     }
 
@@ -251,6 +254,7 @@ public final class AppUtils {
                     .url(imageUrl)
                     .build();
             Response response = client.newCall(request).execute();
+            assert response.body() != null;
             InputStream inputStream = response.body().byteStream();
 
             return BitmapFactory.decodeStream(inputStream);
@@ -376,6 +380,7 @@ public final class AppUtils {
             e.printStackTrace();
         } finally {
             try {
+                assert fos != null;
                 fos.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -408,5 +413,10 @@ public final class AppUtils {
                 = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    public static float dipToPixels(Context context, float dipValue) {
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics);
     }
 }

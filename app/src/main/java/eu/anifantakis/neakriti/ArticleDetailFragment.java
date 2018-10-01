@@ -5,10 +5,11 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
-import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,41 +22,50 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.ConsoleMessage;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.CookieManager;
-import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 import eu.anifantakis.neakriti.data.db.ArticlesDBContract;
 import eu.anifantakis.neakriti.data.feed.gson.Article;
+import eu.anifantakis.neakriti.databinding.ActivityArticleDetailBinding;
 import eu.anifantakis.neakriti.databinding.FragmentArticleDetailBinding;
 import eu.anifantakis.neakriti.utils.AppUtils;
 import eu.anifantakis.neakriti.utils.NeaKritiApp;
 
+import static eu.anifantakis.neakriti.utils.AppUtils.dipToPixels;
 import static eu.anifantakis.neakriti.utils.AppUtils.isNetworkAvailable;
 import static eu.anifantakis.neakriti.utils.AppUtils.isNightMode;
 import static eu.anifantakis.neakriti.utils.AppUtils.onlineMode;
@@ -75,11 +85,14 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
     private WebSettings webSettings;
     private WebView mWebView;
     private AdView adView;
+    private RelativeLayout footerlayout;
     private CollapsingToolbarLayout appBarLayout;
+    private ActivityArticleDetailBinding activityBinding;
 
     private FrameLayout mContainer;
     private WebView mWebViewComments;
     private WebView mWebviewPop;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -93,8 +106,10 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        mTracker = ((NeaKritiApp) getActivity().getApplication()).getDefaultTracker();
+        mTracker = ((NeaKritiApp) Objects.requireNonNull(getActivity()).getApplication()).getDefaultTracker();
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(Objects.requireNonNull(getContext()));
 
+        assert getArguments() != null;
         if (getArguments().containsKey(AppUtils.EXTRAS_ARTICLE)) {
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
@@ -122,8 +137,8 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
      */
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelable(AppUtils.EXTRAS_ARTICLE, mArticle);
         super.onSaveInstanceState(outState);
+        outState.putParcelable(AppUtils.EXTRAS_ARTICLE, mArticle);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -133,12 +148,48 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_article_detail, container, false);
         final View rootView = binding.getRoot();
-
         TextView detailTitle = binding.detailTitle;
         detailTitle.setText(mArticle.getTitle());
 
         TextView detailDate = binding.detailDate;
         detailDate.setText(AppUtils.pubDateFormat(mArticle.getPubDateStr()));
+
+        // get the activity's public binding to associate controls with the activity's footer
+        activityBinding = ((ArticleDetailActivity) Objects.requireNonNull(getActivity())).binding;
+        footerlayout = activityBinding.incQuickSettings.footerLayout;
+        ImageButton btnZoomIn = activityBinding.incQuickSettings.btnzoomin;
+        ImageButton btnZoomOut = activityBinding.incQuickSettings.btnzoomout;
+        AppCompatCheckBox ckboxLinespace = activityBinding.incQuickSettings.ckboxLinespace;
+        //AppCompatCheckBox ckboxNightMode = activityBinding.incQuickSettings.ckboxNightmode;
+
+        btnZoomIn.setOnClickListener(view -> changeFontSize(true));
+
+        btnZoomOut.setOnClickListener(view -> changeFontSize(false));
+
+        // setup quick menu options based on the shared preferences
+        Thread t = new Thread(() -> {
+            if (sharedPreferences == null) {
+                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            }
+            activityBinding.incQuickSettings.ckboxNightmode.setChecked(sharedPreferences.getBoolean(getString(R.string.pref_night_reading_key), false));
+            activityBinding.incQuickSettings.ckboxLinespace.setChecked(sharedPreferences.getBoolean(getString(R.string.pref_increased_line_distance_key), true));
+
+            //setZoomButtonsEnabled();
+
+            ((ArticleDetailActivity)getActivity()).initializatioin = false;
+        });
+        t.run();
+
+        ckboxLinespace.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            if (!((ArticleDetailActivity)getActivity()).initializatioin) {
+
+                SharedPreferences.Editor editor1 = sharedPreferences.edit();
+                editor1.putBoolean(getString(R.string.pref_increased_line_distance_key), isChecked);
+                editor1.apply();
+
+                displayArticle();
+            }
+        });
 
         // comments section
         mWebViewComments = binding.commentsView;
@@ -199,6 +250,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
             }
         }
         Activity activity = this.getActivity();
+        assert activity != null;
         appBarLayout = activity.findViewById(R.id.toolbar_layout);
         if (appBarLayout != null) {
             appBarLayout.setTitle(mArticle.getGroupName());
@@ -208,14 +260,103 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         if (mArticle != null) {
             scaleFontSize();
             displayArticle();
+            displayAdverts();
         }
 
         return rootView;
     }
 
+    /**
+     * Sets the zoom in and zoom out quick settings buttons to enabled/disabled depending on zoom value
+     */
+    private void setZoomButtonsEnabled(){
+        int scaleFont = sharedPreferences.getInt(getString(R.string.pref_font_size_key), 1);
+        if (scaleFont==0){
+            activityBinding.incQuickSettings.btnzoomin.setEnabled(false);
+            activityBinding.incQuickSettings.btnzoomout.setEnabled(true);
+        }
+        else if (scaleFont==4){
+            activityBinding.incQuickSettings.btnzoomin.setEnabled(true);
+            activityBinding.incQuickSettings.btnzoomout.setEnabled(false);
+        }
+        else{
+            activityBinding.incQuickSettings.btnzoomin.setEnabled(true);
+            activityBinding.incQuickSettings.btnzoomout.setEnabled(true);
+        }
+    }
+
+    private void displayAdverts(){
+        // show adverts if we are online
+        if (onlineMode) {
+            AdRequest adRequest = new AdRequest.Builder()
+                    .setRequestAgent("android_studio:ad_template").build();
+            adView.loadAd(adRequest);
+        }
+    }
+
+    /**
+     * Change font size in quick settings (either zoom in or zoom out)
+     * @param increase if true a zoom-in is requested, otherwise zoom-out
+     */
+    @SuppressLint("ApplySharedPref")
+    private void changeFontSize(boolean increase){
+        int scaleFont = scaleFonts(sharedPreferences.getInt(getString(R.string.pref_font_size_key), 1));
+        int newFontValue = scaleFont;
+
+        int[] fontScaleArray = {0, 1, 2, 3, 4};
+        boolean applyChange = false;
+
+        if (scaleFont<4 && increase) {
+            applyChange = true;
+            newFontValue = scaleFont+1;
+        }
+        else if (scaleFont>0 && !increase){
+            applyChange = true;
+            newFontValue = scaleFont-1;
+        }
+
+        if (applyChange){
+            SharedPreferences.Editor editor1 = sharedPreferences.edit();
+            editor1.putInt(getString(R.string.pref_font_size_key), fontScaleArray[newFontValue]);
+            editor1.commit();
+
+            displayArticle();
+        }
+    }
+
+    private int scaleFonts(int fontscale){
+        if (fontscale==0){
+            webSettings.setDefaultFontSize(15);
+            //datetime.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float)15);
+            return 0;
+        }
+        else if (fontscale==1){
+            webSettings.setDefaultFontSize(18);
+            //datetime.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float)18);
+            return 1;
+        }
+        else if (fontscale==2){
+            webSettings.setDefaultFontSize(21);
+            //datetime.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float)21);
+            return 2;
+        }
+
+        else if (fontscale==3){
+            webSettings.setDefaultFontSize(21);
+            //datetime.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float)25);
+            return 3;
+        }
+        else if (fontscale==4){
+            webSettings.setDefaultFontSize(25);
+            //datetime.setTextSize(TypedValue.COMPLEX_UNIT_SP, (float)28);
+            return 4;
+        }
+        return -1;
+    }
+
     private void displayArticle(){
         // update possible online mode change
-        onlineMode = isNetworkAvailable(getContext());
+        onlineMode = isNetworkAvailable(Objects.requireNonNull(getContext()));
 
         if (sharedPreferences == null) {
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -272,13 +413,6 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
 
         webStory = MessageFormat.format(webStory, mArticle.getTitle(), mArticle.getLink(), format, standardStyle, dayNightStyle, articleDetail);
         mWebView.loadDataWithBaseURL(mArticle.getLink(), webStory, "text/html", "utf-8", null);
-
-        // show adverts if we are online
-        if (onlineMode) {
-            AdRequest adRequest = new AdRequest.Builder()
-                    .setRequestAgent("android_studio:ad_template").build();
-            adView.loadAd(adRequest);
-        }
     }
 
     /**
@@ -296,6 +430,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
             case 3: webSettings.setDefaultFontSize(23); break;
             case 4: webSettings.setDefaultFontSize(25); break;
         }
+        //setZoomButtonsEnabled();
     }
 
     @Override
@@ -329,6 +464,35 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         }
         else if (id == R.id.nav_tts){
             speak();
+        }
+        else if (id == R.id.nav_browser){
+            // log Firebase Analytics about article sharing
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, getString(R.string.analytics_art_on_broser));
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, getString(R.string.analytics_article_on_broser));
+            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, getString(R.string.analytics_article_on_broser));
+            bundle.putString(getString(R.string.analytics_article_title), mArticle.getTitle());
+            bundle.putString(getString(R.string.analytics_logged_url), mArticle.getLink());
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
+            Intent browse = new Intent( Intent.ACTION_VIEW , Uri.parse(mArticle.getLink()));
+            startActivity( browse );
+        }
+        else if (id == R.id.nav_settings){
+            // <todo>
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+
+            int scrollviewpadingexists = binding.articleNestedScrollView.getPaddingBottom();
+            if (scrollviewpadingexists==0) {
+                footerFade(android.R.anim.slide_in_left);
+                layoutParams.setMargins(0,0,0, (int)dipToPixels(Objects.requireNonNull(getContext()),90));
+                //articleOnBrowserLayout.setLayoutParams(layoutParams);
+            }else {
+                footerFade(android.R.anim.slide_out_right);
+                layoutParams.setMargins(0,0,0,0);
+                //articleOnBrowserLayout.setLayoutParams(layoutParams);
+            }
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -370,27 +534,23 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
             }
             else if (langAvailability==TextToSpeech.LANG_MISSING_DATA){
                 Log.d("TTS AVAILABILITY", "MISSING INSTALLATION");
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
                 builder
                         .setTitle(R.string.dlg_no_tts_lang_installed_title)
                         .setMessage(R.string.dlg_no_tts_lang_installed_body)
                         .setIcon(R.drawable.warning_48px)
-                        .setNegativeButton(R.string.dlg_cancel, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
+                        .setNegativeButton(R.string.dlg_cancel, (dialog, id) -> {
 
-                            }
                         })
-                        .setPositiveButton(R.string.dlg_install, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // missing data, install it
-                                Intent installTTSIntent = new Intent();
-                                installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-                                ArrayList<String> languages = new ArrayList<>();
-                                languages.add("el-GR");
-                                installTTSIntent.putStringArrayListExtra(TextToSpeech.Engine.EXTRA_CHECK_VOICE_DATA_FOR,
-                                        languages);
-                                startActivity(installTTSIntent);
-                            }
+                        .setPositiveButton(R.string.dlg_install, (dialog, id) -> {
+                            // missing data, install it
+                            Intent installTTSIntent = new Intent();
+                            installTTSIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+                            ArrayList<String> languages = new ArrayList<>();
+                            languages.add("el-GR");
+                            installTTSIntent.putStringArrayListExtra(TextToSpeech.Engine.EXTRA_CHECK_VOICE_DATA_FOR,
+                                    languages);
+                            startActivity(installTTSIntent);
                         });
                 // Create the AlertDialog object and return it
                 builder.create().show();
@@ -399,29 +559,25 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
                 Log.d("TTS AVAILABILITY", "LANGUAGE UNAVAILABLE");
 
                 if (!mTextToSpeech.getDefaultEngine().equals("com.google.android.tts")){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
                     builder
                             .setTitle(R.string.dlg_no_tts_lang_unavailable_title)
                             .setMessage(R.string.dlg_no_tts_no_google_tts_engine_body)
                             .setIcon(R.drawable.not_interested_48px)
-                            .setNegativeButton(R.string.dlg_exit, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
+                            .setNegativeButton(R.string.dlg_exit, (dialog, id) -> {
 
-                                }
                             });
                     // Create the AlertDialog object and return it
                     builder.create().show();
                 }
                 else{
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
                     builder
                         .setTitle(R.string.dlg_no_tts_lang_unavailable_title)
                         .setMessage(R.string.dlg_no_tts_lang_unavailable_body)
                         .setIcon(R.drawable.not_interested_48px)
-                        .setNegativeButton(R.string.dlg_exit, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
+                        .setNegativeButton(R.string.dlg_exit, (dialog, id) -> {
 
-                            }
                         });
                     // Create the AlertDialog object and return it
                     builder.create().show();
@@ -482,11 +638,11 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         //AsyncQueryHandler queryHandler = new AsyncQueryHandler(getContext().getContentResolver()){};
         //queryHandler.startInsert(1,null,ArticlesDBContract.ArticleEntry.CONTENT_URI, contentValues);
 
-        Uri uri = getContext().getContentResolver().insert(ArticlesDBContract.ArticleEntry.CONTENT_URI, contentValues);
+        Uri uri = Objects.requireNonNull(getContext()).getContentResolver().insert(ArticlesDBContract.ArticleEntry.CONTENT_URI, contentValues);
         menu.findItem(R.id.nav_favorite).setIcon(R.drawable.bookmark_wh_24px);
         try {
-            Snackbar.make(getView(), getString(R.string.snack_bookmark_article_added), Snackbar.LENGTH_SHORT).show();
-        }catch (Exception e){}
+            Snackbar.make(Objects.requireNonNull(getView()), getString(R.string.snack_bookmark_article_added), Snackbar.LENGTH_SHORT).show();
+        }catch (Exception ignored){}
     }
 
     private Menu menu;
@@ -497,13 +653,13 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
     private void removeArticleFromFavorites(){
         Uri uri = ArticlesDBContract.ArticleEntry.FAVORITE_CONTENT_URI;
         uri = uri.buildUpon().appendPath(String.valueOf(mArticle.getGuid())).build();
-        getContext().getContentResolver().delete(uri, null, null);
+        Objects.requireNonNull(getContext()).getContentResolver().delete(uri, null, null);
 
         menu.findItem(R.id.nav_favorite).setIcon(R.drawable.bookmark_outline_wh_24px);
 
         try {
-            Snackbar.make(getView(), getString(R.string.snack_bookmark_article_removed), Snackbar.LENGTH_SHORT).show();
-        }catch (Exception e){}
+            Snackbar.make(Objects.requireNonNull(getView()), getString(R.string.snack_bookmark_article_removed), Snackbar.LENGTH_SHORT).show();
+        }catch (Exception ignored){}
     }
 
     /**
@@ -511,13 +667,14 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
      * @return whether the existing article exists in the favorites database
      */
     private boolean isArticleInFavorites(){
-        Cursor cursor = getContext().getContentResolver().query(ArticlesDBContract.ArticleEntry.CONTENT_URI,
+        Cursor cursor = Objects.requireNonNull(getContext()).getContentResolver().query(ArticlesDBContract.ArticleEntry.CONTENT_URI,
                 null,
                 ArticlesDBContract.ArticleEntry.COL_TYPE + " = " + ArticlesDBContract.DB_TYPE_FAVORITE + " AND " + ArticlesDBContract.ArticleEntry.COL_GUID + " = " + mArticle.getGuid(),
                 null,
                 null
         );
 
+        assert cursor != null;
         boolean isArticleInFavorites = (cursor.getCount()>0);
         cursor.close();
 
@@ -552,6 +709,31 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
                 }
             });
         }
+    }
+
+    // <todo>
+    void footerFade(int animid){
+        Animation myFadeInAnimation = AnimationUtils.loadAnimation(getContext() , animid);
+        myFadeInAnimation.setDuration(500);
+        footerlayout.startAnimation(myFadeInAnimation);
+
+        if (animid==android.R.anim.slide_out_right){
+            footerlayout.postDelayed(() -> {
+                binding.articleNestedScrollView.setPadding(0, 0, 0, 0);
+                footerlayout.setVisibility(View.GONE);
+            }, 500);
+        }
+        else{
+            footerlayout.postDelayed(() -> {
+                binding.articleNestedScrollView.setPadding(0, 0, 0, getValueInDIP(90));
+                footerlayout.setVisibility(View.VISIBLE);
+            }, 500);
+        }
+    }
+
+    int getValueInDIP(int pxValue){
+        Resources res = getResources();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, pxValue, res.getDisplayMetrics());
     }
 
     @Override
@@ -611,6 +793,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             String host = Uri.parse(url).getHost();
+            assert host != null;
             return !host.equals("m.facebook.com");
         }
 
@@ -620,13 +803,10 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
             String host = Uri.parse(url).getHost();
             if (url.contains("/plugins/close_popup.php?reload")) {
                 final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        //Do something after 100ms
-                        mContainer.removeView(mWebviewPop);
-                        loadComments();
-                    }
+                handler.postDelayed(() -> {
+                    //Do something after 100ms
+                    mContainer.removeView(mWebviewPop);
+                    loadComments();
                 }, 600);
             }
         }

@@ -10,7 +10,7 @@
         android:id="@+id/widget_row_image"
         android:layout_width="80dp"
         android:layout_height="57dp"
-        android:contentDescription="@string/row.thumb_description"
+        android:contentDescription="@string/row_thumb_description"
         android:src="@drawable/placeholder" />
 
     <TextView

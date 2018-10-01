@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:id="@+id/footerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="-68dp"
+        android:elevation="4dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/linearLayoutFooter"
+            style="?upperlogogray"
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:layout_marginBottom="0dp"
+            android:orientation="horizontal"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/ckbox_linespace"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_gravity="start"
+                    android:text="@string/pref_increased_line_distance_title_short"
+                    android:textColor="#ddd"
+                    app:buttonTint="#ddd" />
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/ckbox_nightmode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="start"
+                    android:checked="false"
+                    android:duplicateParentState="false"
+                    android:text="@string/pref_night_reading_title"
+                    android:textColor="#ddd"
+                    app:buttonTint="#ddd" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true">
+
+                    <android.support.v7.widget.AppCompatImageButton
+                        android:id="@+id/btnzoomout"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_zoom_out_24px" />
+
+                    <android.support.v7.widget.AppCompatImageButton
+                        android:id="@+id/btnzoomin"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_zoom_in_24px" />
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

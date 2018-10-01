@@ -63,4 +63,7 @@
     <string name="row_type_list">List</string>
     <string name="row_type_list_details">List with details</string>
     <string name="row_type_card">Card</string>
+    <string name="detail_menu_quick_settings">Quick Settings</string>
+    <string name="detail_menu_browser">Open Article in Browser</string>
+    <string name="pref_increased_line_distance_title_short">Large Line Gap</string>
 </resources>

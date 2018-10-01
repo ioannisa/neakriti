@@ -11,8 +11,8 @@
     <string name="action_settings">Settings</string>
 
     <string name="transition_photo" translatable="false">transition_photo</string>
-    <string name="row.thumb_description" translatable="false">Article Thumbnail</string>
-    <string name="detail.img_description" translatable="false">Article Image</string>
+    <string name="row_thumb_description" translatable="false">Article Thumbnail</string>
+    <string name="detail_img_description" translatable="false">Article Image</string>
 
     <!-- CATEGORIES -->
 
@@ -108,6 +108,8 @@
     <string name="detail_menu_tts" translatable="false">Text to Speech (TTS)</string>
     <string name="detail_menu_sharing" translatable="false">Sharing</string>
     <string name="detail_menu_bookmark" translatable="false">Bookmark</string>
+    <string name="detail_menu_browser">Open Article in Browser</string>
+    <string name="detail_menu_quick_settings">Quick Settings</string>
     <string name="title_activity_widget_config">Widget Settings</string>
 
     <!-- Shared Preferences -->
@@ -120,6 +122,7 @@
     <string name="pref_increased_line_distance_key" translatable="false">largelinespace</string>
     <string name="pref_increased_line_distance_title">Greater Distance between Lines</string>
     <string name="pref_increased_line_distance_summary">Increases the deistance between lines by half a line to make long articles reading easier.</string>
+    <string name="pref_increased_line_distance_title_short">Large Line Gap</string>
 
     <string name="pref_night_reading_key" translatable="false">nightmode</string>
 
@@ -177,4 +180,11 @@
     <string name="five" translatable="false">5</string>
     <string name="seven" translatable="false">7</string>
     <string name="ten" translatable="false">10</string>
+
+
+    <string name="analytics_art_on_broser" translatable="false">art_on_broser</string>
+    <string name="analytics_article_on_broser" translatable="false">article on browser</string>
+    <string name="analytics_article_title" translatable="false">article_title</string>
+    <string name="analytics_logged_url" translatable="false">logged_url</string>
+
 </resources>
