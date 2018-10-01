@@ -9,37 +9,58 @@
         android:orientation="vertical">
 
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?rowBackgroundItem"
-            android:orientation="vertical"
-            android:paddingBottom="8dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingTop="8dp">
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/detail_title"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:background="#00000000"
-                android:textColor="?rowTitleTextColor"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                tools:text="ARTICLE TITILE HERE" />
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginEnd="56dp"
+                android:layout_marginRight="56dp"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="8dp">
 
-            <TextView
-                android:id="@+id/detail_date"
-                android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/detail_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="#00000000"
+                    android:textColor="?rowTitleTextColor"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="ARTICLE TITILE HERE" />
+
+                <TextView
+                    android:id="@+id/detail_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#00000000"
+                    android:textColor="?rowDateTextColor"
+                    tools:text="ARTICLE DATE TIME HERE" />
+
+            </LinearLayout>
+
+
+            <com.andremion.counterfab.CounterFab
+                android:id="@+id/counter_fab"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#00000000"
-                android:textColor="?rowDateTextColor"
-                tools:text="ARTICLE DATE TIME HERE" />
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                app:fabSize="mini"
+                app:srcCompat="@drawable/ic_comment_w_24px" />
 
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/article_nested_scroll_view"
@@ -54,6 +75,7 @@
                 android:layout_height="wrap_content"
                 android:descendantFocusability="blocksDescendants"
                 android:orientation="vertical">
+
 
                 <WebView
                     android:id="@+id/article_detail"

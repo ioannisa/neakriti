@@ -3,7 +3,6 @@ package eu.anifantakis.neakriti;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -38,7 +37,6 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -54,21 +52,31 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
+import eu.anifantakis.neakriti.data.RequestFacebookCommentsCountInterface;
 import eu.anifantakis.neakriti.data.db.ArticlesDBContract;
+import eu.anifantakis.neakriti.data.facebook_comments.Feed;
 import eu.anifantakis.neakriti.data.feed.gson.Article;
 import eu.anifantakis.neakriti.databinding.ActivityArticleDetailBinding;
 import eu.anifantakis.neakriti.databinding.FragmentArticleDetailBinding;
 import eu.anifantakis.neakriti.utils.AppUtils;
 import eu.anifantakis.neakriti.utils.NeaKritiApp;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static eu.anifantakis.neakriti.utils.AppUtils.dipToPixels;
 import static eu.anifantakis.neakriti.utils.AppUtils.isNetworkAvailable;
 import static eu.anifantakis.neakriti.utils.AppUtils.isNightMode;
 import static eu.anifantakis.neakriti.utils.AppUtils.onlineMode;
+import static eu.anifantakis.neakriti.utils.AppUtils.spec;
 import static eu.anifantakis.neakriti.utils.NeaKritiApp.sharedPreferences;
 
 /**
@@ -263,7 +271,37 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
             displayAdverts();
         }
 
+        // get the number of article comments using the Facebook API.
+        pullCommentsCount();
+
         return rootView;
+    }
+
+    private void pullCommentsCount(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://graph.facebook.com")
+                .client(new OkHttpClient.Builder().connectionSpecs(Collections.singletonList(spec)).build())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        RequestFacebookCommentsCountInterface request = retrofit.create(RequestFacebookCommentsCountInterface.class);
+        Call<Feed> call = request.getCountByArticleURL(mArticle.getLink());
+        call.enqueue(new Callback<Feed>() {
+            @Override
+            public void onResponse(@NonNull Call<Feed> call, @NonNull Response<Feed> response) {
+                assert response.body() != null;
+                int count = response.body().getShare().getCommentCount();
+                Log.d("FACEBOOK", "COUNT: "+count);
+
+                binding.counterFab.setCount(count);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Feed> call, @NonNull Throwable t) {
+                Log.d("FACEBOOK", "FETCH FAIL");
+                binding.counterFab.setCount(0);
+            }
+        });
     }
 
     /**
