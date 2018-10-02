@@ -181,10 +181,11 @@
     <string name="seven" translatable="false">7</string>
     <string name="ten" translatable="false">10</string>
 
-
     <string name="analytics_art_on_broser" translatable="false">art_on_broser</string>
     <string name="analytics_article_on_broser" translatable="false">article on browser</string>
     <string name="analytics_article_title" translatable="false">article_title</string>
     <string name="analytics_logged_url" translatable="false">logged_url</string>
+
+    <string name="request_recreate" translatable="false">RECREATE</string>
 
 </resources>

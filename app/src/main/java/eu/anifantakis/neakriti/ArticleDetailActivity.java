@@ -135,7 +135,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
         // recreate is called when we need to repaint the theme from day to night or vice versa.
         if (recreated){
             Intent resultIntent = new Intent();
-            resultIntent.putExtra("REPAINT", true);
+            resultIntent.putExtra(getString(R.string.request_recreate), true);
             setResult(Activity.RESULT_OK, resultIntent);
         }
 

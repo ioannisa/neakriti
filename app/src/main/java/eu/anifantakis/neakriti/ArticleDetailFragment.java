@@ -57,7 +57,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
-import eu.anifantakis.neakriti.data.RequestFacebookCommentsCountInterface;
+import eu.anifantakis.neakriti.data.facebook_comments.RequestFacebookCommentsCountInterface;
 import eu.anifantakis.neakriti.data.db.ArticlesDBContract;
 import eu.anifantakis.neakriti.data.facebook_comments.Feed;
 import eu.anifantakis.neakriti.data.feed.gson.Article;
@@ -279,7 +279,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
 
     private void pullCommentsCount(){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://graph.facebook.com")
+                .baseUrl(AppUtils.URL_FACEBOOK_GRAPH)
                 .client(new OkHttpClient.Builder().connectionSpecs(Collections.singletonList(spec)).build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

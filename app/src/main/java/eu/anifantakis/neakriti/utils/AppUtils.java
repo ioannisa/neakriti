@@ -48,6 +48,8 @@ public final class AppUtils {
     public static String URL_BASE = "https://anifantakis.eu";
     public static final String RSSFEED_BASE = "/_anifan/articles-json.php";
 
+    public static final String URL_FACEBOOK_GRAPH = "https://graph.facebook.com";
+
     public static String RADIO_STATION_URL = "";
     public static String TV_STATION_URL =  "";
 

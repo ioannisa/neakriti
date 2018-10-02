@@ -1,4 +1,4 @@
-package eu.anifantakis.neakriti.data;
+package eu.anifantakis.neakriti.data.feed;
 
 import eu.anifantakis.neakriti.data.feed.gson.Feed;
 import eu.anifantakis.neakriti.utils.AppUtils;

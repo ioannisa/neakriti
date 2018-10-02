@@ -23,7 +23,7 @@ import java.util.Collections;
 
 import eu.anifantakis.neakriti.ArticleDetailActivity;
 import eu.anifantakis.neakriti.R;
-import eu.anifantakis.neakriti.data.RequestInterface;
+import eu.anifantakis.neakriti.data.feed.RequestInterface;
 import eu.anifantakis.neakriti.data.feed.gson.Article;
 import eu.anifantakis.neakriti.data.feed.gson.Feed;
 import eu.anifantakis.neakriti.utils.AppUtils;

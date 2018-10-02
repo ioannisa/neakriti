@@ -62,7 +62,7 @@ import java.util.Collections;
 import java.util.Objects;
 
 import eu.anifantakis.neakriti.data.ArticlesListAdapter;
-import eu.anifantakis.neakriti.data.RequestInterface;
+import eu.anifantakis.neakriti.data.feed.RequestInterface;
 import eu.anifantakis.neakriti.data.StorageIntentService;
 import eu.anifantakis.neakriti.data.StorageRetrievalAsyncTask;
 import eu.anifantakis.neakriti.data.db.ArticlesDBContract;
@@ -74,7 +74,6 @@ import eu.anifantakis.neakriti.preferences.SetPrefs;
 import eu.anifantakis.neakriti.utils.AppUtils;
 import eu.anifantakis.neakriti.utils.NeaKritiApp;
 import okhttp3.OkHttpClient;
-import okhttp3.Response;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -350,8 +349,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         super.onActivityResult(requestCode, resultCode, data);
         // if the theme has changed from day to night (or vice versa) but this activity uses the opposite theme, then recreate.
         if (resultCode == Activity.RESULT_OK) {
-            if (data.getBooleanExtra("REPAINT", true)) {
-                Log.d("REPAINT", "YES!");
+            if (data.getBooleanExtra(getString(R.string.request_recreate), true)) {
                 recreate();
             }
         }

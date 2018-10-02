@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import eu.anifantakis.neakriti.R;
-import eu.anifantakis.neakriti.data.RequestInterface;
+import eu.anifantakis.neakriti.data.feed.RequestInterface;
 import eu.anifantakis.neakriti.data.feed.gson.Article;
 import eu.anifantakis.neakriti.data.feed.gson.Feed;
 import okhttp3.OkHttpClient;
