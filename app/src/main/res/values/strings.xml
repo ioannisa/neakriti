@@ -51,7 +51,8 @@
 
     <string name="nav_favorite_items">Bookmarks</string>
 
-    <string name="unitID_bottom" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="unitID_manifest" translatable="false">ca-app-pub-3940256099942544~6300978111</string>
+    <string name="unitID_bottom"   translatable="false">ca-app-pub-3940256099942544/6300978111</string>
 
     <!-- Sharing Article -->
     <string name="share_the_article">neakriti.gr - Share this Article</string>

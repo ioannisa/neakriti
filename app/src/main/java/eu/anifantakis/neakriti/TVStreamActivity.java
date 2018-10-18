@@ -16,6 +16,7 @@ import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.drm.DrmInitData;
@@ -155,6 +156,9 @@ public class TVStreamActivity extends AppCompatActivity {
         videoView.setPlayer(mExoPlayer);
         videoView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
 
+        // register the listener that will keep the exoplayer's video screen from dimming when the phone is unattended while video is playing.
+        mExoPlayer.addListener(new PlayerEventListener());
+
 
         Handler mHandler = new Handler();
         String userAgent = Util.getUserAgent(this, "User Agent");
@@ -199,6 +203,24 @@ public class TVStreamActivity extends AppCompatActivity {
             mExoPlayer.stop();
             mExoPlayer.release();
             mExoPlayer = null;
+        }
+    }
+
+    /**
+     * Prevent phone screen from dimming and turning off when unattended while video stream is playing
+     * https://stackoverflow.com/questions/49657683/exoplayer-2-prevent-screen-dim-on-video-playback
+     */
+    private class PlayerEventListener extends Player.DefaultEventListener {
+        @Override
+        public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+            if (playbackState == Player.STATE_IDLE || playbackState == Player.STATE_ENDED ||
+                    !playWhenReady) {
+
+                videoView.setKeepScreenOn(false);
+            } else { // STATE_IDLE, STATE_ENDED
+                // This prevents the screen from getting dim/lock
+                videoView.setKeepScreenOn(true);
+            }
         }
     }
 }
