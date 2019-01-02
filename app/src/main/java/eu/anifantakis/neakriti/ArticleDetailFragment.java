@@ -163,41 +163,47 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         detailDate.setText(AppUtils.pubDateFormat(mArticle.getPubDateStr()));
 
         // get the activity's public binding to associate controls with the activity's footer
-        activityBinding = ((ArticleDetailActivity) Objects.requireNonNull(getActivity())).binding;
-        footerlayout = activityBinding.incQuickSettings.footerLayout;
-        ImageButton btnZoomIn = activityBinding.incQuickSettings.btnzoomin;
-        ImageButton btnZoomOut = activityBinding.incQuickSettings.btnzoomout;
-        AppCompatCheckBox ckboxLinespace = activityBinding.incQuickSettings.ckboxLinespace;
-        //AppCompatCheckBox ckboxNightMode = activityBinding.incQuickSettings.ckboxNightmode;
+        // we use try/catch as the "quick-settings" bottom menu refers only to the detail activity and will produce
+        // exception when called in landscape-mode of tablet version of the app (from this fragment not belonging to the ArticleDetailActivity)
+        try {
+            activityBinding = ((ArticleDetailActivity) Objects.requireNonNull(getActivity())).binding;
+            footerlayout = activityBinding.incQuickSettings.footerLayout;
+            ImageButton btnZoomIn = activityBinding.incQuickSettings.btnzoomin;
+            ImageButton btnZoomOut = activityBinding.incQuickSettings.btnzoomout;
+            AppCompatCheckBox ckboxLinespace = activityBinding.incQuickSettings.ckboxLinespace;
+            //AppCompatCheckBox ckboxNightMode = activityBinding.incQuickSettings.ckboxNightmode;
 
-        btnZoomIn.setOnClickListener(view -> changeFontSize(true));
+            btnZoomIn.setOnClickListener(view -> changeFontSize(true));
 
-        btnZoomOut.setOnClickListener(view -> changeFontSize(false));
+            btnZoomOut.setOnClickListener(view -> changeFontSize(false));
 
-        // setup quick menu options based on the shared preferences
-        Thread t = new Thread(() -> {
-            if (sharedPreferences == null) {
-                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            }
-            activityBinding.incQuickSettings.ckboxNightmode.setChecked(sharedPreferences.getBoolean(getString(R.string.pref_night_reading_key), false));
-            activityBinding.incQuickSettings.ckboxLinespace.setChecked(sharedPreferences.getBoolean(getString(R.string.pref_increased_line_distance_key), true));
+            // setup quick menu options based on the shared preferences
+            Thread t = new Thread(() -> {
+                if (sharedPreferences == null) {
+                    sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                }
+                activityBinding.incQuickSettings.ckboxNightmode.setChecked(sharedPreferences.getBoolean(getString(R.string.pref_night_reading_key), false));
+                activityBinding.incQuickSettings.ckboxLinespace.setChecked(sharedPreferences.getBoolean(getString(R.string.pref_increased_line_distance_key), true));
 
-            //setZoomButtonsEnabled();
+                //setZoomButtonsEnabled();
 
-            ((ArticleDetailActivity)getActivity()).initializatioin = false;
-        });
-        t.run();
+                ((ArticleDetailActivity)getActivity()).initializatioin = false;
+            });
+            t.run();
 
-        ckboxLinespace.setOnCheckedChangeListener((compoundButton, isChecked) -> {
-            if (!((ArticleDetailActivity)getActivity()).initializatioin) {
 
-                SharedPreferences.Editor editor1 = sharedPreferences.edit();
-                editor1.putBoolean(getString(R.string.pref_increased_line_distance_key), isChecked);
-                editor1.apply();
+            ckboxLinespace.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+                if (!((ArticleDetailActivity)getActivity()).initializatioin) {
 
-                displayArticle();
-            }
-        });
+                    SharedPreferences.Editor editor1 = sharedPreferences.edit();
+                    editor1.putBoolean(getString(R.string.pref_increased_line_distance_key), isChecked);
+                    editor1.apply();
+
+                    displayArticle();
+                }
+            });
+
+        }catch (Exception e){}
 
         // comments section
         mWebViewComments = binding.commentsView;
