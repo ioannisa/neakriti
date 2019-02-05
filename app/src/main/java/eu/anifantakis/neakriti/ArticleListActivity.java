@@ -606,6 +606,24 @@ public class ArticleListActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * In tablet landscape mode, when we rotate to portrait we want the toolbar menu items to be redrawn.
+     * So in the "onPrepare" method, we remove the items to be redistributed correctly.
+     * @param menu
+     * @return
+     */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (!mTwoPane) {
+            menu.removeItem(R.id.nav_favorite);
+            menu.removeItem(R.id.nav_share_article);
+            menu.removeItem(R.id.nav_tts);
+            menu.removeItem(R.id.nav_browser);
+            menu.removeItem(R.id.nav_settings);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
