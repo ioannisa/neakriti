@@ -51,6 +51,10 @@
 
     <string name="nav_favorite_items">Bookmarks</string>
 
+    <!-- TODO: DEMO-GOOGLE ADS ACCOUNT IDs -->
+    <!-- ca-app-pub-3940256099942544~6300978111 -->
+    <!-- ca-app-pub-3940256099942544/6300978111 -->
+
     <string name="unitID_manifest" translatable="false">ca-app-pub-3940256099942544~6300978111</string>
     <string name="unitID_bottom"   translatable="false">ca-app-pub-3940256099942544/6300978111</string>
 

@@ -209,7 +209,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
             ImageView target;
             if (listType==1) target = bindingList.rowIvArticleThumb; else
             if (listType==2) target = bindingListDetails.rowIvArticleThumb; else
-            target = bindingCard.rowIvArticleThumb;
+                target = bindingCard.rowIvArticleThumb;
 
             if (image==null || image.isEmpty()){
                 // if movie has no accompanied backdrop image, load the "no image found" from the drawable folder
@@ -237,7 +237,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
             ImageView target;
             if (listType==1) target = bindingList.rowIvArticleThumb; else
             if (listType==2) target = bindingListDetails.rowIvArticleThumb; else
-            target = bindingCard.rowIvArticleThumb;
+                target = bindingCard.rowIvArticleThumb;
 
             return target;
         }
@@ -246,7 +246,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
             TextView target;
             if (listType==1) target = bindingList.listDate; else
             if (listType==2) target = bindingListDetails.listDate; else
-            target = bindingCard.listDate;
+                target = bindingCard.listDate;
 
             target.setText(AppUtils.pubDateFormat(dateStr));
         }

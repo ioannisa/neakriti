@@ -237,7 +237,10 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
 
                 // Once the article is done loading, load the comments section if we are in online mode
                 if (onlineMode){
-                    loadComments();
+                    // disabled for now... will re-enable comments functionality in future version
+
+                    // TODO: RE-ENABLE FACEBOOK COMMENTS
+                    //loadComments();
                 }
             }
         });
@@ -253,7 +256,10 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
                 // The advert loading causes undesired scrolling.  To solve this we disable focusable descendants in xml
                 // however disabling focusable descendants, does not allow to focus on the facebook comments section and write your comment.
                 // so when the advert is done displaying the advert, its now safe to re-enable focusable descendants without undesirable scrolls.
-                binding.articleContainer.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+
+                // TODO: RE-ENABLE FACEBOOK COMMENTS
+                // disabling hack in order to revisit it in future version - will remove facbook comments all together in the existing version.
+                //binding.articleContainer.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
             }
         });
 
