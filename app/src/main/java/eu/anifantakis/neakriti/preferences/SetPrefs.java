@@ -8,6 +8,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
@@ -22,10 +24,12 @@ import eu.anifantakis.neakriti.utils.AppUtils;
 import eu.anifantakis.neakriti.widget.NewsWidgetProvider;
 
 import static eu.anifantakis.neakriti.utils.AppUtils.isNightMode;
+import static eu.anifantakis.neakriti.utils.NeaKritiApp.showTestNotificationsPref;
 
 public class SetPrefs extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    public static final String NEAKRITI_NEWS_TOPIC = "neakriti-android-news-test";
+    public static final String NEAKRITI_NEWS_TOPIC = "neakriti-android-news";
+    public static final String NEAKRITI_NEWS_TEST_TOPIC = "neakriti-android-news-test";
 
     private static PackageInfo pInfo;
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -44,7 +48,8 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
         // manage the widget setup here as well ;)
         assignAppWidgetId();
 
-        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
         getFragmentManager().beginTransaction().replace(android.R.id.content, new PrefsFragment()).commit();
         onSharedPreferenceChanged(null, "");
 
@@ -73,6 +78,24 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
 
             // the "about" (informative only) section of the preferences
             findPreference(getString(R.string.pref_about_version_key)).setSummary(pInfo.versionName);
+
+
+            // if we haven't made the secret combo, but the test notifications preference is already checked
+            // it means that we have definitely done the secret combo previously, so we should show this secret option
+            if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(R.string.pref_fcm_test_key), false))
+                showTestNotificationsPref = true;
+
+            // if we made the secret key combo to show the option for the test notifications
+            // then show them in the screen
+            if (showTestNotificationsPref) {
+                PreferenceCategory targetCategory = (PreferenceCategory) findPreference(getString(R.string.pref_fcm_category_key));
+                CheckBoxPreference checkBoxPreference = new CheckBoxPreference(getActivity());
+                checkBoxPreference.setKey(getString(R.string.pref_fcm_test_key));
+                checkBoxPreference.setTitle(getString(R.string.pref_fcm_test_title));
+                checkBoxPreference.setSummary(getString(R.string.pref_fcm_test_summary));
+                targetCategory.addPreference(checkBoxPreference);
+            }
+
         }
     }
 
@@ -95,6 +118,13 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
                 FirebaseMessaging.getInstance().subscribeToTopic(NEAKRITI_NEWS_TOPIC);
             } else {
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(NEAKRITI_NEWS_TOPIC);
+            }
+        }
+        else if (key.equals(getString(R.string.pref_fcm_test_key))) {
+            if (sharedPreferences.getBoolean(key, true)) {
+                FirebaseMessaging.getInstance().subscribeToTopic(NEAKRITI_NEWS_TEST_TOPIC);
+            } else {
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(NEAKRITI_NEWS_TEST_TOPIC);
             }
         }
         else if (key.equals(getString(R.string.prefs_widget_category_id))) {

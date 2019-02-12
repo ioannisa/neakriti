@@ -58,7 +58,9 @@
     <string name="pref_font_size_summary">Σας επιτρέπει να επιλέξετε πόσο μεγάλοι θα παρουσιάζονται οι χαρακτήρες του κειμένου στην ανάλυση της είδησης</string>
     <string name="pref_fcm_category_title">Αυτόματες Ειδοποιήσεις Ειδήσεων</string>
     <string name="pref_fcm_title">Λήψη αυτόματων ειδοποιήσεων</string>
+    <string name="pref_fcm_test_title">Λήψη δοκιμαστικών ειδοποιήσεων</string>
     <string name="pref_fcm_summary">Εδώ μπορείτε να ενεργοποιήσετε ή να απενεργοποιήσετε τη δυνατότητα αυτόματης λήψης ειδοποιήσεων στη συσκευή σας για τις πιο κρίσημες ειδήσεις</string>
+    <string name="pref_fcm_test_summary">Debugger Module: Ενεργοποίηση/Απενεργοποίηση δοκιμαστικών ειδοποιήσεων</string>
     <string name="pref_about_category_title">Σχετικά</string>
     <string name="pref_about_version_title">Έκδοση</string>
     <string name="pref_about_author_title">Δημιουργός</string>

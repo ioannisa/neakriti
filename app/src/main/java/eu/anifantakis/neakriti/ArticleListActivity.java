@@ -17,6 +17,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -44,6 +45,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.PlaybackParameters;
@@ -85,6 +87,7 @@ import static eu.anifantakis.neakriti.utils.AppUtils.mNotificationManager;
 import static eu.anifantakis.neakriti.utils.AppUtils.onlineMode;
 import static eu.anifantakis.neakriti.utils.AppUtils.spec;
 import static eu.anifantakis.neakriti.utils.NeaKritiApp.sharedPreferences;
+import static eu.anifantakis.neakriti.utils.NeaKritiApp.showTestNotificationsPref;
 
 
 public class ArticleListActivity extends AppCompatActivity implements
@@ -135,6 +138,9 @@ public class ArticleListActivity extends AppCompatActivity implements
     // we need to reload everytime the activity loads onResume, except of when it occurs when coming back from Detail Activity
     public static boolean shouldreload = false;
 
+    private static int counter = 0;
+    private static long previousTapMilis = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,6 +158,38 @@ public class ArticleListActivity extends AppCompatActivity implements
         Toolbar toolbar = binding.masterView.toolbar;
         setSupportActionBar(toolbar);
         //toolbar.setTitle(getTitle());
+
+
+        binding.masterView.listLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // if we have already revealed the test notifications section, there is no need to make use of the counter
+                if (showTestNotificationsPref)
+                    return;
+
+                counter++;
+
+                // do not accept taps if they are longer than 1 second appart from each other
+                // in that case reset the counter to 1
+                if (counter==1){
+                    previousTapMilis = System.currentTimeMillis();
+                } else{
+                    if (previousTapMilis+1000 < System.currentTimeMillis()){
+                        previousTapMilis=System.currentTimeMillis();
+                        counter=1;
+                        return;
+                    }
+                    previousTapMilis=System.currentTimeMillis();
+                }
+
+                if (counter==10) {
+                    Toast.makeText(getApplicationContext(), "DEBUG PREFS ENABLED", Toast.LENGTH_LONG).show();
+                    showTestNotificationsPref=true;
+                }
+                else if (counter>6)
+                    Toast.makeText(getApplicationContext(), Integer.toString(counter), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         feedCategoryTitle = binding.masterView.articles.incLivePanel.feedCategoryTitle;
         btnRadio = binding.masterView.articles.incLivePanel.btnLiveRadio;

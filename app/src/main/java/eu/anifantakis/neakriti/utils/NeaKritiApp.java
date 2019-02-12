@@ -32,6 +32,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
+import static eu.anifantakis.neakriti.preferences.SetPrefs.NEAKRITI_NEWS_TEST_TOPIC;
 import static eu.anifantakis.neakriti.preferences.SetPrefs.NEAKRITI_NEWS_TOPIC;
 
 public class NeaKritiApp extends Application {
@@ -39,6 +40,7 @@ public class NeaKritiApp extends Application {
     private static Tracker sTracker;
     public SimpleExoPlayer mRadioPlayer;
     public static SharedPreferences sharedPreferences;
+    public static boolean showTestNotificationsPref = false;
 
     @Override
     public void onCreate() {
@@ -56,6 +58,10 @@ public class NeaKritiApp extends Application {
 
         if (sharedPreferences.getBoolean(getString(R.string.pref_fcm_key), true)) {
             FirebaseMessaging.getInstance().subscribeToTopic(NEAKRITI_NEWS_TOPIC);
+        }
+
+        if (sharedPreferences.getBoolean(getString(R.string.pref_fcm_key), true)) {
+            FirebaseMessaging.getInstance().subscribeToTopic(NEAKRITI_NEWS_TEST_TOPIC);
         }
 
         AppUtils.isNightMode = sharedPreferences.getBoolean(getString(R.string.pref_night_reading_key), false);

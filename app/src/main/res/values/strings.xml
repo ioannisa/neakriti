@@ -137,8 +137,11 @@
     <string name="pref_fcm_category_key" translatable="false">cat_notifications</string>
 
     <string name="pref_fcm_key" translatable="false">pref_notifications</string>
-    <string name="pref_fcm_title">Receive News Notification</string>
+    <string name="pref_fcm_test_key" translatable="false">pref_test_notifications</string>
+    <string name="pref_fcm_title">Receive News Notifications</string>
+    <string name="pref_fcm_test_title">Receive Test Notifications</string>
     <string name="pref_fcm_summary">Here you can enable or disable the News Notifications Functionality for your device regarding the breaking news</string>
+    <string name="pref_fcm_test_summary">Debugger Module: Enable/Disable Test Notifications</string>
 
     <string name="pref_about_category_title">About</string>
 
