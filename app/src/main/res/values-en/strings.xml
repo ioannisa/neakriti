@@ -58,6 +58,7 @@
     <string name="pref_about_category_title">About</string>
     <string name="pref_about_version_title">Version</string>
     <string name="pref_about_author_title">Author</string>
+    <string name="prefs_widget_section">WIDGET (Experimental - Beta)</string>
     <string name="pref_widget_category_title">Widget Category</string>
     <string name="pref_widget_items_count_title">Articles Quantity in Widget</string>
     <string name="pref_about_author_summary">Ioannis Anifantakis\nhttps://anifantakis.eu</string>
@@ -68,4 +69,15 @@
     <string name="detail_menu_quick_settings">Quick Settings</string>
     <string name="detail_menu_browser">Open Article in Browser</string>
     <string name="pref_increased_line_distance_title_short">Large Line Gap</string>
+
+    <string name="pref_loc_category_title">System Language</string>
+    <string name="pref_app_loc_lang_title">Display application menus and messages language in</string>
+
+    <string name="debug_steps">more steps…</string>
+    <string name="debug_step">more step…</string>
+    <string name="debug_enabled">DEBUG MODE ENABLED</string>
+
+    <string name="dlg_restart_title">Απαιτείται Επανεκκίνηση</string>
+    <string name="dlg_restart_body">Για να εφαρμοστούν οι αλλαγές στη γλώσσα πρέπει να γίνει επανεκκίνηση στην εφαρμογή.\n\nΠιέστε ΚΛΕΙΣΙΜΟ για επανεκκίνηση εφαρμογής</string>
+    <string name="dlg_restart_close">ΚΛΕΙΣΙΜΟ</string>
 </resources>

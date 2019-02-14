@@ -47,4 +47,14 @@
         <item>@string/row_type_list_details_id</item>
         <item>@string/row_type_card_id</item>
     </string-array>
+
+    <string-array name="loc_types">
+        <item>@string/loc_greek</item>
+        <item>@string/loc_english</item>
+    </string-array>
+
+    <string-array name="loc_ids">
+        <item>@string/loc_greek_id</item>
+        <item>@string/loc_english_id</item>
+    </string-array>
 </resources>

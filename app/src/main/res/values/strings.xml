@@ -143,6 +143,22 @@
     <string name="pref_fcm_summary">Here you can enable or disable the News Notifications Functionality for your device regarding the breaking news</string>
     <string name="pref_fcm_test_summary">Debugger Module: Enable/Disable Test Notifications</string>
 
+    <string name="pref_loc_category_key" translatable="false">cat_localization</string>
+    <string name="pref_loc_category_title">System Language</string>
+
+    <string name="pref_app_loc_lang_key" translatable="false">list_loc_lang</string>
+    <string name="pref_app_loc_lang_title">Display application menus and messages language in</string>
+
+    <string name="loc_greek" translatable="false">Ελληνικά (Greek)</string>
+    <string name="loc_english" translatable="false">English (Αγγλικά)</string>
+    <string name="loc_greek_id" translatable="false">el</string>
+    <string name="loc_english_id" translatable="false">en</string>
+
+    <string name="dlg_restart_title">Restart Required</string>
+    <string name="dlg_restart_body">For the language to change to take effect you need to restart the application.\n\nPress CLOSE to restart the application</string>
+    <string name="dlg_restart_close">CLOSE</string>
+
+
     <string name="pref_about_category_title">About</string>
 
     <string name="pref_about_version_key" translatable="false">version</string>
@@ -162,6 +178,7 @@
 
     <string name="prefs_widget_category_order" translatable="false">prefs_widget_category_order</string>
     <string name="prefs_widget_category_id" translatable="false">prefs_widget_category_id</string>
+    <string name="prefs_widget_section">WIDGET (Experimental - Beta)</string>
     <string name="prefs_widget_category_title" translatable="false">prefs_widget_category_title</string>
     <string name="prefs_widget_category_items" translatable="false">prefs_widget_category_items</string>
 
@@ -195,5 +212,9 @@
     <string name="analytics_logged_url" translatable="false">logged_url</string>
 
     <string name="request_recreate" translatable="false">RECREATE</string>
+
+    <string name="debug_steps">more steps…</string>
+    <string name="debug_step">more step…</string>
+    <string name="debug_enabled">DEBUG MODE ENABLED</string>
 
 </resources>

@@ -17,7 +17,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -64,11 +63,11 @@ import java.util.Collections;
 import java.util.Objects;
 
 import eu.anifantakis.neakriti.data.ArticlesListAdapter;
-import eu.anifantakis.neakriti.data.feed.RequestInterface;
 import eu.anifantakis.neakriti.data.StorageIntentService;
 import eu.anifantakis.neakriti.data.StorageRetrievalAsyncTask;
 import eu.anifantakis.neakriti.data.db.ArticlesDBContract;
 import eu.anifantakis.neakriti.data.feed.ArticlesCollection;
+import eu.anifantakis.neakriti.data.feed.RequestInterface;
 import eu.anifantakis.neakriti.data.feed.gson.Article;
 import eu.anifantakis.neakriti.data.feed.gson.Feed;
 import eu.anifantakis.neakriti.databinding.ActivityArticleListBinding;
@@ -141,6 +140,8 @@ public class ArticleListActivity extends AppCompatActivity implements
     private static int counter = 0;
     private static long previousTapMilis = 0;
 
+    public static boolean RESTART_REQUIRED = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,7 +159,6 @@ public class ArticleListActivity extends AppCompatActivity implements
         Toolbar toolbar = binding.masterView.toolbar;
         setSupportActionBar(toolbar);
         //toolbar.setTitle(getTitle());
-
 
         binding.masterView.listLogo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,11 +183,14 @@ public class ArticleListActivity extends AppCompatActivity implements
                 }
 
                 if (counter==10) {
-                    Toast.makeText(getApplicationContext(), "DEBUG PREFS ENABLED", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.debug_enabled), Toast.LENGTH_LONG).show();
                     showTestNotificationsPref=true;
                 }
                 else if (counter>6)
-                    Toast.makeText(getApplicationContext(), Integer.toString(counter), Toast.LENGTH_SHORT).show();
+                    if (counter==9)
+                        Toast.makeText(getApplicationContext(), Integer.toString(10-counter) + " "+getString(R.string.debug_step) , Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(getApplicationContext(), Integer.toString(10-counter) + " "+getString(R.string.debug_steps) , Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -219,6 +222,16 @@ public class ArticleListActivity extends AppCompatActivity implements
             feedItems = savedInstanceState.getInt(STATE_FEED_ITEMS);
             feedName = savedInstanceState.getString(STATE_FEED_NAME);
             feedType = savedInstanceState.getInt(STATE_FEED_TYPE);
+
+            if (RESTART_REQUIRED){
+                Intent i = getBaseContext().getPackageManager().
+                        getLaunchIntentForPackage(getBaseContext().getPackageName());
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+
+                finish();
+            }
         }
         else{
             // set default selected menu category the home category
@@ -305,7 +318,6 @@ public class ArticleListActivity extends AppCompatActivity implements
         shouldreload = false;
         makeArticlesLoaderQuery(feedName, feedType, feedSrvid, feedItems);
     }
-
 
     /**
      * Interface implementation (defined in the adapter) for the clicking of an item in the articles recycler view

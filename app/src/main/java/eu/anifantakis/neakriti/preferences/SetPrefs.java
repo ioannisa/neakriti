@@ -14,6 +14,8 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -150,6 +152,28 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
 
             // the "recreate()" method forces new theme to be applied in case we have switched from day to night theme (or vice versa)
             recreate();
+        }
+        else if (key.equals(getString(R.string.pref_app_loc_lang_key))){
+
+
+            Log.d("PREFS", sharedPreferences.getString(key, "XXX"));
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(key, sharedPreferences.getString(key, "XXX"));
+            editor.apply();
+
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder
+                    .setTitle(R.string.dlg_restart_title)
+                    .setMessage(R.string.dlg_restart_body)
+                    .setIcon(R.drawable.warning_48px)
+                    .setNegativeButton(R.string.dlg_restart_close, (dialog, id) -> {
+                        ArticleListActivity.RESTART_REQUIRED = true;
+                        finish();
+                    }
+                    );
+            // Create the AlertDialog object and return it
+            builder.create().show();
         }
     }
 

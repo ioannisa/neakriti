@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:theme="@style/DarkActionBar">
 
-    <PreferenceCategory android:title="Widget">
+    <PreferenceCategory android:title="@string/prefs_widget_section">
         <ListPreference
             android:key="@string/prefs_widget_category_id"
             android:title="@string/pref_widget_category_title"
@@ -111,13 +111,19 @@
             android:key="@string/pref_fcm_key"
             android:summary="@string/pref_fcm_summary"
             android:title="@string/pref_fcm_title" />
+    </PreferenceCategory>
 
-        <!--
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="@string/pref_fcm_test_key"
-            android:summary="@string/pref_fcm_test_summary"
-            android:title="@string/pref_fcm_test_title"/>-->
+    <PreferenceCategory
+        android:key="@string/pref_loc_category_key"
+        android:title="@string/pref_loc_category_title">
+
+        <ListPreference
+            android:key="@string/pref_app_loc_lang_key"
+            android:title="@string/pref_app_loc_lang_title"
+            android:entries="@array/loc_types"
+            android:entryValues="@array/loc_ids"
+            android:defaultValue="@string/loc_greek_id"
+            android:summary="%s"/>
 
     </PreferenceCategory>
 

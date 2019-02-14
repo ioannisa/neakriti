@@ -1,15 +1,23 @@
 package eu.anifantakis.neakriti;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
+import android.util.DisplayMetrics;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+
+import java.util.Locale;
 
 import eu.anifantakis.neakriti.utils.AppUtils;
 
@@ -19,6 +27,11 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+
+        // set the system language based on the SharedPreferences (Default is greek).
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String lang = prefs.getString(getString(R.string.pref_app_loc_lang_key), getString(R.string.loc_greek_id));
+        setLocale(lang);
 
         initFirebaseRemoteConfig();
 
@@ -77,5 +90,22 @@ public class SplashActivity extends AppCompatActivity {
                         finish();
                     }
                 });
+    }
+
+    /**
+     * Change the app's language for the given locale
+     * source: https://stackoverflow.com/questions/12908289/how-to-change-language-of-app-when-user-selects-language#
+     * @param lang the language in which the application is to run. Currently supported "en" and "el".
+     */
+    public void setLocale(String lang) {
+        Locale myLocale = new Locale(lang);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        res.updateConfiguration(conf, dm);
+        //Intent refresh = new Intent(this, ArticleListActivity.class);
+        //startActivity(refresh);
+        //finish();
     }
 }
