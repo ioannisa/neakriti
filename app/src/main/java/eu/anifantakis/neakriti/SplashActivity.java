@@ -1,6 +1,5 @@
 package eu.anifantakis.neakriti;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -11,6 +10,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -20,6 +21,8 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import java.util.Locale;
 
 import eu.anifantakis.neakriti.utils.AppUtils;
+
+import static eu.anifantakis.neakriti.utils.NeaKritiApp.TEST_MODE;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -31,6 +34,7 @@ public class SplashActivity extends AppCompatActivity {
         // set the system language based on the SharedPreferences (Default is greek).
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String lang = prefs.getString(getString(R.string.pref_app_loc_lang_key), getString(R.string.loc_greek_id));
+        //lang = "el";
         setLocale(lang);
 
         initFirebaseRemoteConfig();
@@ -66,6 +70,8 @@ public class SplashActivity extends AppCompatActivity {
         AppUtils.URL_BASE = getFireBaseString("URL_BASE_V2");
         AppUtils.RADIO_STATION_URL = getFireBaseString("RADIO_STATION_URL");
         AppUtils.TV_STATION_URL = getFireBaseString("TV_STATION_URL");
+
+        if (TEST_MODE) Toast.makeText(getApplicationContext(), "TEST_1: "+getFireBaseString("URL_BASE_V2"), Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -99,13 +105,8 @@ public class SplashActivity extends AppCompatActivity {
      */
     public void setLocale(String lang) {
         Locale myLocale = new Locale(lang);
-        Resources res = getResources();
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration conf = res.getConfiguration();
+        Configuration conf = new Configuration();
         conf.locale = myLocale;
-        res.updateConfiguration(conf, dm);
-        //Intent refresh = new Intent(this, ArticleListActivity.class);
-        //startActivity(refresh);
-        //finish();
+        getBaseContext().getResources().updateConfiguration(conf, null);
     }
 }

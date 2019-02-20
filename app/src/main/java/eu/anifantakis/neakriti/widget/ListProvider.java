@@ -1,8 +1,11 @@
 package eu.anifantakis.neakriti.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService.RemoteViewsFactory;
 
@@ -12,19 +15,21 @@ import eu.anifantakis.neakriti.R;
 import eu.anifantakis.neakriti.data.feed.gson.Article;
 import eu.anifantakis.neakriti.utils.AppUtils;
 
+import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.WIDGET_DIRECTION_EXISTING;
+
 // source: https://laaptu.wordpress.com/2013/07/19/android-app-widget-with-listview/
 public class ListProvider implements RemoteViewsFactory {
     public static class ListItem {
-        public String categoryTitle;
-        public int guid;
-        public String link;
+        String categoryTitle;
+        int guid;
+        String link;
         public String title;
-        public String description;
-        public String pubDate;
-        public String updated;
-        public String pubDateGre;
-        public String imgThumb;
-        public String imgLarge;
+        String description;
+        String pubDate;
+        String updated;
+        String pubDateGre;
+        String imgThumb;
+        String imgLarge;
     }
 
     private static ArrayList<ListItem> listItemList = new ArrayList<>();
@@ -53,7 +58,14 @@ public class ListProvider implements RemoteViewsFactory {
 
     @Override
     public int getCount() {
-        return listItemList.size();
+        int size = 0;
+        try {
+            size = listItemList.size();
+        }
+        catch (NullPointerException e){
+            e.printStackTrace();
+        }
+        return size;
     }
 
     @Override

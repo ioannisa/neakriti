@@ -76,8 +76,11 @@
     <string name="debug_steps">more steps…</string>
     <string name="debug_step">more step…</string>
     <string name="debug_enabled">DEBUG MODE ENABLED</string>
+    <string name="debug_disabled">DEBUG MODE DISABLED</string>
 
     <string name="dlg_restart_title">Απαιτείται Επανεκκίνηση</string>
     <string name="dlg_restart_body">Για να εφαρμοστούν οι αλλαγές στη γλώσσα πρέπει να γίνει επανεκκίνηση στην εφαρμογή.\n\nΠιέστε ΚΛΕΙΣΙΜΟ για επανεκκίνηση εφαρμογής</string>
     <string name="dlg_restart_close">ΚΛΕΙΣΙΜΟ</string>
+
+    <string name="widget_experimental">ΑΤΤΕΝΤΙΟΝ: Widget control is experimental. Please use it accordingly until further notice.</string>
 </resources>

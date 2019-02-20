@@ -284,11 +284,15 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         }
 
         // get the number of article comments using the Facebook API.
-        pullCommentsCount();
+        // TODO: RE-ENABLE FACEBOOK COMMENTS
+        //pullCommentsCount();
 
         return rootView;
     }
 
+    /**
+     * Get the amount of comments the current article has, and put it on the special FAB control that can display numbers (similar to notifications count)
+     */
     private void pullCommentsCount(){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(AppUtils.URL_FACEBOOK_GRAPH)
@@ -305,13 +309,13 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
                 int count = response.body().getShare().getCommentCount();
                 Log.d("FACEBOOK", "COUNT: "+count);
 
-                binding.counterFab.setCount(count);
+                //binding.counterFab.setCount(count);
             }
 
             @Override
             public void onFailure(@NonNull Call<Feed> call, @NonNull Throwable t) {
                 Log.d("FACEBOOK", "FETCH FAIL");
-                binding.counterFab.setCount(0);
+                //binding.counterFab.setCount(0);
             }
         });
     }

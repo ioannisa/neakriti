@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
@@ -56,6 +57,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -80,13 +82,14 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
+import static eu.anifantakis.neakriti.preferences.SetPrefs.NEAKRITI_NEWS_TEST_TOPIC;
 import static eu.anifantakis.neakriti.utils.AppUtils.URL_BASE;
 import static eu.anifantakis.neakriti.utils.AppUtils.isNightMode;
 import static eu.anifantakis.neakriti.utils.AppUtils.mNotificationManager;
 import static eu.anifantakis.neakriti.utils.AppUtils.onlineMode;
 import static eu.anifantakis.neakriti.utils.AppUtils.spec;
 import static eu.anifantakis.neakriti.utils.NeaKritiApp.sharedPreferences;
-import static eu.anifantakis.neakriti.utils.NeaKritiApp.showTestNotificationsPref;
+import static eu.anifantakis.neakriti.utils.NeaKritiApp.TEST_MODE;
 
 
 public class ArticleListActivity extends AppCompatActivity implements
@@ -163,10 +166,6 @@ public class ArticleListActivity extends AppCompatActivity implements
         binding.masterView.listLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // if we have already revealed the test notifications section, there is no need to make use of the counter
-                if (showTestNotificationsPref)
-                    return;
-
                 counter++;
 
                 // do not accept taps if they are longer than 1 second appart from each other
@@ -183,8 +182,24 @@ public class ArticleListActivity extends AppCompatActivity implements
                 }
 
                 if (counter==10) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.debug_enabled), Toast.LENGTH_LONG).show();
-                    showTestNotificationsPref=true;
+                    TEST_MODE=!TEST_MODE;
+
+                    if (TEST_MODE)
+                        Toast.makeText(getApplicationContext(), getString(R.string.debug_enabled), Toast.LENGTH_LONG).show();
+                    else
+                        Toast.makeText(getApplicationContext(), getString(R.string.debug_disabled), Toast.LENGTH_LONG).show();
+
+
+                    SharedPreferences.Editor editor1 = sharedPreferences.edit();
+                    editor1.putBoolean(getString(R.string.pref_test_mode_key), TEST_MODE);
+                    editor1.putBoolean(getString(R.string.pref_fcm_test_key), TEST_MODE);
+                    editor1.apply();
+
+                    if (sharedPreferences.getBoolean(getString(R.string.pref_fcm_key), true)) {
+                        FirebaseMessaging.getInstance().subscribeToTopic(NEAKRITI_NEWS_TEST_TOPIC);
+                    } else {
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic(NEAKRITI_NEWS_TEST_TOPIC);
+                    }
                 }
                 else if (counter>6)
                     if (counter==9)
@@ -559,7 +574,11 @@ public class ArticleListActivity extends AppCompatActivity implements
 
                     } catch (IOException e) {
                         Log.e("LOG EXCEPTION", "RETROFIT CALL");
+
+                        Log.e("LOAD", e+"");
+
                         e.printStackTrace();
+                        Log.e("LOG EXCEPTION", "RETROFIT CALL");
                         return null;
                     }
 
@@ -659,8 +678,6 @@ public class ArticleListActivity extends AppCompatActivity implements
     /**
      * In tablet landscape mode, when we rotate to portrait we want the toolbar menu items to be redrawn.
      * So in the "onPrepare" method, we remove the items to be redistributed correctly.
-     * @param menu
-     * @return
      */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {

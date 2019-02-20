@@ -26,7 +26,7 @@ import eu.anifantakis.neakriti.utils.AppUtils;
 import eu.anifantakis.neakriti.widget.NewsWidgetProvider;
 
 import static eu.anifantakis.neakriti.utils.AppUtils.isNightMode;
-import static eu.anifantakis.neakriti.utils.NeaKritiApp.showTestNotificationsPref;
+import static eu.anifantakis.neakriti.utils.NeaKritiApp.TEST_MODE;
 
 public class SetPrefs extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -40,6 +40,7 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        ArticleListActivity.RESTART_REQUIRED = false;
         ArticleListActivity.shouldreload = false;
 
         ActionBar actionBar = getSupportActionBar();
@@ -81,15 +82,9 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
             // the "about" (informative only) section of the preferences
             findPreference(getString(R.string.pref_about_version_key)).setSummary(pInfo.versionName);
 
-
-            // if we haven't made the secret combo, but the test notifications preference is already checked
-            // it means that we have definitely done the secret combo previously, so we should show this secret option
-            if (PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(getString(R.string.pref_fcm_test_key), false))
-                showTestNotificationsPref = true;
-
             // if we made the secret key combo to show the option for the test notifications
             // then show them in the screen
-            if (showTestNotificationsPref) {
+            if (TEST_MODE) {
                 PreferenceCategory targetCategory = (PreferenceCategory) findPreference(getString(R.string.pref_fcm_category_key));
                 CheckBoxPreference checkBoxPreference = new CheckBoxPreference(getActivity());
                 checkBoxPreference.setKey(getString(R.string.pref_fcm_test_key));
@@ -213,8 +208,6 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
      * This method is required for Lollipop and Bellow (API 22 and lower) for the back button of the
      * Preferences Activity to be functional
      * Source: https://stackoverflow.com/questions/37222879/add-action-bar-with-back-button-in-preference-activity
-     * @param item
-     * @return
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

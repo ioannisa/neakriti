@@ -232,7 +232,7 @@ public class FBMessagingService extends FirebaseMessagingService {
             else
                 sendNotification(title, message, bitmap, big_picture_bitmap, link, notification_id);
 
-            if (bitmapLogo!=null) { bitmapLogo.recycle(); }
+            //if (bitmapLogo!=null) { bitmapLogo.recycle(); }
         }
     }
 

@@ -7,7 +7,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +29,12 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+
+import javax.net.ssl.SSLContext;
 
 import okhttp3.CipherSuite;
 import okhttp3.ConnectionSpec;
@@ -45,7 +51,7 @@ public final class AppUtils {
 
     // URL_BASE will have its value changed via REMOTE CONFIG, but useful default value here for widget if we "reinstall app" while widget already exists
     // in that case the widget will be called before actual remote config is initialized, thus we need a predefined copy of the default remote config default value
-    public static String URL_BASE = "https://anifantakis.eu";
+    public static String URL_BASE = "https://radio984.gr";
     public static final String RSSFEED_BASE = "/_anifan/articles-json.php";
 
     public static final String URL_FACEBOOK_GRAPH = "https://graph.facebook.com";

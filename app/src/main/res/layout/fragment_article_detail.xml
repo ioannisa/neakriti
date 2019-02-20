@@ -53,7 +53,7 @@
 
             <!-- TODO: RE-ENABLE FACEBOOK COMMENTS -->
             <!-- Remove the visibility:gone to show again the control -->
-            <com.andremion.counterfab.CounterFab
+            <!--<com.andremion.counterfab.CounterFab
                 android:visibility="gone"
                 android:id="@+id/counter_fab"
                 android:layout_width="wrap_content"
@@ -61,7 +61,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 app:fabSize="mini"
-                app:srcCompat="@drawable/ic_comment_w_24px" />
+                app:srcCompat="@drawable/ic_comment_w_24px" />-->
 
 
         </RelativeLayout>

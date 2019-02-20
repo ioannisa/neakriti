@@ -2,7 +2,7 @@
 <defaultsMap>
     <entry>
         <key>URL_BASE_V2</key>
-        <value>https://anifantakis.eu</value>
+        <value>https://radio984.gr</value> <!-- The domain that serves the JSON articles: Don't confuse it for the radio stream -->
     </entry>
     <entry>
         <key>RADIO_STATION_URL</key>
@@ -12,4 +12,37 @@
         <key>TV_STATION_URL</key>
         <value>http://live.cretetv.gr:1935/cretetv/myStream/playlist.m3u8</value>
     </entry>
+    <entry>
+        <key>AUTHOR_URL</key>
+        <value>https://anifantakis.eu</value>
+    </entry>
+    <entry>
+        <key>AUTHOR_NAME</key>
+        <value>Ioannis Anifantakis</value>
+    </entry>
+
+
+
+    <entry>
+        <key>TEST_1</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>TEST_2</key>
+        <value>2</value>
+    </entry>
+    <entry>
+        <key>TEST_3</key>
+        <value>3</value>
+    </entry>
+    <entry>
+        <key>TEST_4</key>
+        <value>4</value>
+    </entry>
+    <entry>
+        <key>TEST_5</key>
+        <value>5</value>
+    </entry>
+
+
 </defaultsMap>

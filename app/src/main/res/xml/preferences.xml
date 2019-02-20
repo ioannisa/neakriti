@@ -3,6 +3,7 @@
     android:theme="@style/DarkActionBar">
 
     <PreferenceCategory android:title="@string/prefs_widget_section">
+        <Preference android:summary="@string/widget_experimental"/>
         <ListPreference
             android:key="@string/prefs_widget_category_id"
             android:title="@string/pref_widget_category_title"

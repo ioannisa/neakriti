@@ -1,10 +1,15 @@
 package eu.anifantakis.neakriti.utils;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.multidex.MultiDex;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -25,6 +30,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 import eu.anifantakis.neakriti.R;
 import okhttp3.Cache;
@@ -40,7 +46,7 @@ public class NeaKritiApp extends Application {
     private static Tracker sTracker;
     public SimpleExoPlayer mRadioPlayer;
     public static SharedPreferences sharedPreferences;
-    public static boolean showTestNotificationsPref = false;
+    public static boolean TEST_MODE = false;
 
     @Override
     public void onCreate() {
@@ -52,6 +58,16 @@ public class NeaKritiApp extends Application {
         setupPicasso();
     }
 
+    /**
+     * This method is part of a compatibility requirement for devices running Android 4.4 or lower
+     * https://groups.google.com/forum/#!topic/firebase-talk/tJxjjHtf8Ww
+     */
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
+
     private void initSharedPrefs(){
         if (sharedPreferences == null)
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -59,6 +75,8 @@ public class NeaKritiApp extends Application {
         if (sharedPreferences.getBoolean(getString(R.string.pref_fcm_key), true)) {
             FirebaseMessaging.getInstance().subscribeToTopic(NEAKRITI_NEWS_TOPIC);
         }
+
+        TEST_MODE = sharedPreferences.getBoolean(getString(R.string.pref_test_mode_key), false);
 
         if (sharedPreferences.getBoolean(getString(R.string.pref_fcm_key), true)) {
             FirebaseMessaging.getInstance().subscribeToTopic(NEAKRITI_NEWS_TEST_TOPIC);

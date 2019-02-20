@@ -81,9 +81,12 @@
 
     <string name="debug_steps">ακόμα βήματα…</string>
     <string name="debug_step">ακόμα βήμα…</string>
-    <string name="debug_enabled">ΚΑΤΑΣΤΑΣΗ ΑΠΑΣΦΑΛΜΑΤΩΣΗΣ</string>
+    <string name="debug_enabled">ΕΝΕΡΓΟΠΟΙΗΣΗ ΑΠΑΣΦΑΛΜΑΤΩΣΗΣ</string>
+    <string name="debug_disabled">ΑΠΕΝΕΡΓΟΠΟΙΗΣΗ ΑΠΑΣΦΑΛΜΑΤΩΣΗΣ</string>
 
     <string name="dlg_restart_title">Restart Required</string>
     <string name="dlg_restart_body">For the language to change to take effect you need to restart the application.\n\nPress CLOSE to restart the application</string>
     <string name="dlg_restart_close">CLOSE</string>
+
+    <string name="widget_experimental">ΠΡΟΣΟΧΗ: Η χρήση Widget είναι πειραματική.  Σας παρακαλούμε να τη χρησιμοποιείτε μόνο δοκιμαστικά χρήση μέχρι νεοτέρας</string>
 </resources>
