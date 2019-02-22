@@ -3,6 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/categoryGridItemText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dark_container_item"
+        android:gravity="center"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textColor="#ffffff"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        tools:text="Sample Sub-Category" />
+
+    <LinearLayout
         android:id="@+id/article_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -73,5 +92,7 @@
                     />
             </LinearLayout>
         </RelativeLayout>
+    </LinearLayout>
+
     </LinearLayout>
 </layout>

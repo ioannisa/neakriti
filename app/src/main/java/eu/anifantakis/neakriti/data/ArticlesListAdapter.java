@@ -15,15 +15,14 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.w3c.dom.Text;
 
 import java.io.File;
 
+import eu.anifantakis.neakriti.ArticleListActivity;
 import eu.anifantakis.neakriti.R;
 import eu.anifantakis.neakriti.data.feed.ArticlesCollection;
 import eu.anifantakis.neakriti.data.feed.gson.Article;
@@ -121,9 +120,29 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
         holder.setDateStr(article.getPubDateStr());
         holder.itemView.setTag(article.getGuid());
 
+        Log.d("LIST_ADAPTER", "CURRENT FEED ID = " + ArticleListActivity.feedSrvid);
+
         if (listType==1){
             ViewCompat.setTransitionName(holder.getImageView(), Integer.toString(article.getGuid()));
             holder.bindingList.articleRow.setSelected((position == selectedPosition));
+
+
+            if (ArticleListActivity.feedSrvid.equals(mActivity.getString(R.string.nav_home_id))) {
+                if (position == AppUtils.MAIN_1_CAT_POS) {
+                    holder.bindingList.categoryGridItemText.setVisibility(View.VISIBLE);
+                    holder.bindingList.categoryGridItemText.setText(AppUtils.MAIN_1_CAT_NAME);
+                } else if (position == AppUtils.MAIN_2_CAT_POS) {
+                    holder.bindingList.categoryGridItemText.setVisibility(View.VISIBLE);
+                    holder.bindingList.categoryGridItemText.setText(AppUtils.MAIN_2_CAT_NAME);
+                } else if (position == AppUtils.MAIN_3_CAT_POS) {
+                    holder.bindingList.categoryGridItemText.setVisibility(View.VISIBLE);
+                    holder.bindingList.categoryGridItemText.setText(AppUtils.MAIN_3_CAT_NAME);
+                } else {
+                    holder.bindingList.categoryGridItemText.setVisibility(View.GONE);
+                    holder.bindingList.categoryGridItemText.setText("");
+                }
+            }
+
         }
         else if (listType==2){
             ViewCompat.setTransitionName(holder.getImageView(), Integer.toString(article.getGuid()));
@@ -141,11 +160,50 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
             holder.bindingListDetails.articlePreview.setText(previewText);
             holder.bindingListDetails.articlePreview.setMaxLines(4); // 4 max line of preview paragraph text
 
+            if (ArticleListActivity.feedSrvid.equals(mActivity.getString(R.string.nav_home_id))) {
+                if (position == AppUtils.MAIN_1_CAT_POS) {
+                    holder.bindingListDetails.categoryGridItemText.setVisibility(View.VISIBLE);
+                    holder.bindingListDetails.categoryGridItemText.setText(AppUtils.MAIN_1_CAT_NAME);
+                } else if (position == AppUtils.MAIN_2_CAT_POS) {
+                    holder.bindingListDetails.categoryGridItemText.setVisibility(View.VISIBLE);
+                    holder.bindingListDetails.categoryGridItemText.setText(AppUtils.MAIN_2_CAT_NAME);
+                } else if (position == AppUtils.MAIN_3_CAT_POS) {
+                    holder.bindingListDetails.categoryGridItemText.setVisibility(View.VISIBLE);
+                    holder.bindingListDetails.categoryGridItemText.setText(AppUtils.MAIN_3_CAT_NAME);
+                } else {
+                    holder.bindingListDetails.categoryGridItemText.setVisibility(View.GONE);
+                    holder.bindingListDetails.categoryGridItemText.setText("");
+                }
+            }
+
         }
         else if (listType==3){
             ViewCompat.setTransitionName(holder.getImageView(), Integer.toString(article.getGuid()));
             holder.bindingCard.articleRow.setSelected((position == selectedPosition));
+
+            if (ArticleListActivity.feedSrvid.equals(mActivity.getString(R.string.nav_home_id))) {
+                if (position == AppUtils.MAIN_1_CAT_POS) {
+                    holder.bindingCard.categoryGridItemText.setVisibility(View.VISIBLE);
+                    holder.bindingCard.categoryGridItemText.setText(AppUtils.MAIN_1_CAT_NAME);
+                } else if (position == AppUtils.MAIN_2_CAT_POS) {
+                    holder.bindingCard.categoryGridItemText.setVisibility(View.VISIBLE);
+                    holder.bindingCard.categoryGridItemText.setText(AppUtils.MAIN_2_CAT_NAME);
+                } else if (position == AppUtils.MAIN_3_CAT_POS) {
+                    holder.bindingCard.categoryGridItemText.setVisibility(View.VISIBLE);
+                    holder.bindingCard.categoryGridItemText.setText(AppUtils.MAIN_3_CAT_NAME);
+                } else {
+                    holder.bindingCard.categoryGridItemText.setVisibility(View.GONE);
+                    holder.bindingCard.categoryGridItemText.setText("");
+                }
+            }
         }
+    }
+
+    public void showSubCategory(Object obj, Class classType, int position){
+
+
+
+
     }
 
     @Override

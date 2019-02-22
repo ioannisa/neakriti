@@ -3,60 +3,81 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:id="@+id/article_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?rowBackgroundItem"
-        android:orientation="horizontal"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingTop="8dp">
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/categoryGridItemText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dark_container_item"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            tools:text="Sample Sub-Category" />
 
 
         <LinearLayout
-            android:layout_width="120dp"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/row_iv_article_thumb"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="0dp"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="0dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/row_thumb_description"
-                tools:src="@drawable/placeholder" />
-
-        </LinearLayout>
-
-        <LinearLayout
+            android:id="@+id/article_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:background="?rowBackgroundItem"
+            android:orientation="horizontal"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
+            android:paddingRight="8dp">
 
-            <TextView
-                android:id="@+id/content"
+            <LinearLayout
+                android:layout_width="120dp"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/row_iv_article_thumb"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginTop="0dp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/row_thumb_description"
+                    tools:src="@drawable/placeholder" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="?rowTitleTextColor"
-                tools:text="TITLE Line 1\nLine 2\nLine 3\nLine 4" />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/list_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:textColor="?rowDateTextColor"
-                tools:text="DATE GOES HERE" />
+                <TextView
+                    android:id="@+id/content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:textColor="?rowTitleTextColor"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="TITLE Line 1\nLine 2\nLine 3\nLine 4" />
+
+                <TextView
+                    android:id="@+id/list_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="?rowDateTextColor"
+                    tools:text="DATE GOES HERE" />
+            </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
 </layout>

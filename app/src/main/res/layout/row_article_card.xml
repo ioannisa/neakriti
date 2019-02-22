@@ -1,82 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.v7.widget.CardView
-        android:background="?rowBackgroundItem"
-        android:id="@+id/article_row"
-        android:layout_margin="4dp"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/categoryGridItemText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dark_container_item"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            tools:text="Sample Sub-Category" />
 
-        <LinearLayout
-
+        <android.support.v7.widget.CardView
+            android:id="@+id/article_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?rowBackgroundItem"
-            android:orientation="vertical">
+            android:layout_margin="4dp"
+            android:background="?rowBackgroundItem">
 
-            <FrameLayout
+
+            <LinearLayout
+
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="?rowBackgroundItem"
+                android:orientation="vertical">
 
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/row_iv_article_thumb"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginTop="0dp"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@string/row_thumb_description"
-                    tools:src="@drawable/placeholder" />
+                    android:layout_height="wrap_content">
 
 
-                <View
-                    android:id="@+id/article_title"
-                    style="@style/poster_shader"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </FrameLayout>
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/row_iv_article_thumb"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="0dp"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginTop="0dp"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="@string/row_thumb_description"
+                            tools:src="@drawable/placeholder" />
 
 
-                <TextView
-                    android:id="@+id/content"
-                    style="@style/OverlayText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:textColor="#fff"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    android:layout_gravity="bottom"
-                    tools:text="TITLE Line 1\nLine 2\nLine 3\nLine 4" />
+                        <View
+                            android:id="@+id/article_title"
+                            style="@style/poster_shader"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </FrameLayout>
 
 
-            </FrameLayout>
+                    <TextView
+                        android:id="@+id/content"
+                        style="@style/OverlayText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_margin="8dp"
+                        android:textColor="#fff"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        tools:text="TITLE Line 1\nLine 2\nLine 3\nLine 4" />
+
+
+                </FrameLayout>
 
                 <TextView
                     android:id="@+id/list_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="8dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:textColor="?rowDateTextColor"
                     tools:text="DATE GOES HERE" />
             </LinearLayout>
 
 
-    </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
 
 </layout>

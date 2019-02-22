@@ -1,21 +1,22 @@
 package eu.anifantakis.neakriti.widget;
 
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService.RemoteViewsFactory;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 
 import eu.anifantakis.neakriti.R;
 import eu.anifantakis.neakriti.data.feed.gson.Article;
 import eu.anifantakis.neakriti.utils.AppUtils;
-
-import static eu.anifantakis.neakriti.widget.NewsWidgetProvider.WIDGET_DIRECTION_EXISTING;
 
 // source: https://laaptu.wordpress.com/2013/07/19/android-app-widget-with-listview/
 public class ListProvider implements RemoteViewsFactory {
@@ -58,12 +59,20 @@ public class ListProvider implements RemoteViewsFactory {
 
     @Override
     public int getCount() {
+        Log.d("WIDGET_VIEWS_FACTORY", "GET COUNT");
         int size = 0;
         try {
+            if (listItemList==null) {
+                Log.d("WIDGET_VIEWS_FACTORY", "GET COUNT - ListItemList is null");
+                populateListItem();
+                Log.d("WIDGET_VIEWS_FACTORY", "GET COUNT - ListItemList populated");
+            }
+
             size = listItemList.size();
         }
         catch (NullPointerException e){
             e.printStackTrace();
+            Log.d("WIDGET_VIEWS_FACTORY", "GET COUNT - EXCEPTION");
         }
         return size;
     }
@@ -80,6 +89,7 @@ public class ListProvider implements RemoteViewsFactory {
      */
     @Override
     public RemoteViews getViewAt(int position) {
+        Log.d("WIDGET_VIEWS_FACTORY", "GET ViewAt");
         final RemoteViews remoteView = new RemoteViews(
                 context.getPackageName(), R.layout.row_widget_list);
 
@@ -87,6 +97,7 @@ public class ListProvider implements RemoteViewsFactory {
             ListItem listItem = listItemList.get(position);
             remoteView.setTextViewText(R.id.widget_row_heading, listItem.title);
             remoteView.setImageViewBitmap(R.id.widget_row_image, AppUtils.getBitmapfromUrl(listItem.imgThumb));
+            //remoteView.setImageViewBitmap(R.id.widget_row_image, null);
 
             Article article = new Article();
             article.setGuid(listItem.guid);

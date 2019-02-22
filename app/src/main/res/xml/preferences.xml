@@ -81,7 +81,7 @@
             android:title="@string/pref_list_article_row_appearance_title"
             android:entries="@array/list_article_row_appearance_types"
             android:entryValues="@array/list_article_row_appearance_ids"
-            android:defaultValue="@string/row_type_list_id"
+            android:defaultValue="@string/row_type_list_details_id"
             android:summary="%s"/>
 
         <CheckBoxPreference

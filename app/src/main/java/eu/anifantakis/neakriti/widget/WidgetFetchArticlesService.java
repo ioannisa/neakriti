@@ -14,6 +14,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -99,16 +101,16 @@ public class WidgetFetchArticlesService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("WIDGET FETCH SERVICE", "ON START");
+        Log.d("WIDGET_FETCH SERVICE", "ON START");
         if (intent.hasExtra(AppWidgetManager.EXTRA_APPWIDGET_ID))
-            Log.d("WIDGET FETCH SERVICE", "STARTED");
+            Log.d("WIDGET_FETCH SERVICE", "STARTED");
             appWidgetId = intent.getIntExtra(
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
 
-        Log.d("WIDGET FETCH", "SERVICE ON START");
+        Log.d("WIDGET_FETCH", "SERVICE ON START");
         if (intent.hasExtra(WIDGET_EXTRAS_DIRECTION)){
-            Log.d("WIDGET DIRECTION", "EXISTS");
+            Log.d("WIDGET_DIRECTION", "EXISTS");
             int direction = intent.getIntExtra(WIDGET_EXTRAS_DIRECTION, 0);
             if (direction>0){
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -162,7 +164,7 @@ public class WidgetFetchArticlesService extends Service {
      * We are not in an IntentService.  So make async retrofit call, not to block the main thread
      */
     private void fetchDataFromWeb() {
-        Log.d("WIDGET FETCH SERVICE", "FETCH DATA FROM: " + URL_BASE);
+        Log.d("WIDGET_FETCH_SERVICE", "FETCH DATA FROM: " + URL_BASE);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(URL_BASE)
@@ -212,6 +214,8 @@ public class WidgetFetchArticlesService extends Service {
                         listItemList.add(listItem);
                     }
 
+                    saveArrayListInPreferences();
+
                     populateWidget(true);
                 }
             }
@@ -220,13 +224,30 @@ public class WidgetFetchArticlesService extends Service {
             public void onFailure(@NonNull Call<Feed> call, @NonNull Throwable t) {
                 widgetFeed = null;
                 populateWidget(false);
+                Log.d("WIDGET_FETCH_SERVICE", "FAILED TO GET DATA");
+            }
+
+            /**
+             * ArrayList<ListProvider.ListItem> listItemList can be garbage collected at any time in our widget
+             *
+             * Safe keep the array list with the widget articles, since the list object may be garbage collected at any time
+             * So we save this easily in json format in our preferences for widget to be used when ArrayList is garbage collected
+             */
+            private void saveArrayListInPreferences(){
+                SharedPreferences appSharedPrefs = PreferenceManager
+                        .getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();
+                Gson gson = new Gson();
+                String json = gson.toJson(listItemList);
+                prefsEditor.putString("MyObject", json);
+                prefsEditor.apply();
             }
         });
     }
 
     //then we send broadcast
     private void populateWidget(boolean hasData) {
-        Log.d("WIDGET FETCH SERVICE", "POPULATING WIDGET");
+        Log.d("WIDGET_FETCH_SERVICE", "POPULATING WIDGET");
         Intent widgetUpdateIntent = new Intent();
         widgetUpdateIntent.setAction(APPWIDGET_UPDATE);
 

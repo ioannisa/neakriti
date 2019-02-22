@@ -22,6 +22,37 @@
     </entry>
 
 
+    <entry>
+        <key>MAIN_1_CAT_POS</key>
+        <value>-1</value>
+    </entry>
+    <entry>
+        <key>MAIN_1_CAT_NAME</key>
+        <value>Θέμα Κρήτη</value>
+    </entry>
+    <entry>
+        <key>MAIN_1_CAT_NAME_EN</key>
+        <value>Θέμα Κρήτη</value>
+    </entry>
+
+    <entry>
+        <key>MAIN_2_CAT_POS</key>
+        <value>0</value>
+    </entry>
+    <entry>
+        <key>MAIN_2_CAT_NAME</key>
+        <value>Σημαντικότερες Ειδήσεις</value>
+    </entry>
+
+    <entry>
+        <key>MAIN_3_CAT_POS</key>
+        <value>5</value>
+    </entry>
+    <entry>
+        <key>MAIN_3_CAT_NAME</key>
+        <value>Τελευταίες Ειδήσεις</value>
+    </entry>
+
 
     <entry>
         <key>TEST_1</key>

@@ -175,7 +175,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
     }
 
     private void startMainActivity(){
-        Intent intent = new Intent(getApplicationContext(), ArticleListActivity.class);
+        Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }

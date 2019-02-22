@@ -742,7 +742,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     private int feedType = -1;
     private String feedName = "";
-    private String feedSrvid = "";
+    public static String feedSrvid = "";
     private int feedItems = 0;
 
     private static final String STATE_FEED_TYPE = "STATE_FEED_TYPE";

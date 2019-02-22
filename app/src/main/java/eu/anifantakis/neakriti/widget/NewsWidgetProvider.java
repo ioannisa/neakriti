@@ -8,11 +8,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.RemoteViews;
 
 import eu.anifantakis.neakriti.ArticleDetailActivity;
 import eu.anifantakis.neakriti.R;
 import eu.anifantakis.neakriti.preferences.SetPrefs;
+import eu.anifantakis.neakriti.utils.AppUtils;
 
 public class NewsWidgetProvider extends AppWidgetProvider {
 
@@ -25,6 +27,8 @@ public class NewsWidgetProvider extends AppWidgetProvider {
     public static final int WIDGET_DIRECTION_EXISTING = 0;
     public static final int WIDGET_DIRECTION_PREVIOUS = 1;
     public static final int WIDGET_DIRECTION_NEXT     = 2;
+
+    public static long lastNoHasData = 0;
 
     private RemoteViews updateAppWidget(Context context, int appWidgetId, boolean hasData, CharSequence categoryTitle) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.news_widget_provider);
@@ -39,6 +43,7 @@ public class NewsWidgetProvider extends AppWidgetProvider {
         svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
 
         if (hasData) {
+            Log.d("WIDGET_HAS_DATA", "TRUE");
             //setting adapter to listview of the widget
             views.setRemoteAdapter(R.id.list_view_widget,
                     svcIntent);
@@ -129,7 +134,7 @@ public class NewsWidgetProvider extends AppWidgetProvider {
 
 
 
-        Log.d("WIDGET RECEIVER", "ON RECEIVE");
+        Log.d("WIDGET_RECEIVER", "ON RECEIVE");
 
         if (intent.getAction().equals(APPWIDGET_UPDATE)) {
             int appWidgetId = intent.getIntExtra(
@@ -162,6 +167,4 @@ public class NewsWidgetProvider extends AppWidgetProvider {
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
     }
-
-
 }

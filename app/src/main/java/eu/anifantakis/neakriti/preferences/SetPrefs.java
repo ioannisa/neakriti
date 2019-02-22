@@ -32,6 +32,7 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
 
     public static final String NEAKRITI_NEWS_TOPIC = "neakriti-android-news";
     public static final String NEAKRITI_NEWS_TEST_TOPIC = "neakriti-android-news-test";
+    public static final String NEAKRITI_NEWS_UPDATES_TOPIC = "neakriti-android-updates";
 
     private static PackageInfo pInfo;
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;

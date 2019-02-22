@@ -3,13 +3,10 @@ package eu.anifantakis.neakriti.utils;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
-import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -30,7 +27,6 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Locale;
 
 import eu.anifantakis.neakriti.R;
 import okhttp3.Cache;
@@ -40,6 +36,7 @@ import okhttp3.Response;
 
 import static eu.anifantakis.neakriti.preferences.SetPrefs.NEAKRITI_NEWS_TEST_TOPIC;
 import static eu.anifantakis.neakriti.preferences.SetPrefs.NEAKRITI_NEWS_TOPIC;
+import static eu.anifantakis.neakriti.preferences.SetPrefs.NEAKRITI_NEWS_UPDATES_TOPIC;
 
 public class NeaKritiApp extends Application {
     private static GoogleAnalytics sAnalytics;
@@ -75,6 +72,8 @@ public class NeaKritiApp extends Application {
         if (sharedPreferences.getBoolean(getString(R.string.pref_fcm_key), true)) {
             FirebaseMessaging.getInstance().subscribeToTopic(NEAKRITI_NEWS_TOPIC);
         }
+
+        FirebaseMessaging.getInstance().subscribeToTopic(NEAKRITI_NEWS_UPDATES_TOPIC);
 
         TEST_MODE = sharedPreferences.getBoolean(getString(R.string.pref_test_mode_key), false);
 

@@ -54,6 +54,13 @@ public final class AppUtils {
     public static String URL_BASE = "https://radio984.gr";
     public static final String RSSFEED_BASE = "/_anifan/articles-json.php";
 
+    public static int MAIN_1_CAT_POS = -1;
+    public static String MAIN_1_CAT_NAME = "";
+    public static int MAIN_2_CAT_POS = -1;
+    public static String MAIN_2_CAT_NAME = "";
+    public static int MAIN_3_CAT_POS = -1;
+    public static String MAIN_3_CAT_NAME = "";
+
     public static final String URL_FACEBOOK_GRAPH = "https://graph.facebook.com";
 
     public static String RADIO_STATION_URL = "";

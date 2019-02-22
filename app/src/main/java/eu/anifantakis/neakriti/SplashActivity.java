@@ -21,6 +21,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import java.util.Locale;
 
 import eu.anifantakis.neakriti.utils.AppUtils;
+import eu.anifantakis.neakriti.utils.NeaKritiApp;
 
 import static eu.anifantakis.neakriti.utils.NeaKritiApp.TEST_MODE;
 
@@ -70,6 +71,11 @@ public class SplashActivity extends AppCompatActivity {
         AppUtils.URL_BASE = getFireBaseString("URL_BASE_V2");
         AppUtils.RADIO_STATION_URL = getFireBaseString("RADIO_STATION_URL");
         AppUtils.TV_STATION_URL = getFireBaseString("TV_STATION_URL");
+
+
+        try {AppUtils.MAIN_1_CAT_POS = Integer.parseInt(mFirebaseRemoteConfig.getString("MAIN_1_CAT_POS")); AppUtils.MAIN_1_CAT_NAME = mFirebaseRemoteConfig.getString("MAIN_1_CAT_NAME"); }catch(Exception e){ AppUtils.MAIN_1_CAT_POS = -1; AppUtils.MAIN_1_CAT_NAME = ""; }
+        try {AppUtils.MAIN_2_CAT_POS = Integer.parseInt(mFirebaseRemoteConfig.getString("MAIN_2_CAT_POS")); AppUtils.MAIN_2_CAT_NAME = mFirebaseRemoteConfig.getString("MAIN_2_CAT_NAME"); }catch(Exception e){ AppUtils.MAIN_2_CAT_POS = -1; AppUtils.MAIN_2_CAT_NAME = ""; }
+        try {AppUtils.MAIN_3_CAT_POS = Integer.parseInt(mFirebaseRemoteConfig.getString("MAIN_3_CAT_POS")); AppUtils.MAIN_3_CAT_NAME = mFirebaseRemoteConfig.getString("MAIN_3_CAT_NAME"); }catch(Exception e){ AppUtils.MAIN_3_CAT_POS = -1; AppUtils.MAIN_3_CAT_NAME = ""; }
 
         if (TEST_MODE) Toast.makeText(getApplicationContext(), "TEST_1: "+getFireBaseString("URL_BASE_V2"), Toast.LENGTH_LONG).show();
     }

@@ -6,8 +6,8 @@ android {
         applicationId "eu.anifantakis.neakriti"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0.0"
+        versionCode 71
+        versionName "3.0.9"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true

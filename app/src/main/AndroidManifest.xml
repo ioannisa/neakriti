@@ -11,6 +11,8 @@
     Source: https://stackoverflow.com/questions/52382710/permission-denial-startforeground-requires-android-permission-foreground-servic -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
+    <!-- Added the usesCleartextTraffic to overcome error produced by exoplayer when streaming the live video stream -->
+    <!-- https://stackoverflow.com/questions/45940861/android-8-cleartext-http-traffic-not-permitted -->
     <application
         android:name=".utils.NeaKritiApp"
         android:allowBackup="false"
@@ -19,7 +21,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:vmSafeMode="true">
+        android:vmSafeMode="true"
+        android:usesCleartextTraffic="true">
 
         <!-- Sample AdMob App ID:
         https://developers.google.com/admob/android/quick-start#update_your_androidmanifestxml
