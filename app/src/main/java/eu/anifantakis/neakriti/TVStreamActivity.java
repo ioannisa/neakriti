@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.MediaRouteButton;
 import android.support.v7.view.ContextThemeWrapper;
@@ -74,6 +73,8 @@ public class TVStreamActivity extends AppCompatActivity {
 
     private boolean playWhenReady = true;
     private long position = -1;
+
+    CastPlayer castPlayer;
 
     ScaleGestureDetector scaleGestureDetector;
 
@@ -184,34 +185,36 @@ public class TVStreamActivity extends AppCompatActivity {
                 .setStreamType(MediaInfo.STREAM_TYPE_LIVE).setContentType(MimeTypes.APPLICATION_M3U8)
                 .setMetadata(movieMetadata).build();
 
-        final CastPlayer castPlayer = new CastPlayer(mCastContext);
+        castPlayer = new CastPlayer(mCastContext);
         castPlayer.setSessionAvailabilityListener(new CastPlayer.SessionAvailabilityListener() {
             @Override
             public void onCastSessionAvailable() {
                 final MediaQueueItem[] mediaItems = {new MediaQueueItem.Builder(mediaInfo).build()};
                 castPlayer.loadItems(mediaItems, 0, 0, Player.REPEAT_MODE_OFF);
+
+                pausePlayer();
             }
 
             @Override
             public void onCastSessionUnavailable() {
-                Toast.makeText(TVStreamActivity.this, getString(R.string.chromecast_unavailable), Toast.LENGTH_LONG).show();
+                //Toast.makeText(TVStreamActivity.this, getString(R.string.chromecast_unavailable), Toast.LENGTH_LONG).show();
             }
         });
 
         // Stylize Chromecast icon
         Context castContext = new ContextThemeWrapper(this, android.support.v7.mediarouter.R.style.Theme_MediaRouter);
 
-        Drawable drawable = null;
+        Drawable castDrawable = null;
         TypedArray a = castContext.obtainStyledAttributes(null,
                 android.support.v7.mediarouter.R.styleable.MediaRouteButton, android.support.v7.mediarouter.R.attr.mediaRouteButtonStyle, 0);
-        drawable = a.getDrawable(
+        castDrawable = a.getDrawable(
                 android.support.v7.mediarouter.R.styleable.MediaRouteButton_externalRouteEnabledDrawable);
         a.recycle();
 
-        assert drawable != null;
-        DrawableCompat.setTint(drawable, Color.WHITE);
+        assert castDrawable != null;
+        DrawableCompat.setTint(castDrawable, Color.WHITE);
 
-        mMediaRouteButton.setRemoteIndicatorDrawable(drawable);
+        mMediaRouteButton.setRemoteIndicatorDrawable(castDrawable);
 }
 
     private void initPlayer(){
@@ -290,6 +293,13 @@ public class TVStreamActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        super.onResume();
+        startPlayer();
+    }
+
     private void releasePlayer() {
         if (mExoPlayer != null) {
             mExoPlayer.stop();
@@ -314,5 +324,21 @@ public class TVStreamActivity extends AppCompatActivity {
                 videoView.setKeepScreenOn(true);
             }
         }
+    }
+
+    /**
+     * Source: https://stackoverflow.com/questions/40555405/how-to-pause-exoplayer-2-playback-and-resume-playercontrol-was-removed
+     */
+    private void pausePlayer(){
+        mExoPlayer.setPlayWhenReady(false);
+        mExoPlayer.getPlaybackState();
+    }
+
+    /**
+     * https://stackoverflow.com/questions/40555405/how-to-pause-exoplayer-2-playback-and-resume-playercontrol-was-removed
+     */
+    private void startPlayer(){
+        mExoPlayer.setPlayWhenReady(true);
+        mExoPlayer.getPlaybackState();
     }
 }

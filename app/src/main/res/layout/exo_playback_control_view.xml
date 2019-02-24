@@ -3,29 +3,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@id/exo_play"
-        style="@style/ExoMediaButton.Play"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:background="#88000000"
-        android:contentDescription="@string/btn_tv_play" />
+        android:background="#60000000">
 
-    <ImageButton
-        android:id="@id/exo_pause"
-        style="@style/ExoMediaButton.Pause"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:background="#88000000"
-        android:contentDescription="@string/btn_tv_pause" />
+        <ImageButton
+            android:id="@id/exo_play"
+            style="@style/ExoMediaButton.Play"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:background="@drawable/roundcorner"
+            android:contentDescription="@string/btn_tv_play" />
 
-    <android.support.v7.app.MediaRouteButton
-        android:id="@+id/media_route_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:mediaRouteTypes="user"
-        android:visibility="gone"/>
+        <ImageButton
+            android:id="@id/exo_pause"
+            style="@style/ExoMediaButton.Pause"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:background="@drawable/roundcorner"
+            android:contentDescription="@string/btn_tv_pause" />
+
+        <android.support.v7.app.MediaRouteButton
+            android:layout_margin="72dp"
+            android:id="@+id/media_route_button"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:background="@drawable/rounded"
+            android:mediaRouteTypes="user"
+            android:visibility="gone" />
+
+    </FrameLayout>
 </merge>
