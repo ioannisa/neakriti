@@ -12,6 +12,12 @@
         <key>TV_STATION_URL</key>
         <value>http://live.cretetv.gr:1935/cretetv/myStream/playlist.m3u8</value>
     </entry>
+
+    <entry>
+        <key>CHROMECAST_TV_DRAWABLE_URL</key>
+        <value>https://www.neakriti.gr/Content/Media/kritiTv.svg</value>
+    </entry>
+
     <entry>
         <key>AUTHOR_URL</key>
         <value>https://anifantakis.eu</value>

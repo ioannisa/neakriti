@@ -221,4 +221,6 @@
     <string name="debug_enabled">DEBUG MODE ENABLED</string>
     <string name="debug_disabled">DEBUG MODE DISABLED</string>
 
+    <string name="chromecast_title" translatable="false">CreteTV.gr - Live Stream</string>
+    <string name="chromecast_unavailable">Unable to stream on Chromecast or Android TV</string>
 </resources>

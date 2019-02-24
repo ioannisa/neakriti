@@ -89,4 +89,5 @@
     <string name="dlg_restart_close">CLOSE</string>
 
     <string name="widget_experimental">ΠΡΟΣΟΧΗ: Η χρήση Widget είναι πειραματική.  Σας παρακαλούμε να τη χρησιμοποιείτε μόνο δοκιμαστικά μέχρι νεοτέρας</string>
+    <string name="chromecast_unavailable">Αδυναμία μετάδοσης σε Chromecast ή Android TV</string>
 </resources>

@@ -65,6 +65,7 @@ public final class AppUtils {
 
     public static String RADIO_STATION_URL = "";
     public static String TV_STATION_URL =  "";
+    public static String CHROMECAST_TV_DRAWABLE_URL = "";
 
     public static final String EXTRAS_ARTICLE = "ARTICLE";
     public static final String EXTRAS_LOW_RES_BITMAP = "low_res_bitmap";

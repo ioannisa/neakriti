@@ -1,15 +1,25 @@
 package eu.anifantakis.neakriti;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.MediaRouteButton;
+import android.support.v7.view.ContextThemeWrapper;
 import android.view.ScaleGestureDetector;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -23,6 +33,7 @@ import com.google.android.exoplayer2.drm.DrmInitData;
 import com.google.android.exoplayer2.drm.DrmSession;
 import com.google.android.exoplayer2.drm.DrmSessionManager;
 import com.google.android.exoplayer2.drm.FrameworkMediaCrypto;
+import com.google.android.exoplayer2.ext.cast.CastPlayer;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
@@ -35,8 +46,18 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
+import com.google.android.gms.cast.MediaInfo;
+import com.google.android.gms.cast.MediaMetadata;
+import com.google.android.gms.cast.MediaQueueItem;
+import com.google.android.gms.cast.framework.CastButtonFactory;
+import com.google.android.gms.cast.framework.CastContext;
+import com.google.android.gms.cast.framework.CastState;
+import com.google.android.gms.cast.framework.CastStateListener;
+import com.google.android.gms.common.images.WebImage;
 
+import eu.anifantakis.neakriti.utils.AppUtils;
 import in.championswimmer.sfg.lib.SimpleFingerGestures;
 
 import static eu.anifantakis.neakriti.utils.AppUtils.TV_STATION_URL;
@@ -45,6 +66,8 @@ public class TVStreamActivity extends AppCompatActivity {
 
     private SimpleExoPlayer mExoPlayer;
     private PlayerView videoView;
+
+    private MediaRouteButton mMediaRouteButton;
 
     private final String SELECTED_POSITION = "selected_position";
     private final String PLAY_WHEN_READY = "play_when_ready";
@@ -120,7 +143,76 @@ public class TVStreamActivity extends AppCompatActivity {
         }
 
         initPlayer();
+        initChromecast();
     }
+
+    /**
+     * Initialize Chromecast functionality for the tv live stream
+     * Source: https://android.jlelse.eu/sending-media-to-chromecast-has-never-been-easier-c331eeef1e0a
+     *
+     * Stylize Chromcast button
+     * Source: https://smartapps.egeniq.com/style-mediaroutebutton-change-chromecast-icon-color-ecc98d72abe4
+     */
+    private void initChromecast(){
+        mMediaRouteButton = (MediaRouteButton) findViewById(R.id.media_route_button);
+        CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), mMediaRouteButton);
+
+        CastContext mCastContext = CastContext.getSharedInstance(this);
+
+        // Enable Chromecast button if chromecast available in the network
+        if(mCastContext.getCastState() != CastState.NO_DEVICES_AVAILABLE)
+            mMediaRouteButton.setVisibility(View.VISIBLE);
+
+        mCastContext.addCastStateListener(new CastStateListener() {
+            @Override
+            public void onCastStateChanged(int state) {
+                if (state == CastState.NO_DEVICES_AVAILABLE)
+                    mMediaRouteButton.setVisibility(View.GONE);
+                else {
+                    if (mMediaRouteButton.getVisibility() == View.GONE)
+                        mMediaRouteButton.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        MediaMetadata movieMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE);
+        movieMetadata.putString(MediaMetadata.KEY_TITLE, getString(R.string.chromecast_title));
+        movieMetadata.putString(MediaMetadata.KEY_ALBUM_ARTIST, "Test Artist");
+        movieMetadata.addImage(new WebImage(Uri.parse(AppUtils.CHROMECAST_TV_DRAWABLE_URL)));
+
+        MediaInfo mediaInfo = new MediaInfo.Builder(AppUtils.TV_STATION_URL)
+                .setStreamType(MediaInfo.STREAM_TYPE_LIVE).setContentType(MimeTypes.APPLICATION_M3U8)
+                .setMetadata(movieMetadata).build();
+
+        final CastPlayer castPlayer = new CastPlayer(mCastContext);
+        castPlayer.setSessionAvailabilityListener(new CastPlayer.SessionAvailabilityListener() {
+            @Override
+            public void onCastSessionAvailable() {
+                final MediaQueueItem[] mediaItems = {new MediaQueueItem.Builder(mediaInfo).build()};
+                castPlayer.loadItems(mediaItems, 0, 0, Player.REPEAT_MODE_OFF);
+            }
+
+            @Override
+            public void onCastSessionUnavailable() {
+                Toast.makeText(TVStreamActivity.this, getString(R.string.chromecast_unavailable), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        // Stylize Chromecast icon
+        Context castContext = new ContextThemeWrapper(this, android.support.v7.mediarouter.R.style.Theme_MediaRouter);
+
+        Drawable drawable = null;
+        TypedArray a = castContext.obtainStyledAttributes(null,
+                android.support.v7.mediarouter.R.styleable.MediaRouteButton, android.support.v7.mediarouter.R.attr.mediaRouteButtonStyle, 0);
+        drawable = a.getDrawable(
+                android.support.v7.mediarouter.R.styleable.MediaRouteButton_externalRouteEnabledDrawable);
+        a.recycle();
+
+        assert drawable != null;
+        DrawableCompat.setTint(drawable, Color.WHITE);
+
+        mMediaRouteButton.setRemoteIndicatorDrawable(drawable);
+}
 
     private void initPlayer(){
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
