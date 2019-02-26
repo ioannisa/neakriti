@@ -1,5 +1,6 @@
 package eu.anifantakis.neakriti.widget;
 
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -27,10 +28,13 @@ public class NewsWidgetProvider extends AppWidgetProvider {
     public static final int WIDGET_DIRECTION_EXISTING = 0;
     public static final int WIDGET_DIRECTION_PREVIOUS = 1;
     public static final int WIDGET_DIRECTION_NEXT     = 2;
+    private static final Object ALARM_SERVICE = 549832;
 
     public static long lastNoHasData = 0;
 
     private RemoteViews updateAppWidget(Context context, int appWidgetId, boolean hasData, CharSequence categoryTitle) {
+
+
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.news_widget_provider);
 
         //RemoteViews Service needed to provide adapter for ListView
@@ -52,6 +56,11 @@ public class NewsWidgetProvider extends AppWidgetProvider {
             Intent intent = new Intent(context, ArticleDetailActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             views.setPendingIntentTemplate(R.id.list_view_widget, pendingIntent);
+
+
+
+
+
         }
 
         // set the category title

@@ -304,7 +304,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         mRecyclerView.setLayoutManager(layoutManager);
 
         //mRecyclerView.setHasFixedSize(true);
-        mArticlesListAdapter = new ArticlesListAdapter(this);
+        mArticlesListAdapter = new ArticlesListAdapter(this, mTwoPane);
         mRecyclerView.setAdapter(mArticlesListAdapter);
 
         itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
@@ -364,6 +364,9 @@ public class ArticleListActivity extends AppCompatActivity implements
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.article_detail_container, fragment)
                     .commit();
+
+            // in tablet mode, when we click on an article, we want it highlighted on the list
+            Objects.requireNonNull(mRecyclerView.getAdapter()).notifyDataSetChanged();
         } else {
             Intent intent = new Intent(this, ArticleDetailActivity.class);
             article.setGroupName(feedName);

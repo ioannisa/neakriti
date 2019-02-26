@@ -8,17 +8,16 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.MediaRouteButton;
 import android.support.v7.view.ContextThemeWrapper;
+import android.util.Log;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -28,10 +27,6 @@ import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.drm.DrmInitData;
-import com.google.android.exoplayer2.drm.DrmSession;
-import com.google.android.exoplayer2.drm.DrmSessionManager;
-import com.google.android.exoplayer2.drm.FrameworkMediaCrypto;
 import com.google.android.exoplayer2.ext.cast.CastPlayer;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
@@ -215,37 +210,17 @@ public class TVStreamActivity extends AppCompatActivity {
         DrawableCompat.setTint(castDrawable, Color.WHITE);
 
         mMediaRouteButton.setRemoteIndicatorDrawable(castDrawable);
-}
+    }
 
     private void initPlayer(){
-        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-
-        TrackSelection.Factory videoFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+        TrackSelection.Factory videoFactory = new AdaptiveTrackSelection.Factory();
         TrackSelector trackSelector = new DefaultTrackSelector(videoFactory);
         LoadControl loadControl = new DefaultLoadControl();
 
-        // Create DrmSessionManager and RenderersFactory
-        DrmSessionManager<FrameworkMediaCrypto> drmSessionManager = new DrmSessionManager<FrameworkMediaCrypto>() {
-            @Override
-            public boolean canAcquireSession(DrmInitData drmInitData) {
-                return false;
-            }
-
-            @Override
-            public DrmSession<FrameworkMediaCrypto> acquireSession(Looper playbackLooper, DrmInitData drmInitData) {
-                return null;
-            }
-
-            @Override
-            public void releaseSession(DrmSession<FrameworkMediaCrypto> drmSession) {
-
-            }
-        };
-        RenderersFactory renderersFactory = new DefaultRenderersFactory(this, drmSessionManager,
-                DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF, 0);
+        RenderersFactory renderersFactory = new DefaultRenderersFactory(this);
 
         // Create Player
-        mExoPlayer = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, loadControl);
+        mExoPlayer = ExoPlayerFactory.newSimpleInstance(TVStreamActivity.this, renderersFactory, trackSelector, loadControl);
 
         // attach player view on player object
         videoView.setPlayer(mExoPlayer);
@@ -265,9 +240,7 @@ public class TVStreamActivity extends AppCompatActivity {
 
 
         Uri url = Uri.parse(TV_STATION_URL);
-        HlsMediaSource mediaSource = new HlsMediaSource.Factory(dataSourceFactory)
-                .setAllowChunklessPreparation(true)
-                .createMediaSource(url, mHandler, null);
+        HlsMediaSource mediaSource = new HlsMediaSource.Factory(dataSourceFactory).createMediaSource(url);
 
         if (position>0)
             mExoPlayer.seekTo(position);
@@ -312,7 +285,7 @@ public class TVStreamActivity extends AppCompatActivity {
      * Prevent phone screen from dimming and turning off when unattended while video stream is playing
      * https://stackoverflow.com/questions/49657683/exoplayer-2-prevent-screen-dim-on-video-playback
      */
-    private class PlayerEventListener extends Player.DefaultEventListener {
+    private class PlayerEventListener implements Player.EventListener {
         @Override
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
             if (playbackState == Player.STATE_IDLE || playbackState == Player.STATE_ENDED ||
@@ -330,15 +303,29 @@ public class TVStreamActivity extends AppCompatActivity {
      * Source: https://stackoverflow.com/questions/40555405/how-to-pause-exoplayer-2-playback-and-resume-playercontrol-was-removed
      */
     private void pausePlayer(){
-        mExoPlayer.setPlayWhenReady(false);
-        mExoPlayer.getPlaybackState();
+        if (mExoPlayer==null) {
+            Log.d("EXOPLAYER", "WAS NULL ON PAUSE");
+            initPlayer();
+        }
+
+        if (mExoPlayer!=null) {
+            mExoPlayer.setPlayWhenReady(false);
+            mExoPlayer.getPlaybackState();
+        }
     }
 
     /**
      * https://stackoverflow.com/questions/40555405/how-to-pause-exoplayer-2-playback-and-resume-playercontrol-was-removed
      */
     private void startPlayer(){
-        mExoPlayer.setPlayWhenReady(true);
-        mExoPlayer.getPlaybackState();
+        if (mExoPlayer==null) {
+            Log.d("EXOPLAYER", "WAS NULL ON RESUME");
+            initPlayer();
+        }
+
+        if (mExoPlayer!=null) {
+            mExoPlayer.setPlayWhenReady(true);
+            mExoPlayer.getPlaybackState();
+        }
     }
 }

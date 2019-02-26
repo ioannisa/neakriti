@@ -21,6 +21,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.File;
+import java.util.Objects;
 
 import eu.anifantakis.neakriti.ArticleListActivity;
 import eu.anifantakis.neakriti.R;
@@ -36,6 +37,7 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
     private Activity mActivity;
     private int selectedPosition = -1;
 
+    private boolean highlightSelectedCell;
     private int listType;
 
     final private ArticleItemClickListener mOnClickListener;
@@ -44,18 +46,20 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
         void onArticleItemClick(int clickedItemIndex, ImageView sharedImage);
     }
 
-    public ArticlesListAdapter(ArticleItemClickListener mOnClickListener) {
+    public ArticlesListAdapter(ArticleItemClickListener mOnClickListener, boolean highlightSelectedCell) {
         this.mOnClickListener = mOnClickListener;
         mActivity = (Activity) mOnClickListener;
+        this.highlightSelectedCell = highlightSelectedCell;
 
-        listType = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(mActivity).getString(mActivity.getString(R.string.pref_list_article_row_appearance),mActivity.getString(R.string.row_type_list_details_id)));
+        listType = Integer.valueOf(Objects.requireNonNull(PreferenceManager.getDefaultSharedPreferences(mActivity).getString(mActivity.getString(R.string.pref_list_article_row_appearance), mActivity.getString(R.string.row_type_list_details_id))));
 
         clearOldFileCache(2);
     }
 
-    public ArticlesListAdapter(ArticleItemClickListener mOnClickListener, Activity activity) {
+    public ArticlesListAdapter(ArticleItemClickListener mOnClickListener, Activity activity, boolean highlightSelectedCell) {
         this.mOnClickListener = mOnClickListener;
         mActivity = activity;
+        this.highlightSelectedCell = highlightSelectedCell;
 
         listType = PreferenceManager.getDefaultSharedPreferences(mActivity).getInt(mActivity.getString(R.string.pref_list_article_row_appearance),1); //R.string.row_type_list_details_id
 
@@ -120,12 +124,14 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
         holder.setDateStr(article.getPubDateStr());
         holder.itemView.setTag(article.getGuid());
 
-        Log.d("LIST_ADAPTER", "CURRENT FEED ID = " + ArticleListActivity.feedSrvid);
+        //Log.d("LIST_ADAPTER", "CURRENT_FEED_ID = " + ArticleListActivity.feedSrvid);
+        //Log.d("LIST_ADAPTER", "SELECTED POSITION " + selectedPosition);
 
         if (listType==1){
             ViewCompat.setTransitionName(holder.getImageView(), Integer.toString(article.getGuid()));
-            holder.bindingList.articleRow.setSelected((position == selectedPosition));
 
+            if (highlightSelectedCell)
+                holder.bindingList.articleRow.setSelected((position == selectedPosition));
 
             if (ArticleListActivity.feedSrvid.equals(mActivity.getString(R.string.nav_home_id))) {
                 if (position == AppUtils.MAIN_1_CAT_POS) {
@@ -142,11 +148,15 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
                     holder.bindingList.categoryGridItemText.setText("");
                 }
             }
-
+            else{
+                holder.bindingList.categoryGridItemText.setVisibility(View.GONE);
+            }
         }
         else if (listType==2){
             ViewCompat.setTransitionName(holder.getImageView(), Integer.toString(article.getGuid()));
-            holder.bindingListDetails.articleRow.setSelected((position == selectedPosition));
+
+            if (highlightSelectedCell)
+                holder.bindingListDetails.articleRow.setSelected((position == selectedPosition));
 
 
             // set the preview text
@@ -175,11 +185,15 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
                     holder.bindingListDetails.categoryGridItemText.setText("");
                 }
             }
-
+            else{
+                holder.bindingListDetails.categoryGridItemText.setVisibility(View.GONE);
+            }
         }
         else if (listType==3){
             ViewCompat.setTransitionName(holder.getImageView(), Integer.toString(article.getGuid()));
-            holder.bindingCard.articleRow.setSelected((position == selectedPosition));
+
+            if (highlightSelectedCell)
+                holder.bindingCard.articleRow.setSelected((position == selectedPosition));
 
             if (ArticleListActivity.feedSrvid.equals(mActivity.getString(R.string.nav_home_id))) {
                 if (position == AppUtils.MAIN_1_CAT_POS) {
@@ -195,6 +209,9 @@ public class ArticlesListAdapter extends RecyclerView.Adapter<ArticlesListAdapte
                     holder.bindingCard.categoryGridItemText.setVisibility(View.GONE);
                     holder.bindingCard.categoryGridItemText.setText("");
                 }
+            }
+            else{
+                holder.bindingCard.categoryGridItemText.setVisibility(View.GONE);
             }
         }
     }

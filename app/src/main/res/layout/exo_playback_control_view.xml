@@ -27,10 +27,10 @@
             android:contentDescription="@string/btn_tv_pause" />
 
         <android.support.v7.app.MediaRouteButton
-            android:layout_margin="72dp"
             android:id="@+id/media_route_button"
             android:layout_width="72dp"
             android:layout_height="72dp"
+            android:layout_margin="72dp"
             android:background="@drawable/rounded"
             android:mediaRouteTypes="user"
             android:visibility="gone" />

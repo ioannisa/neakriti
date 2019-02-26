@@ -3,15 +3,10 @@ package eu.anifantakis.neakriti.widget;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService.RemoteViewsFactory;
 
-import com.squareup.picasso.Picasso;
-
-import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 
 import eu.anifantakis.neakriti.R;

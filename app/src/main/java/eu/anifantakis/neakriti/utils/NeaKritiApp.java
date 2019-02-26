@@ -14,10 +14,8 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
@@ -30,6 +28,7 @@ import java.io.IOException;
 
 import eu.anifantakis.neakriti.R;
 import okhttp3.Cache;
+import okhttp3.CacheControl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
@@ -98,11 +97,7 @@ public class NeaKritiApp extends Application {
 
     public SimpleExoPlayer getRadioPlayer(){
         if (mRadioPlayer == null){
-            TrackSelector trackSelector = new DefaultTrackSelector(
-                    new AdaptiveTrackSelection.Factory(
-                            new DefaultBandwidthMeter()
-                    )
-            );
+            TrackSelector trackSelector = new DefaultTrackSelector();
 
             mRadioPlayer = ExoPlayerFactory.newSimpleInstance(
                     getApplicationContext(),
@@ -115,7 +110,7 @@ public class NeaKritiApp extends Application {
             MediaSource source = new ExtractorMediaSource.Factory(new OkHttpDataSourceFactory(
                     new OkHttpClient(),
                     userAgent,
-                    null
+                    (CacheControl) null
             )).createMediaSource(Uri.parse(AppUtils.RADIO_STATION_URL));
 
 
@@ -133,6 +128,7 @@ public class NeaKritiApp extends Application {
         OkHttpClient okHttpClient1 = new OkHttpClient.Builder()
 
                 .addInterceptor(new Interceptor() {
+                    @NonNull
                     @Override
                     public Response intercept(@NonNull Chain chain) throws IOException {
                         Response originalResponse = chain.proceed(chain.request());
