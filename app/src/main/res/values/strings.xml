@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">neakriti</string>
     <string name="app_logo" translatable="false">neakriti Logo</string>
-    <string name="title_article_detail" translatable="false">Article Detail</string>
+    <string name="title_article_detail">Home</string>
 
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
@@ -55,8 +55,14 @@
     <!-- ca-app-pub-3940256099942544~6300978111 -->
     <!-- ca-app-pub-3940256099942544/6300978111 -->
 
+
+    <string name="unitID_manifest" translatable="false">ca-app-pub-3940256099942544~6300978111</string>
+    <string name="unitID_bottom"   translatable="false">ca-app-pub-3940256099942544~6300978111</string>
+
+<!--
     <string name="unitID_manifest" translatable="false">ca-app-pub-3940256099942544~6300978111</string>
     <string name="unitID_bottom"   translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    -->
 
     <!-- Sharing Article -->
     <string name="share_the_article">neakriti.gr - Share this Article</string>
@@ -201,6 +207,9 @@
     <string name="notif_channel_news_id" translatable="false">news-channel</string>
     <string name="notif_channel_news_name" translatable="false">News Articles</string>
 
+    <string name="notif_channel_external_id" translatable="false">external-links-channel</string>
+    <string name="notif_channel_external_name" translatable="false">Website Articles and Links</string>
+
     <string name="notif_channel_radio_id" translatable="false">radio-channel</string>
     <string name="notif_channel_radio_name" translatable="false">Radio Player Notification</string>
 
@@ -223,4 +232,6 @@
 
     <string name="chromecast_title" translatable="false">CreteTV.gr - Live Stream</string>
     <string name="chromecast_unavailable">Unable to stream on Chromecast or Android TV</string>
+
+    <string name="build" translatable="false">build</string>
 </resources>

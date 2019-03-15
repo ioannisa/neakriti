@@ -81,7 +81,7 @@ public class SetPrefs extends AppCompatPreferenceActivity implements SharedPrefe
             addPreferencesFromResource(R.xml.preferences);
 
             // the "about" (informative only) section of the preferences
-            findPreference(getString(R.string.pref_about_version_key)).setSummary(pInfo.versionName);
+            findPreference(getString(R.string.pref_about_version_key)).setSummary(pInfo.versionName + " ("+getString(R.string.build)+" "+pInfo.versionCode+")");
 
             // if we made the secret key combo to show the option for the test notifications
             // then show them in the screen

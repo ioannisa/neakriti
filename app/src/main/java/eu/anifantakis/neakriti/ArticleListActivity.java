@@ -148,6 +148,9 @@ public class ArticleListActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        NeaKritiApp.setLangFromPreferences(getBaseContext());
+
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_article_list);
         //setContentView(R.layout.activity_article_list);
@@ -180,6 +183,9 @@ public class ArticleListActivity extends AppCompatActivity implements
                     }
                     previousTapMilis=System.currentTimeMillis();
                 }
+
+                if (counter>10)
+                    return;
 
                 if (counter==10) {
                     TEST_MODE=!TEST_MODE;

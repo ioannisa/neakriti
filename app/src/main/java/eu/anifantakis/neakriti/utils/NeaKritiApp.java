@@ -3,6 +3,7 @@ package eu.anifantakis.neakriti.utils;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -25,6 +26,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 import eu.anifantakis.neakriti.R;
 import okhttp3.Cache;
@@ -44,14 +46,50 @@ public class NeaKritiApp extends Application {
     public static SharedPreferences sharedPreferences;
     public static boolean TEST_MODE = false;
 
+    // get static context
+    // Source: https://stackoverflow.com/questions/2002288/static-way-to-get-context-in-android
+    private static Context context;
+
     @Override
     public void onCreate() {
         super.onCreate();
 
+        NeaKritiApp.context = getApplicationContext();
         initSharedPrefs();
 
         sAnalytics = GoogleAnalytics.getInstance(this);
         setupPicasso();
+    }
+
+    /**
+     * Provides the Application context in static calls
+     * @return context
+     */
+    public static Context getAppContext(){
+        return NeaKritiApp.context;
+    }
+
+    /**
+     * Change the app's language for the given locale
+     * source: https://stackoverflow.com/questions/12908289/how-to-change-language-of-app-when-user-selects-language#
+     * @param lang the language in which the application is to run. Currently supported "en" and "el".
+     */
+    public static void setLocale(String lang, Context context) {
+        Locale myLocale = new Locale(lang);
+        Configuration conf = new Configuration();
+        conf.locale = myLocale;
+        context.getResources().updateConfiguration(conf, null);
+    }
+
+    /**
+     * Sets the language based on system preferences
+     */
+    public static void setLangFromPreferences(Context context){
+        // set the system language based on the SharedPreferences (Default is greek).
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getAppContext());
+        String lang = prefs.getString(getAppContext().getResources().getString(R.string.pref_app_loc_lang_key), getAppContext().getResources().getString(R.string.loc_greek_id));
+
+        NeaKritiApp.setLocale(lang, context);
     }
 
     /**

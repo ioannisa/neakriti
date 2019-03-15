@@ -66,70 +66,73 @@
 
         </RelativeLayout>
 
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/article_nested_scroll_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:ignore="WebViewLayout">
 
-            <!-- TODO: RE-ENABLE FACEBOOK COMMENTS -->
-            <!-- used to have the bellow line in the LinearLayout -->
-            <!-- android:descendantFocusability="blocksDescendants" -->
-            <LinearLayout
-                android:id="@+id/article_container"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusableInTouchMode="true">
+
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/article_nested_scroll_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_alignParentTop="true"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                tools:ignore="WebViewLayout">
 
 
-                <WebView
-                    android:id="@+id/article_detail"
+                <!-- TODO: RE-ENABLE FACEBOOK COMMENTS -->
+                <!-- used to have the bellow line in the LinearLayout -->
+                <!-- android:descendantFocusability="blocksDescendants" -->
+                <LinearLayout
+                    android:id="@+id/article_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:scrollbarStyle="insideOverlay"
-                    android:visibility="visible" />
+                    android:descendantFocusability="blocksDescendants"
+                    android:orientation="vertical">
 
-
-                <FrameLayout
-                    android:id="@+id/webview_frame"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:focusableInTouchMode="true">
 
                     <WebView
-                        android:id="@+id/comments_view"
+                        android:id="@+id/article_detail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
                         android:scrollbarStyle="insideOverlay"
                         android:visibility="visible" />
-                </FrameLayout>
 
-                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/detailAdViewLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:focusableInTouchMode="true"
-                    android:orientation="vertical"
-                    android:paddingBottom="15dp">
 
-                    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/adView"
+                    <FrameLayout
+                        android:id="@+id/webview_frame"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center|bottom"
-                        android:layout_margin="16dp"
-                        ads:adSize="BANNER"
+                        android:layout_height="match_parent"
+                        android:focusableInTouchMode="true">
 
-                        ads:adUnitId="@string/unitID_bottom" />
+                        <WebView
+                            android:id="@+id/comments_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:scrollbarStyle="insideOverlay"
+                            android:visibility="visible" />
+                    </FrameLayout>
 
-                </RelativeLayout>
-            </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+
+            <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="center|bottom"
+                android:layout_margin="16dp"
+                ads:adSize="BANNER"
+                ads:adUnitId="@string/unitID_bottom" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 </layout>

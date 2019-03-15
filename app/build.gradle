@@ -6,19 +6,28 @@ android {
         applicationId "eu.anifantakis.neakriti"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 75
-        versionName "3.0.11"
+        versionCode 79
+        versionName "3.0.12"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
 
-    signingConfigs {
+    /*signingConfigs {
         myconfig {
             keyAlias 'capstone'
             keyPassword 'udacity'
             storeFile file('../keystore.jks')
             storePassword 'udacity'
+        }
+    }*/
+
+    signingConfigs {
+        myconfig {
+            keyAlias 'neakriti'
+            keyPassword '599bcdahe'
+            storeFile file('../rsskey')
+            storePassword '599bcdahe'
         }
     }
 

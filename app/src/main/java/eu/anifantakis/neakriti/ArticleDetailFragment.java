@@ -46,6 +46,7 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -113,6 +114,8 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        //MobileAds.initialize(getContext(), "ca-app-pub-3940256099942544~6300978111");
 
         mTracker = ((NeaKritiApp) Objects.requireNonNull(getActivity()).getApplication()).getDefaultTracker();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(Objects.requireNonNull(getContext()));
@@ -259,7 +262,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
 
                 // TODO: RE-ENABLE FACEBOOK COMMENTS
                 // disabling hack in order to revisit it in future version - will remove facbook comments all together in the existing version.
-                //binding.articleContainer.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+                binding.articleContainer.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
             }
         });
 

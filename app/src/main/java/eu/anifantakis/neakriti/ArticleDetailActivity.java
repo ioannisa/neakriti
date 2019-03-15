@@ -22,6 +22,7 @@ import com.squareup.picasso.Picasso;
 import eu.anifantakis.neakriti.data.feed.gson.Article;
 import eu.anifantakis.neakriti.databinding.ActivityArticleDetailBinding;
 import eu.anifantakis.neakriti.utils.AppUtils;
+import eu.anifantakis.neakriti.utils.NeaKritiApp;
 
 import static eu.anifantakis.neakriti.utils.AppUtils.isNightMode;
 import static eu.anifantakis.neakriti.utils.NeaKritiApp.sharedPreferences;
@@ -131,6 +132,8 @@ public class ArticleDetailActivity extends AppCompatActivity {
                     .add(R.id.article_detail_container, fragment)
                     .commit();
         }
+
+        NeaKritiApp.setLangFromPreferences(getBaseContext());
 
         // recreate is called when we need to repaint the theme from day to night or vice versa.
         if (recreated){
