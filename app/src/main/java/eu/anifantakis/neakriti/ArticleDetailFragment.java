@@ -117,6 +117,9 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
 
         //MobileAds.initialize(getContext(), "ca-app-pub-3940256099942544~6300978111");
 
+        // initialize TTS
+        mTextToSpeech = new TextToSpeech(getActivity(), this);
+
         mTracker = ((NeaKritiApp) Objects.requireNonNull(getActivity()).getApplication()).getDefaultTracker();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(Objects.requireNonNull(getContext()));
 
@@ -433,18 +436,18 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         if (isNightMode){
             dayNightStyle =
                     "body,p,div{background:#333333 !Important; color:#eeeeee;} a{color:#ee3333 !Important}" +
-                    "blockquote p {background:#444 !Important} "+
-                    "blockquote{background:#444 !Important; border-left: 10px solid #666 !Important;} "+
-                    "blockquote:before { color:#666 !Important }"+
+                            "blockquote p {background:#444 !Important} "+
+                            "blockquote{background:#444 !Important; border-left: 10px solid #666 !Important;} "+
+                            "blockquote:before { color:#666 !Important }"+
 
-                    ".descr p {background:#444 !Important} "+
-                    ".descr{color: #ccc; background:#444 !Important; border-left: 10px solid #666 !Important;} "+
-                    ".descr:before { color:#666 !Important }";
+                            ".descr p {background:#444 !Important} "+
+                            ".descr{color: #ccc; background:#444 !Important; border-left: 10px solid #666 !Important;} "+
+                            ".descr:before { color:#666 !Important }";
             //binding.articleNestedScrollView.setBackgroundColor(Color.parseColor("#333333"));
         }
 
         String standardStyle =
-                        ".video-container{position: relative;padding-bottom: 56.25%;margin-top:20px;height: 0;overflow: hidden;}.video-container iframe, .video-container object, .video-container embed{position: absolute;top: 0;left: 0;width: 100%;height: 100%;}figure{margin-bottom:0;margin-left:0;margin-right:0;padding:0;width=\"100%\"}img{width: 100%;}"+
+                ".video-container{position: relative;padding-bottom: 56.25%;margin-top:20px;height: 0;overflow: hidden;}.video-container iframe, .video-container object, .video-container embed{position: absolute;top: 0;left: 0;width: 100%;height: 100%;}figure{margin-bottom:0;margin-left:0;margin-right:0;padding:0;width=\"100%\"}img{width: 100%;}"+
 
                         " .descr {background: #eee !Important; color:#444; font-size:0.9em; border-left: 10px solid #ccc; margin: 1.5em 00px; padding: 0.5em 10px;}" +
                         " .descr:before {color: #ccc; line-height: 0.1em; margin-right: 0.25em; vertical-align: -0.4em;}" +
@@ -455,10 +458,10 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
 
         String webStory =
                 "<!DOCTYPE html><html lang=\"el\"><head><title>{0}</title> "+
-                "<meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\"/>"+
-                "<link rel=\"canonical\" href=\"{1}\"> <link href=\"https://fonts.googleapis.com/css?family=Roboto:400,700,900&subset=greek,latin\" rel=\"stylesheet\" type=\"text/css\"> "+
-                "<style> a'{' text-decoration:none; color:#a00; font-weight:600; '}' body'{'line-height:normal; font-family:\"Roboto\"; padding-bottom:50px;{2}'}' "+
-                "object,img,iframe,div,video,param,embed'{'max-width: 100%; '}'{3}{4}</style></head><body>{5}</body></html>";
+                        "<meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\"/>"+
+                        "<link rel=\"canonical\" href=\"{1}\"> <link href=\"https://fonts.googleapis.com/css?family=Roboto:400,700,900&subset=greek,latin\" rel=\"stylesheet\" type=\"text/css\"> "+
+                        "<style> a'{' text-decoration:none; color:#a00; font-weight:600; '}' body'{'line-height:normal; font-family:\"Roboto\"; padding-bottom:50px;{2}'}' "+
+                        "object,img,iframe,div,video,param,embed'{'max-width: 100%; '}'{3}{4}</style></head><body>{5}</body></html>";
 
         String format;
         if (sharedPreferences.getBoolean(getString(R.string.pref_increased_line_distance_key), true)){
@@ -558,17 +561,22 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
 
     @Override
     public void onDestroy(){
-        super.onDestroy();
         if (mTextToSpeech!=null) {
+            mTextToSpeech.stop();
             mTextToSpeech.shutdown();
         }
-
+        super.onDestroy();
     }
 
 
     private void speak(){
-        if (mTextToSpeech==null)
+        if (mTextToSpeech==null) {
+            Log.d("TTS", "ITS NULL");
             mTextToSpeech = new TextToSpeech(getActivity(), this);
+        }
+        else {
+            Log.d("TTS", "ITS NOT NULL");
+        }
 
         Log.d("Default Engine Info " , mTextToSpeech.getDefaultEngine());
 
@@ -577,9 +585,11 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         } else {
             // Check if TTS for the Greek Language - Greece (el_GR) is installed for the TTS Engine Running on the user's device
             int langAvailability = mTextToSpeech.isLanguageAvailable(new Locale("el", "GR"));
+
             if (langAvailability==TextToSpeech.LANG_AVAILABLE || langAvailability==TextToSpeech.LANG_COUNTRY_AVAILABLE || langAvailability==TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE){
                 Log.d("TTS AVAILABILITY", "INSTALLED");
                 mTextToSpeech.setLanguage(new Locale("el", "GR"));
+
                 mTextToSpeech.setSpeechRate(1);
                 mTextToSpeech.setPitch(1);
 
@@ -630,12 +640,12 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
                 else{
                     AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
                     builder
-                        .setTitle(R.string.dlg_no_tts_lang_unavailable_title)
-                        .setMessage(R.string.dlg_no_tts_lang_unavailable_body)
-                        .setIcon(R.drawable.not_interested_48px)
-                        .setNegativeButton(R.string.dlg_exit, (dialog, id) -> {
+                            .setTitle(R.string.dlg_no_tts_lang_unavailable_title)
+                            .setMessage(R.string.dlg_no_tts_lang_unavailable_body)
+                            .setIcon(R.drawable.not_interested_48px)
+                            .setNegativeButton(R.string.dlg_exit, (dialog, id) -> {
 
-                        });
+                            });
                     // Create the AlertDialog object and return it
                     builder.create().show();
                 }
@@ -744,8 +754,9 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
      */
     @Override
     public void onInit(int status) {
-        if (mTextToSpeech==null)
+        if (mTextToSpeech==null) {
             mTextToSpeech = new TextToSpeech(getActivity(), this);
+        }
 
         if (status == TextToSpeech.SUCCESS) {
             mTextToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
@@ -828,17 +839,17 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         // facebook comment widget including the article url
         String facebookComments =
                 " <!doctype html> <html lang='el'> <head></head> <body> " +
-                    " <div id='fb-root'></div>" +
-                    " <script>(function(d, s, id) {" +
-                    "  var js, fjs = d.getElementsByTagName(s)[0];" +
-                    "  if (d.getElementById(id)) return;" +
-                    "  js = d.createElement(s); js.id = id;" +
-                    "  js.src = 'https://connect.facebook.net/el_GR/sdk.js#xfbml=1&version=v3.1&appId=56856387271&autoLogAppEvents=1';" +
-                    "  fjs.parentNode.insertBefore(js, fjs);" +
-                    "}(document, 'script', 'facebook-jssdk'));</script>" +
+                        " <div id='fb-root'></div>" +
+                        " <script>(function(d, s, id) {" +
+                        "  var js, fjs = d.getElementsByTagName(s)[0];" +
+                        "  if (d.getElementById(id)) return;" +
+                        "  js = d.createElement(s); js.id = id;" +
+                        "  js.src = 'https://connect.facebook.net/el_GR/sdk.js#xfbml=1&version=v3.1&appId=56856387271&autoLogAppEvents=1';" +
+                        "  fjs.parentNode.insertBefore(js, fjs);" +
+                        "}(document, 'script', 'facebook-jssdk'));</script>" +
 
-                    " <div class='fb-comments' data-href='" + mArticle.getLink() + "' data-num-posts='30'></div> " +
-                " </body> </html>";
+                        " <div class='fb-comments' data-href='" + mArticle.getLink() + "' data-num-posts='30'></div> " +
+                        " </body> </html>";
 
 
         mWebViewComments.loadDataWithBaseURL("https://www.neakriti.gr", facebookComments, "text/html", "UTF-8", null);

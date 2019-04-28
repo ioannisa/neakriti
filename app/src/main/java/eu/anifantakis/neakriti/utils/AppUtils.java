@@ -17,6 +17,8 @@ import android.view.animation.Animation;
 import android.view.animation.LayoutAnimationController;
 import android.view.animation.TranslateAnimation;
 
+import com.google.android.exoplayer2.ui.PlayerNotificationManager;
+
 import org.jsoup.Jsoup;
 
 import java.io.File;
@@ -75,7 +77,7 @@ public final class AppUtils {
     public static final String EXTRAS_ORIGIN_NOTIFICATION = "EXTRAS_ORIGIN_NOTIFICATION";
 
     public static boolean onlineMode = true;
-    public static NotificationManager mNotificationManager;
+    public static PlayerNotificationManager mPlayerNotificationManager;
 
     public static boolean isNightMode = false;
 

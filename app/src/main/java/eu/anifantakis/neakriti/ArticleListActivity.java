@@ -2,10 +2,8 @@ package eu.anifantakis.neakriti;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
+import android.app.Notification;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,17 +11,18 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
@@ -48,12 +47,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.FirebaseApp;
@@ -81,15 +81,14 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
 import static eu.anifantakis.neakriti.preferences.SetPrefs.NEAKRITI_NEWS_TEST_TOPIC;
 import static eu.anifantakis.neakriti.utils.AppUtils.URL_BASE;
 import static eu.anifantakis.neakriti.utils.AppUtils.isNightMode;
-import static eu.anifantakis.neakriti.utils.AppUtils.mNotificationManager;
+import static eu.anifantakis.neakriti.utils.AppUtils.mPlayerNotificationManager;
 import static eu.anifantakis.neakriti.utils.AppUtils.onlineMode;
 import static eu.anifantakis.neakriti.utils.AppUtils.spec;
-import static eu.anifantakis.neakriti.utils.NeaKritiApp.sharedPreferences;
 import static eu.anifantakis.neakriti.utils.NeaKritiApp.TEST_MODE;
+import static eu.anifantakis.neakriti.utils.NeaKritiApp.sharedPreferences;
 
 
 public class ArticleListActivity extends AppCompatActivity implements
@@ -114,12 +113,11 @@ public class ArticleListActivity extends AppCompatActivity implements
     private static ArticlesCollection cachedCollection = null;
     private ImageView btnRadio;
     private  boolean clickedAtLeastOneItem = false;
-    private static boolean exoPlayerIsPlaying = false;
     private TextView feedCategoryTitle;
     private ItemTouchHelper itemTouchHelper;
     private ArticleDetailFragment fragment;
     private Tracker mTracker;
-    private SimpleExoPlayer mRadioPlayer;
+    private ExoPlayer mRadioPlayer;
     private NavigationView navigationView;
 
     private static final int ARTICLES_FEED_LOADER = 0;
@@ -128,7 +126,6 @@ public class ArticleListActivity extends AppCompatActivity implements
     private static final String LOADER_ID = "LOADER_ID";
     private static final String LOADER_ITEMS_COUNT = "LOADER_ITEMS_COUNT";
     private static final String LIVE_PANEL_VISIBILITY = "LIVE_PANEL_VISIBILITY";
-    private static final String STATE_EXO_PLAYER_RADIO_PLAYING = "exo_player_radio_playing";
     private static final String STATE_CLICKED_AN_ITEM = "STATE_CLICKED_AN_ITEM";
     private static final String STATE_FRAGMENT = "STATE_FRAGMENT";
 
@@ -225,10 +222,7 @@ public class ArticleListActivity extends AppCompatActivity implements
             //cachedCollection = savedInstanceState.getParcelable(CACHED_COLLECTION);
             liveView.setVisibility(savedInstanceState.getInt(LIVE_PANEL_VISIBILITY));
 
-            if (savedInstanceState.containsKey(STATE_EXO_PLAYER_RADIO_PLAYING)) {
-                exoPlayerIsPlaying = savedInstanceState.getBoolean(STATE_EXO_PLAYER_RADIO_PLAYING);
-            }
-            if (exoPlayerIsPlaying){
+            if (isRadioPlaying()){
                 btnRadio.setImageResource(R.drawable.btn_radio_pause);
             }
             if (savedInstanceState.containsKey(STATE_CLICKED_AN_ITEM)) {
@@ -338,6 +332,74 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         shouldreload = false;
         makeArticlesLoaderQuery(feedName, feedType, feedSrvid, feedItems);
+
+        initRadioNotifier();
+    }
+
+    private boolean isRadioPlaying(){
+        return (mRadioPlayer.getPlaybackState() == Player.STATE_READY && mRadioPlayer.getPlayWhenReady());
+    }
+
+    private void initRadioNotifier(){
+        // Initialize Radio984 - ExoPlayer Notifications
+        mPlayerNotificationManager = PlayerNotificationManager.createWithNotificationChannel(
+                getApplicationContext(),
+                getString(R.string.notif_channel_radio_id),
+                R.string.notif_channel_radio_name,
+                NOTIFICATION_RADIO984_ID,
+                new PlayerNotificationManager.MediaDescriptionAdapter() {
+                    @Override
+                    public String getCurrentContentTitle(Player player) {
+                        //return mPositionalAlbumDetailDataModel.get(player.getCurrentWindowIndex()).getTITLE();
+                        return "Radio 984";
+                    }
+
+                    @Nullable
+                    @Override
+                    public PendingIntent createCurrentContentIntent(Player player) {
+                        // on notification click open this activity
+                        Intent intent = new Intent(ArticleListActivity.this, ArticleListActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                        PendingIntent pendingIntent = PendingIntent.getActivity(ArticleListActivity.this, 0 , intent,
+                                PendingIntent.FLAG_UPDATE_CURRENT);
+
+                        return pendingIntent;
+                    }
+
+
+                    @Override
+                    public String getCurrentContentText(Player player) {
+                        return "Live Streaming...";
+                    }
+
+                    @Nullable
+                    @Override
+                    public Bitmap getCurrentLargeIcon(Player player, PlayerNotificationManager.BitmapCallback callback) {
+                        return BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.radio984);
+                    }
+
+                    @Nullable
+                    @Override
+                    public String getCurrentSubText(Player player) {
+                        return null;
+                    }
+                }
+        );
+
+
+        //mPlayerNotificationManager.setPlayer(mRadioPlayer);
+        // omit skip previous and next actions
+        mPlayerNotificationManager.setUseNavigationActions(false);
+        // omit fast forward action by setting the increment to zero
+        mPlayerNotificationManager.setFastForwardIncrementMs(0);
+        // omit rewind action by setting the increment to zero
+        mPlayerNotificationManager.setRewindIncrementMs(0);
+        // omit the stop action
+        mPlayerNotificationManager.setStopAction(null);
+
+        mPlayerNotificationManager.setColorized(true);
+        mPlayerNotificationManager.setColor(Color.WHITE);
     }
 
     /**
@@ -840,7 +902,6 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         //outState.putParcelable(CACHED_COLLECTION, cachedCollection);
         outState.putInt(LIVE_PANEL_VISIBILITY, liveView.getVisibility());
-        outState.putBoolean(STATE_EXO_PLAYER_RADIO_PLAYING, exoPlayerIsPlaying);
         outState.putBoolean(STATE_CLICKED_AN_ITEM, clickedAtLeastOneItem);
 
         outState.putString(STATE_FEED_SRVID, feedSrvid);
@@ -885,7 +946,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     public void liveStreamRadioClicked(View view){
         if (checkNetworkAvailabilityBeforeStreaming()) {
-            if (!exoPlayerIsPlaying) {
+            if (!isRadioPlaying()) {
                 // if no WiFi connected, warn the user for possible charges while watching streamed content
                 if (!AppUtils.isWifiConnected(this)) {
                     alertForStream(true);
@@ -905,62 +966,17 @@ public class ArticleListActivity extends AppCompatActivity implements
      * Plays/Stops Radio Stream
      */
     private void streamRadioOnOff(){
-        exoPlayerIsPlaying = (mNotificationManager!=null);
-
-        exoPlayerIsPlaying = !exoPlayerIsPlaying;
-        setStreamRadioStatus(exoPlayerIsPlaying);
+        setStreamRadioStatus(!isRadioPlaying());
     }
 
     private void setStreamRadioStatus(boolean status){
         mRadioPlayer.setPlayWhenReady(status);
 
         if (status){
-            Picasso.get()
-                    .load(R.drawable.btn_radio_pause)
-                    .into(btnRadio);
-
-            String channelId = getString(R.string.notif_channel_radio_id);
-            String channelName = getString(R.string.notif_channel_radio_name);
-            int importance = 0;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                importance = NotificationManager.IMPORTANCE_LOW;
-            }
-            AppUtils.mNotificationManager = (NotificationManager) ArticleListActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
-
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                NotificationChannel mChannel = new NotificationChannel(
-                        channelId, channelName, importance);
-                AppUtils.mNotificationManager.createNotificationChannel(mChannel);
-            }
-
-            Intent intent = new Intent(this, ArticleListActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent,
-                    PendingIntent.FLAG_ONE_SHOT);
-
-            NotificationCompat.Builder builder =
-                    new NotificationCompat.Builder(getApplicationContext(), channelId)
-                            .setSmallIcon(R.drawable.play_circle_outline_white)
-                            .setContentTitle("Radio 984")
-                            .setVisibility(VISIBILITY_PUBLIC)
-                            .setAutoCancel(false)
-                            .setContentText("Ακούτε Radio9.84 Live")
-                            .setOngoing(true)
-                            .setContentIntent(pendingIntent);
-
-            AppUtils.mNotificationManager.notify(NOTIFICATION_RADIO984_ID, builder.build());
-
+            mPlayerNotificationManager.setPlayer(mRadioPlayer);
         }
         else{
-            Picasso.get()
-                    .load(R.drawable.btn_radio)
-                    .into(btnRadio);
-
-            if (AppUtils.mNotificationManager != null){
-                AppUtils.mNotificationManager.cancel(NOTIFICATION_RADIO984_ID);
-                AppUtils.mNotificationManager = null;
-            }
+            mPlayerNotificationManager.setPlayer(null);
         }
     }
 
@@ -969,7 +985,7 @@ public class ArticleListActivity extends AppCompatActivity implements
      */
     private void streamTV(){
         // If radio is currently playing, ask the user to stop radio, or continue listening
-        if (exoPlayerIsPlaying){
+        if (isRadioPlaying()){
             DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
@@ -1051,13 +1067,15 @@ public class ArticleListActivity extends AppCompatActivity implements
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         if((playbackState == Player.STATE_READY) && playWhenReady){
             Log.d("RssReader", "onPlayerStateChanged: PLAYING");
-            exoPlayerIsPlaying=true;
-            //makeNotification();
+            Picasso.get()
+                    .load(R.drawable.btn_radio_pause)
+                    .into(btnRadio);
         } else if((playbackState == Player.STATE_READY)){
             Log.d("RssReader", "onPlayerStateChanged: PAUSED");
-            exoPlayerIsPlaying=false;
-            //if (mNotificationManager!=null)
-            //    mNotificationManager.cancel(NOTIFICATION_RADIO984_ID);
+
+            Picasso.get()
+                    .load(R.drawable.btn_radio)
+                    .into(btnRadio);
         }
     }
 
@@ -1073,7 +1091,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     @Override
     public void onPlayerError(ExoPlaybackException error) {
-        exoPlayerIsPlaying = false;
+        mPlayerNotificationManager.setPlayer(null);
         setStreamRadioStatus(false);
     }
 
@@ -1090,6 +1108,15 @@ public class ArticleListActivity extends AppCompatActivity implements
     @Override
     public void onSeekProcessed() {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        mPlayerNotificationManager.setPlayer(null);
+        mRadioPlayer.release();
+        mRadioPlayer = null;
+
+        super.onDestroy();
     }
 
     @Override
