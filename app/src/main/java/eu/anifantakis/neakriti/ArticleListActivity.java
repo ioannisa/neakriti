@@ -2,7 +2,6 @@ package eu.anifantakis.neakriti;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -336,10 +335,23 @@ public class ArticleListActivity extends AppCompatActivity implements
         initRadioNotifier();
     }
 
+    /**
+     * Check if radio streamer is currently streaming
+     * @return True if radio streamer is streaming, False otherwise
+     */
     private boolean isRadioPlaying(){
-        return (mRadioPlayer.getPlaybackState() == Player.STATE_READY && mRadioPlayer.getPlayWhenReady());
+        if (mRadioPlayer!=null) {
+            return (mRadioPlayer.getPlaybackState() == Player.STATE_READY && mRadioPlayer.getPlayWhenReady());
+        }
+        else{
+            return false;
+        }
     }
 
+    /**
+     * Initialize the Notification System for the Radio ExoPlayer System.
+     * The specialized "PlayerNotificationManager" gets linked to the ExoPlayer and manages notification playback.
+     */
     private void initRadioNotifier(){
         // Initialize Radio984 - ExoPlayer Notifications
         mPlayerNotificationManager = PlayerNotificationManager.createWithNotificationChannel(
@@ -351,7 +363,7 @@ public class ArticleListActivity extends AppCompatActivity implements
                     @Override
                     public String getCurrentContentTitle(Player player) {
                         //return mPositionalAlbumDetailDataModel.get(player.getCurrentWindowIndex()).getTITLE();
-                        return "Radio 984";
+                        return getString(R.string.radio_notifier_title);
                     }
 
                     @Nullable
@@ -370,7 +382,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
                     @Override
                     public String getCurrentContentText(Player player) {
-                        return "Live Streaming...";
+                        return getString(R.string.radio_notifier_content_text);
                     }
 
                     @Nullable

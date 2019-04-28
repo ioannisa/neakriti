@@ -92,4 +92,6 @@
 
     <string name="widget_experimental">ΠΡΟΣΟΧΗ: Η χρήση Widget είναι πειραματική.  Σας παρακαλούμε να τη χρησιμοποιείτε μόνο δοκιμαστικά μέχρι νεοτέρας</string>
     <string name="chromecast_unavailable">Αδυναμία μετάδοσης σε Chromecast ή Android TV</string>
+
+    <string name="radio_notifier_content_text">Ζωντανή μετάδοση προγράμματος…</string>
 </resources>

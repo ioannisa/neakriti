@@ -71,6 +71,9 @@
     <string name="dlg_no_wifi_detected_title">Do you wish to continue making use of your mobile data plan?</string>
     <string name="dlg_no_wifi_detected_body">Do you wish to continue making use of your mobile data plan?</string>
 
+    <string name="radio_notifier_title" translatable="false">Radio 984</string>
+    <string name="radio_notifier_content_text">Live Streaming…</string>
+
     <!-- ALERT DIALOG RADIO IS ALREADY PLAYING (Warning if we try to launch tv stream while radio stream already playing) -->
     <string name="live_streaming" translatable="false">Live Streaming</string>
     <string name="btn_tv_play" translatable="false">Play</string>

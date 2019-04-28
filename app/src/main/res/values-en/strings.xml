@@ -87,4 +87,6 @@
 
     <string name="widget_experimental">ΑΤΤΕΝΤΙΟΝ: Widget control is experimental. Please use it accordingly until further notice.</string>
     <string name="chromecast_unavailable">Unable to stream on Chromecast or Android TV</string>
+
+    <string name="radio_notifier_content_text">Live Streaming…</string>
 </resources>
