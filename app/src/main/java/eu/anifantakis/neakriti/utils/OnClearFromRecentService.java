@@ -28,20 +28,20 @@ public class OnClearFromRecentService extends Service {
     }
 
     @Override
-    /*
-      Code to execute when the service is destroyed (aka when the app is destroyed)
-     */
     public void onDestroy() {
         super.onDestroy();
         Log.d("ClearFromRecentService", "Service Destroyed");
-
-        mPlayerNotificationManager.setPlayer(null);
     }
 
     @Override
+    /*
+      Code to execute when the service is destroyed (aka when the app is destroyed)
+     */
     public void onTaskRemoved(Intent rootIntent) {
         Log.e("ClearFromRecentService", "END");
         //Code here
+        mPlayerNotificationManager.setPlayer(null);
+
         stopSelf();
     }
 }
