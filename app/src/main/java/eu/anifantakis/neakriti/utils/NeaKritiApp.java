@@ -142,30 +142,33 @@ public class NeaKritiApp extends Application {
     }
 
     public ExoPlayer getRadioPlayer(boolean reset){
-        if (reset)
-            mRadioPlayer = null;
+        String userAgent = Util.getUserAgent(getApplicationContext(), "rssreadernk");
+
+        MediaSource source = new ExtractorMediaSource.Factory(new OkHttpDataSourceFactory(
+                new OkHttpClient(),
+                userAgent,
+                (CacheControl) null
+        )).createMediaSource(Uri.parse(AppUtils.RADIO_STATION_URL));
+
+        TrackSelector trackSelector = new DefaultTrackSelector();
 
         if (mRadioPlayer == null){
-            TrackSelector trackSelector = new DefaultTrackSelector();
-
             mRadioPlayer = ExoPlayerFactory.newSimpleInstance(
                     getApplicationContext(),
                     trackSelector
             );
+
             //mRadioPlayer.addListener(this);
 
-            String userAgent = Util.getUserAgent(getApplicationContext(), "rssreadernk");
-
-            MediaSource source = new ExtractorMediaSource.Factory(new OkHttpDataSourceFactory(
-                    new OkHttpClient(),
-                    userAgent,
-                    (CacheControl) null
-            )).createMediaSource(Uri.parse(AppUtils.RADIO_STATION_URL));
-
-
             mRadioPlayer.prepare(source);
-            //sRadioPlayer.setPlayWhenReady(true);
+            //mRadioPlayer.setPlayWhenReady(true);
         }
+
+        if (reset) {
+            mRadioPlayer.prepare(source);
+            mRadioPlayer.setPlayWhenReady(false);
+        }
+
         return mRadioPlayer;
     }
 

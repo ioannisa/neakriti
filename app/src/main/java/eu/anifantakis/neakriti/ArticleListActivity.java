@@ -135,6 +135,8 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     public static Bitmap bm;
 
+    private boolean playerCanceledByButton = false;
+
     // we need to reload everytime the activity loads onResume, except of when it occurs when coming back from Detail Activity
     public static boolean shouldreload = false;
 
@@ -359,6 +361,7 @@ public class ArticleListActivity extends AppCompatActivity implements
             Picasso.get()
                     .load(R.drawable.btn_radio_pause)
                     .into(btnRadio);
+
         }
 
         if (mPlayerNotificationManager!=null)
@@ -448,12 +451,18 @@ public class ArticleListActivity extends AppCompatActivity implements
             @Override
             public void onNotificationCancelled(int notificationId) {
                 // reset the player
-                initializeRadioExoPlayer(false);
+
+                if (!playerCanceledByButton) {
+                    initializeRadioExoPlayer(true);
+                    mPlayerNotificationManager.setPlayer(null);
+                }
 
                 // reset the radio image to the standard (not playing)
                 Picasso.get()
                         .load(R.drawable.btn_radio)
                         .into(btnRadio);
+
+                playerCanceledByButton = false;
             }
         });
     }
@@ -1032,6 +1041,7 @@ public class ArticleListActivity extends AppCompatActivity implements
             mPlayerNotificationManager.setPlayer(mRadioPlayer);
         }
         else{
+            playerCanceledByButton = true;
             mPlayerNotificationManager.setPlayer(null);
         }
     }
@@ -1151,6 +1161,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     @Override
     public void onPlayerError(ExoPlaybackException error) {
+        playerCanceledByButton = true;
         mPlayerNotificationManager.setPlayer(null);
         setStreamRadioStatus(false);
     }
