@@ -1,23 +1,18 @@
 package eu.anifantakis.neakriti.utils;
 
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LayoutAnimationController;
 import android.view.animation.TranslateAnimation;
-
-import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 
 import org.jsoup.Jsoup;
 
@@ -31,12 +26,8 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
-
-import javax.net.ssl.SSLContext;
 
 import okhttp3.CipherSuite;
 import okhttp3.ConnectionSpec;
@@ -77,7 +68,6 @@ public final class AppUtils {
     public static final String EXTRAS_ORIGIN_NOTIFICATION = "EXTRAS_ORIGIN_NOTIFICATION";
 
     public static boolean onlineMode = true;
-    public static PlayerNotificationManager mPlayerNotificationManager;
 
     public static boolean isNightMode = false;
 

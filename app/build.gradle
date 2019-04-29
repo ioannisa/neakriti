@@ -3,11 +3,11 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "eu.anifantakis.neakriti"
+        applicationId "com.ioannisa.rssreadernk"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 80
-        versionName "3.0.13"
+        versionCode 81
+        versionName "3.0.14"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true

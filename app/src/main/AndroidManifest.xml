@@ -89,6 +89,10 @@
             android:name=".data.StorageIntentService"
             android:exported="false" />
 
+        <service
+            android:name=".utils.OnClearFromRecentService"
+            android:stopWithTask="false" />
+
         <provider
             android:name=".data.db.ArticlesContentProvider"
             android:authorities="eu.anifantakis.neakriti"

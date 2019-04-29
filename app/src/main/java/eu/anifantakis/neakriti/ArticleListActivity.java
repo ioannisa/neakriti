@@ -85,7 +85,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static eu.anifantakis.neakriti.preferences.SetPrefs.NEAKRITI_NEWS_TEST_TOPIC;
 import static eu.anifantakis.neakriti.utils.AppUtils.URL_BASE;
 import static eu.anifantakis.neakriti.utils.AppUtils.isNightMode;
-import static eu.anifantakis.neakriti.utils.AppUtils.mPlayerNotificationManager;
+import static eu.anifantakis.neakriti.utils.NeaKritiApp.mPlayerNotificationManager;
 import static eu.anifantakis.neakriti.utils.AppUtils.onlineMode;
 import static eu.anifantakis.neakriti.utils.AppUtils.spec;
 import static eu.anifantakis.neakriti.utils.NeaKritiApp.TEST_MODE;
@@ -1167,6 +1167,8 @@ public class ArticleListActivity extends AppCompatActivity implements
     public void onSeekProcessed() {
 
     }
+
+
 
     @Override
     public Resources.Theme getTheme() {

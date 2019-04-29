@@ -2,6 +2,7 @@ package eu.anifantakis.neakriti.utils;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -17,6 +18,7 @@ import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
@@ -49,6 +51,7 @@ public class NeaKritiApp extends Application {
     // get static context
     // Source: https://stackoverflow.com/questions/2002288/static-way-to-get-context-in-android
     private static Context context;
+    public static PlayerNotificationManager mPlayerNotificationManager;
 
     @Override
     public void onCreate() {
@@ -59,6 +62,11 @@ public class NeaKritiApp extends Application {
 
         sAnalytics = GoogleAnalytics.getInstance(this);
         setupPicasso();
+
+        // create a service that runs while the app runs.
+        // when the service is killed, it means the app is killed as well.
+        // this is useful as to detect app termination so we remove radio notification incase radio is running while terminating.
+        startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
     }
 
     /**
