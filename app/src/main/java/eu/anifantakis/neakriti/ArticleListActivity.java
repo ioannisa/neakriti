@@ -216,6 +216,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         feedCategoryTitle = binding.masterView.articles.incLivePanel.feedCategoryTitle;
         btnRadio = binding.masterView.articles.incLivePanel.btnLiveRadio;
         initializeRadioExoPlayer();
+        initRadioNotifier();
 
         liveView = binding.masterView.articles.incLivePanel.liveView;
 
@@ -333,8 +334,6 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         shouldreload = false;
         makeArticlesLoaderQuery(feedName, feedType, feedSrvid, feedItems);
-
-        initRadioNotifier();
     }
 
     /**
@@ -355,6 +354,16 @@ public class ArticleListActivity extends AppCompatActivity implements
      * The specialized "PlayerNotificationManager" gets linked to the ExoPlayer and manages notification playback.
      */
     private void initRadioNotifier(){
+        // change the default icon for radio, if radio is playing.
+        if(isRadioPlaying()) {
+            Picasso.get()
+                    .load(R.drawable.btn_radio_pause)
+                    .into(btnRadio);
+        }
+
+        if (mPlayerNotificationManager!=null)
+            return;
+
         // Initialize Radio984 - ExoPlayer Notifications
         mPlayerNotificationManager = PlayerNotificationManager.createWithNotificationChannel(
                 getApplicationContext(),
@@ -431,13 +440,6 @@ public class ArticleListActivity extends AppCompatActivity implements
         // set the Radio Player small notification icon
         mPlayerNotificationManager.setSmallIcon(R.drawable.exo_notification_small_icon);
 
-        // change the default icon for radio, if radio is playing.
-        if(isRadioPlaying()) {
-            Picasso.get()
-                    .load(R.drawable.btn_radio_pause)
-                    .into(btnRadio);
-        }
-
         mPlayerNotificationManager.setNotificationListener(new PlayerNotificationManager.NotificationListener() {
             @Override
             public void onNotificationStarted(int notificationId, Notification notification) {
@@ -446,7 +448,7 @@ public class ArticleListActivity extends AppCompatActivity implements
             @Override
             public void onNotificationCancelled(int notificationId) {
                 // reset the player
-                initializeRadioExoPlayer(true);
+                initializeRadioExoPlayer(false);
 
                 // reset the radio image to the standard (not playing)
                 Picasso.get()
