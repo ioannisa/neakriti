@@ -2,6 +2,7 @@ package eu.anifantakis.neakriti;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
@@ -408,10 +410,50 @@ public class ArticleListActivity extends AppCompatActivity implements
         // omit rewind action by setting the increment to zero
         mPlayerNotificationManager.setRewindIncrementMs(0);
         // omit the stop action
-        mPlayerNotificationManager.setStopAction(null);
+        //mPlayerNotificationManager.setStopAction(null);
 
+        // set controls colors
         mPlayerNotificationManager.setColorized(true);
-        mPlayerNotificationManager.setColor(Color.WHITE);
+        mPlayerNotificationManager.setColor(0xFFAA0000);
+
+        // show chronometer so user knows how long has been listening to the radio station
+        mPlayerNotificationManager.setUseChronometer(true);
+
+        // don't allow the notification to be swiped out
+        mPlayerNotificationManager.setOngoing(true);
+
+        // Give Max Priority so the player notification goes on top of other notifications so its easily accessible
+        mPlayerNotificationManager.setPriority(NotificationCompat.PRIORITY_MAX);
+
+        // display the play/pause buttons
+        mPlayerNotificationManager.setUsePlayPauseActions(true);
+
+        // set the Radio Player small notification icon
+        mPlayerNotificationManager.setSmallIcon(R.drawable.exo_notification_small_icon);
+
+        // change the default icon for radio, if radio is playing.
+        if(isRadioPlaying()) {
+            Picasso.get()
+                    .load(R.drawable.btn_radio_pause)
+                    .into(btnRadio);
+        }
+
+        mPlayerNotificationManager.setNotificationListener(new PlayerNotificationManager.NotificationListener() {
+            @Override
+            public void onNotificationStarted(int notificationId, Notification notification) {
+            }
+
+            @Override
+            public void onNotificationCancelled(int notificationId) {
+                // reset the player
+                initializeRadioExoPlayer(true);
+
+                // reset the radio image to the standard (not playing)
+                Picasso.get()
+                        .load(R.drawable.btn_radio)
+                        .into(btnRadio);
+            }
+        });
     }
 
     /**
@@ -1056,7 +1098,11 @@ public class ArticleListActivity extends AppCompatActivity implements
     }
 
     private void initializeRadioExoPlayer(){
-        mRadioPlayer = ((NeaKritiApp) getApplication()).getRadioPlayer();
+        initializeRadioExoPlayer(false);
+    }
+
+    private void initializeRadioExoPlayer(boolean reset){
+        mRadioPlayer = ((NeaKritiApp) getApplication()).getRadioPlayer(reset);
         mRadioPlayer.addListener(this);
     }
 
@@ -1120,15 +1166,6 @@ public class ArticleListActivity extends AppCompatActivity implements
     @Override
     public void onSeekProcessed() {
 
-    }
-
-    @Override
-    protected void onDestroy() {
-        mPlayerNotificationManager.setPlayer(null);
-        mRadioPlayer.release();
-        mRadioPlayer = null;
-
-        super.onDestroy();
     }
 
     @Override

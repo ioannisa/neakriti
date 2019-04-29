@@ -10,8 +10,8 @@ import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -42,7 +42,7 @@ import static eu.anifantakis.neakriti.preferences.SetPrefs.NEAKRITI_NEWS_UPDATES
 public class NeaKritiApp extends Application {
     private static GoogleAnalytics sAnalytics;
     private static Tracker sTracker;
-    public SimpleExoPlayer mRadioPlayer;
+    public ExoPlayer mRadioPlayer;
     public static SharedPreferences sharedPreferences;
     public static boolean TEST_MODE = false;
 
@@ -133,7 +133,10 @@ public class NeaKritiApp extends Application {
         return sTracker;
     }
 
-    public SimpleExoPlayer getRadioPlayer(){
+    public ExoPlayer getRadioPlayer(boolean reset){
+        if (reset)
+            mRadioPlayer = null;
+
         if (mRadioPlayer == null){
             TrackSelector trackSelector = new DefaultTrackSelector();
 
