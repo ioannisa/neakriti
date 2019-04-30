@@ -90,7 +90,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:descendantFocusability="blocksDescendants"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingBottom="48dp">
 
 
                     <WebView
@@ -122,6 +123,17 @@
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>
 
+            <!--
+            https://developers.google.com/admob/android/banner
+
+            AD SIZES:
+            320x50                      Banner                     Phones and Tablets	      BANNER
+            320x100                     Large Banner               Phones and Tablets	      LARGE_BANNER
+            300x250                     IAB Medium Rectangle       Phones and Tablets	      MEDIUM_RECTANGLE
+            468x60                      IAB Full-Size Banner       Tablets	              FULL_BANNER
+            728x90                      IAB Leaderboard            Tablets	              LEADERBOARD
+            Screen width x 32|50|90	     Smart Banner               Phones and Tablets       SMART_BANNER
+            -->
             <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/adView"
                 android:layout_width="match_parent"
@@ -129,7 +141,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_gravity="center|bottom"
                 android:layout_margin="16dp"
-                ads:adSize="BANNER"
+                ads:adSize="LARGE_BANNER"
                 ads:adUnitId="@string/unitID_bottom" />
 
         </RelativeLayout>
