@@ -46,7 +46,6 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -58,9 +57,9 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
-import eu.anifantakis.neakriti.data.facebook_comments.RequestFacebookCommentsCountInterface;
 import eu.anifantakis.neakriti.data.db.ArticlesDBContract;
 import eu.anifantakis.neakriti.data.facebook_comments.Feed;
+import eu.anifantakis.neakriti.data.facebook_comments.RequestFacebookCommentsCountInterface;
 import eu.anifantakis.neakriti.data.feed.gson.Article;
 import eu.anifantakis.neakriti.databinding.ActivityArticleDetailBinding;
 import eu.anifantakis.neakriti.databinding.FragmentArticleDetailBinding;
