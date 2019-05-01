@@ -62,11 +62,6 @@ public class NeaKritiApp extends Application {
 
         sAnalytics = GoogleAnalytics.getInstance(this);
         setupPicasso();
-
-        // create a service that runs while the app runs.
-        // when the service is killed, it means the app is killed as well.
-        // this is useful as to detect app termination so we remove radio notification incase radio is running while terminating.
-        startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
     }
 
     /**
@@ -207,5 +202,13 @@ public class NeaKritiApp extends Application {
 
         // indicator for checking picasso caching - need to comment out on release
         //picasso.setIndicatorsEnabled(true);
+    }
+
+    @Override
+    public void onTerminate() {
+        if (mPlayerNotificationManager!=null)
+            mPlayerNotificationManager.setPlayer(null);
+
+        super.onTerminate();
     }
 }

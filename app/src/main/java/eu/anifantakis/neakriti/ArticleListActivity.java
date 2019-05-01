@@ -452,15 +452,15 @@ public class ArticleListActivity extends AppCompatActivity implements
             public void onNotificationCancelled(int notificationId) {
                 // reset the player
 
-                if (!playerCanceledByButton) {
-                    initializeRadioExoPlayer(true);
-                    mPlayerNotificationManager.setPlayer(null);
-                }
-
                 // reset the radio image to the standard (not playing)
                 Picasso.get()
                         .load(R.drawable.btn_radio)
                         .into(btnRadio);
+
+                if (!playerCanceledByButton) {
+                    initializeRadioExoPlayer(true);
+                }
+                mPlayerNotificationManager.setPlayer(null);
 
                 playerCanceledByButton = false;
             }
@@ -1180,8 +1180,6 @@ public class ArticleListActivity extends AppCompatActivity implements
     public void onSeekProcessed() {
 
     }
-
-
 
     @Override
     public Resources.Theme getTheme() {
