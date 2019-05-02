@@ -330,6 +330,14 @@ public class ArticleListActivity extends AppCompatActivity implements
         // define BroadcastReceiver manager to receive radio service broadcasts.
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter(getString(R.string.broadcast_from_radio)));
+
+        // If the radio is already playing while this activity is created (due to previous activity of the same class)
+        // then update the radio button graphic texture to the "pause" one.
+        if (isRadioPlaying()){
+            Picasso.get()
+                    .load(R.drawable.btn_radio_pause)
+                    .into(btnRadio);
+        }
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
