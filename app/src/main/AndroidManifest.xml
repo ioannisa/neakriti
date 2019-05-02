@@ -90,7 +90,7 @@
             android:exported="false" />
 
         <service
-            android:name=".utils.OnClearFromRecentService"
+            android:name=".utils.RadioPlayerService"
             android:stopWithTask="false" />
 
         <provider

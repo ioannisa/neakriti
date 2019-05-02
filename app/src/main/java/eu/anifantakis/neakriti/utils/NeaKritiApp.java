@@ -2,24 +2,13 @@ package eu.anifantakis.neakriti.utils;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.PlayerNotificationManager;
-import com.google.android.exoplayer2.util.Util;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -32,7 +21,6 @@ import java.util.Locale;
 
 import eu.anifantakis.neakriti.R;
 import okhttp3.Cache;
-import okhttp3.CacheControl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
@@ -44,14 +32,12 @@ import static eu.anifantakis.neakriti.preferences.SetPrefs.NEAKRITI_NEWS_UPDATES
 public class NeaKritiApp extends Application {
     private static GoogleAnalytics sAnalytics;
     private static Tracker sTracker;
-    public ExoPlayer mRadioPlayer;
     public static SharedPreferences sharedPreferences;
     public static boolean TEST_MODE = false;
 
     // get static context
     // Source: https://stackoverflow.com/questions/2002288/static-way-to-get-context-in-android
     private static Context context;
-    public static PlayerNotificationManager mPlayerNotificationManager;
 
     @Override
     public void onCreate() {
@@ -136,37 +122,6 @@ public class NeaKritiApp extends Application {
         return sTracker;
     }
 
-    public ExoPlayer getRadioPlayer(boolean reset){
-        String userAgent = Util.getUserAgent(getApplicationContext(), "rssreadernk");
-
-        MediaSource source = new ExtractorMediaSource.Factory(new OkHttpDataSourceFactory(
-                new OkHttpClient(),
-                userAgent,
-                (CacheControl) null
-        )).createMediaSource(Uri.parse(AppUtils.RADIO_STATION_URL));
-
-        TrackSelector trackSelector = new DefaultTrackSelector();
-
-        if (mRadioPlayer == null){
-            mRadioPlayer = ExoPlayerFactory.newSimpleInstance(
-                    getApplicationContext(),
-                    trackSelector
-            );
-
-            //mRadioPlayer.addListener(this);
-
-            mRadioPlayer.prepare(source);
-            //mRadioPlayer.setPlayWhenReady(true);
-        }
-
-        if (reset) {
-            mRadioPlayer.prepare(source);
-            mRadioPlayer.setPlayWhenReady(false);
-        }
-
-        return mRadioPlayer;
-    }
-
     /**
      * Setup picasso with 2 days caching via okHttpClient for the received icons
      */
@@ -202,13 +157,5 @@ public class NeaKritiApp extends Application {
 
         // indicator for checking picasso caching - need to comment out on release
         //picasso.setIndicatorsEnabled(true);
-    }
-
-    @Override
-    public void onTerminate() {
-        if (mPlayerNotificationManager!=null)
-            mPlayerNotificationManager.setPlayer(null);
-
-        super.onTerminate();
     }
 }

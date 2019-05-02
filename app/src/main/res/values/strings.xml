@@ -237,4 +237,10 @@
     <string name="chromecast_unavailable">Unable to stream on Chromecast or Android TV</string>
 
     <string name="build" translatable="false">build</string>
+
+    <string name="broadcast_from_radio" translatable="false">radio-broadcast-msg-from-service</string>
+    <string name="broadcast_from_radio_extra_playing" translatable="false">playing</string>
+
+    <string name="broadcast_to_radio" translatable="false">radio-broadcast-msg-to-service</string>
+    <string name="broadcast_to_radio_extra_resume" translatable="false">resume</string>
 </resources>

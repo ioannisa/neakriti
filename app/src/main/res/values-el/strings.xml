@@ -65,11 +65,11 @@
     <string name="pref_fcm_test_summary">Debugger Module: Ενεργοποίηση/Απενεργοποίηση δοκιμαστικών ειδοποιήσεων</string>
     <string name="pref_about_category_title">Σχετικά</string>
     <string name="pref_about_version_title">Έκδοση</string>
-    <string name="pref_about_author_title">Δημιουργός</string>
+    <string name="pref_about_author_title">Δημιουργία</string>
     <string name="prefs_widget_section">WIDGET (Δοκιμαστική - Beta)</string>
     <string name="pref_widget_category_title">Κατηγορία Widget</string>
     <string name="pref_widget_items_count_title">Ποσότητα Άρθρων στο Widget</string>
-    <string name="pref_about_author_summary">Γιάννης Ανυφαντάκης\nhttps://anifantakis.eu</string>
+    <string name="pref_about_author_summary">Ιωάννης Ανυφαντάκης\nhttps://anifantakis.eu</string>
     <string name="pref_list_article_row_appearance_title">Προβολή Άρθρων ως</string>
     <string name="row_type_list">Λίστα</string>
     <string name="row_type_list_details">Λίστα με Κείμενο</string>
