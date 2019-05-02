@@ -946,6 +946,13 @@ public class ArticleListActivity extends AppCompatActivity implements
     }
 
     private void startRadioService(){
+        // Even though the drawable will change when radio service starts playing,
+        // we change it here before calling this service, as it can have up to 1 sec lag
+        // and to provide optimum user experience we don't want this delay to reflect on the button's graphic image.
+        Picasso.get()
+                .load(R.drawable.btn_radio_pause)
+                .into(btnRadio);
+
         Intent intent = new Intent(this, RadioPlayerService.class);
         componentName = Util.startForegroundService(this, intent);
     }
