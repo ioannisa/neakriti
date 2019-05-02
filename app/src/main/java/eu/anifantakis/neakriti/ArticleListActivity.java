@@ -988,6 +988,8 @@ public class ArticleListActivity extends AppCompatActivity implements
             DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
+                        terminateRadioService();
+
                         Intent intent = new Intent(ArticleListActivity.this, TVStreamActivity.class);
                         startActivity(intent);
                         break;
