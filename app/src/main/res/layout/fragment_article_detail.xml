@@ -134,15 +134,15 @@
             728x90                      IAB Leaderboard            Tablets	              LEADERBOARD
             Screen width x 32|50|90	     Smart Banner               Phones and Tablets       SMART_BANNER
             -->
-            <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            <com.google.android.gms.ads.AdView
+                xmlns:ads="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/adView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
-                android:layout_gravity="center|bottom"
-                android:layout_margin="16dp"
-                ads:adSize="LARGE_BANNER"
-                ads:adUnitId="@string/unitID_bottom" />
+                ads:adSize="SMART_BANNER"
+                ads:adUnitId="@string/admob_bannerid"/>
 
         </RelativeLayout>
 

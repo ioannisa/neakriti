@@ -136,7 +136,13 @@
 
         <Preference
             android:summary="@string/pref_about_author_summary"
-            android:title="@string/pref_about_author_title" />
+            android:title="@string/pref_about_author_title" >
+            <!-- On clicking author's info preference, open the author's website via intent -->
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/pref_about_author_url"
+                />
+        </Preference>
     </PreferenceCategory>
 
 </PreferenceScreen>

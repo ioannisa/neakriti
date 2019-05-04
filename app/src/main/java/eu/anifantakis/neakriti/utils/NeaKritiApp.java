@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -42,6 +43,8 @@ public class NeaKritiApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        MobileAds.initialize(getApplicationContext(), getString(R.string.admob_appid));
 
         NeaKritiApp.context = getApplicationContext();
         initSharedPrefs();

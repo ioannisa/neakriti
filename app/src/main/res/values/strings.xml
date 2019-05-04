@@ -56,13 +56,13 @@
     <!-- ca-app-pub-3940256099942544/6300978111 -->
 
 
-    <string name="unitID_manifest" translatable="false">ca-app-pub-3940256099942544~6300978111</string>
-    <string name="unitID_bottom"   translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="admob_appid"      translatable="false">ca-app-pub-3940256099942544~6300978111</string>
+    <string name="admob_bannerid"   translatable="false">ca-app-pub-3940256099942544/6300978111</string>
 
-<!--
-    <string name="unitID_manifest" translatable="false">ca-app-pub-3940256099942544~6300978111</string>
-    <string name="unitID_bottom"   translatable="false">ca-app-pub-3940256099942544/6300978111</string>
-    -->
+    <!--
+        <string name="admob_appid"      translatable="false">ca-app-pub-3940256099942544~6300978111</string>
+        <string name="admob_bannerid"   translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+        -->
 
     <!-- Sharing Article -->
     <string name="share_the_article">neakriti.gr - Share this Article</string>
@@ -178,6 +178,7 @@
 
     <string name="pref_about_author_title">Author</string>
     <string name="pref_about_author_summary">Ioannis Anifantakis\nhttps://anifantakis.eu</string>
+    <string name="pref_about_author_url" translatable="false">https://anifantakis.eu</string>
 
     <string name="pref_widget_items_count_title">Articles Quantity in Widget</string>
 

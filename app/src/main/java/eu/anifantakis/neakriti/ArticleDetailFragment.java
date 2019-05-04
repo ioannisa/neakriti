@@ -114,8 +114,6 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        //MobileAds.initialize(getContext(), "ca-app-pub-3940256099942544~6300978111");
-
         // initialize TTS
         mTextToSpeech = new TextToSpeech(getActivity(), this);
 
@@ -347,8 +345,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
     private void displayAdverts(){
         // show adverts if we are online
         if (onlineMode) {
-            AdRequest adRequest = new AdRequest.Builder()
-                    .setRequestAgent("android_studio:ad_template").build();
+            AdRequest adRequest = new AdRequest.Builder().build();
             adView.loadAd(adRequest);
         }
     }

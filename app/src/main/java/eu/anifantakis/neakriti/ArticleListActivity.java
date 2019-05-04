@@ -324,7 +324,7 @@ public class ArticleListActivity extends AppCompatActivity implements
             }
         });
 
-        shouldreload = false;
+        //shouldreload = false;
         makeArticlesLoaderQuery(feedName, feedType, feedSrvid, feedItems);
 
         // define BroadcastReceiver manager to receive radio service broadcasts.
@@ -437,7 +437,7 @@ public class ArticleListActivity extends AppCompatActivity implements
                         ).toBundle();
 
                 //if (feedType == ArticlesDBContract.DB_TYPE_FAVORITE){
-                    ActivityCompat.startActivityForResult(this, intent, DETAIL_ACTIVITY_REQUEST_CODE, bundle);
+                ActivityCompat.startActivityForResult(this, intent, DETAIL_ACTIVITY_REQUEST_CODE, bundle);
                 //}
                 //else {
                 //    startActivity(intent, bundle);
@@ -445,7 +445,7 @@ public class ArticleListActivity extends AppCompatActivity implements
             }
             else{
                 //if (feedType == ArticlesDBContract.DB_TYPE_FAVORITE) {
-                    startActivityForResult(intent, DETAIL_ACTIVITY_REQUEST_CODE);
+                startActivityForResult(intent, DETAIL_ACTIVITY_REQUEST_CODE);
                 //}
                 //else {
                 //    startActivity(intent);
