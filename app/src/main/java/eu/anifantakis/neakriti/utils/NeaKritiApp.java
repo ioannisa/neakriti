@@ -36,29 +36,16 @@ public class NeaKritiApp extends Application {
     public static SharedPreferences sharedPreferences;
     public static boolean TEST_MODE = false;
 
-    // get static context
-    // Source: https://stackoverflow.com/questions/2002288/static-way-to-get-context-in-android
-    private static Context context;
-
     @Override
     public void onCreate() {
         super.onCreate();
 
         MobileAds.initialize(getApplicationContext(), getString(R.string.admob_appid));
 
-        NeaKritiApp.context = getApplicationContext();
         initSharedPrefs();
 
         sAnalytics = GoogleAnalytics.getInstance(this);
         setupPicasso();
-    }
-
-    /**
-     * Provides the Application context in static calls
-     * @return context
-     */
-    public static Context getAppContext(){
-        return NeaKritiApp.context;
     }
 
     /**
@@ -78,8 +65,8 @@ public class NeaKritiApp extends Application {
      */
     public static void setLangFromPreferences(Context context){
         // set the system language based on the SharedPreferences (Default is greek).
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getAppContext());
-        String lang = prefs.getString(getAppContext().getResources().getString(R.string.pref_app_loc_lang_key), getAppContext().getResources().getString(R.string.loc_greek_id));
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String lang = prefs.getString(context.getResources().getString(R.string.pref_app_loc_lang_key), context.getResources().getString(R.string.loc_greek_id));
 
         NeaKritiApp.setLocale(lang, context);
     }

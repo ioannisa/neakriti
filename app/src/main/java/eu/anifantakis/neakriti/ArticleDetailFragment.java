@@ -1,5 +1,6 @@
 package eu.anifantakis.neakriti;
 
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
@@ -43,7 +44,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.analytics.HitBuilders;
@@ -250,6 +250,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
 
         adView = binding.adView;
 
+        /*
         adView.setAdListener(new AdListener(){
             @Override
             public void onAdLoaded() {
@@ -262,9 +263,10 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
 
                 // TODO: RE-ENABLE FACEBOOK COMMENTS
                 // disabling hack in order to revisit it in future version - will remove facbook comments all together in the existing version.
-                binding.articleContainer.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+                //binding.articleContainer.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
             }
         });
+        */
 
         // Handling Rotation
         if (savedInstanceState!=null){

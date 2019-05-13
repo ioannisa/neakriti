@@ -89,7 +89,6 @@
                     android:id="@+id/article_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:descendantFocusability="blocksDescendants"
                     android:orientation="vertical"
                     android:paddingBottom="48dp">
 
