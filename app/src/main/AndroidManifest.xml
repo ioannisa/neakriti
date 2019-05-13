@@ -21,7 +21,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:vmSafeMode="true"
         android:usesCleartextTraffic="true">
 
         <!-- Sample AdMob App ID:

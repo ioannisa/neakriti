@@ -6,8 +6,8 @@ android {
         applicationId "com.ioannisa.rssreadernk"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 87
-        versionName "3.0.14H"
+        versionCode 88
+        versionName "3.0.14J"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
