@@ -114,9 +114,6 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        // initialize TTS
-        mTextToSpeech = new TextToSpeech(getActivity(), this);
-
         mTracker = ((NeaKritiApp) Objects.requireNonNull(getActivity()).getApplication()).getDefaultTracker();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(Objects.requireNonNull(getContext()));
 
@@ -292,6 +289,8 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         // TODO: RE-ENABLE FACEBOOK COMMENTS
         //pullCommentsCount();
 
+        // initialize TTS
+        mTextToSpeech = new TextToSpeech(getActivity(), this);
         return rootView;
     }
 
@@ -568,15 +567,16 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
 
 
     private void speak(){
+        // if the tts object is null, then the user's device does not
+        // contain ANY KIND of tts engine.  We must exit to avoid conflicts.
         if (mTextToSpeech==null) {
             Log.d("TTS", "ITS NULL");
-            mTextToSpeech = new TextToSpeech(getActivity(), this);
+            return;
         }
         else {
             Log.d("TTS", "ITS NOT NULL");
+            Log.d("Default Engine Info " , mTextToSpeech.getDefaultEngine());
         }
-
-        Log.d("Default Engine Info " , mTextToSpeech.getDefaultEngine());
 
         if (mTextToSpeech.isSpeaking()) {
             mTextToSpeech.stop();
@@ -752,8 +752,13 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
      */
     @Override
     public void onInit(int status) {
+        // if during the onInit which is called after tts object creation, the tts object remains null
+        // that means that the user's device DOES NOT have any kind of TTS service running.
+        // Thus we need to disable the tts ICON and exit;
         if (mTextToSpeech==null) {
-            mTextToSpeech = new TextToSpeech(getActivity(), this);
+            MenuItem ttsItem = menu.findItem(R.id.nav_tts);
+            ttsItem.setVisible(false);
+            return;
         }
 
         if (status == TextToSpeech.SUCCESS) {
