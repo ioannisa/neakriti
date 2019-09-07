@@ -102,6 +102,8 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
     private WebView mWebviewPop;
     private FirebaseAnalytics mFirebaseAnalytics;
 
+    private boolean ttsFailed=false;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -290,7 +292,12 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         //pullCommentsCount();
 
         // initialize TTS
-        mTextToSpeech = new TextToSpeech(getActivity(), this);
+        try {
+            mTextToSpeech = new TextToSpeech(getActivity(), this);
+        }
+        catch (Exception e){
+            ttsFailed=true;
+        }
         return rootView;
     }
 
@@ -501,6 +508,11 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         }
         else{
             menu.findItem(R.id.nav_favorite).setIcon(R.drawable.bookmark_outline_wh_24px);
+        }
+
+        if (ttsFailed) {
+            MenuItem ttsItem = menu.findItem(R.id.nav_tts);
+            ttsItem.setVisible(false);
         }
     }
 
