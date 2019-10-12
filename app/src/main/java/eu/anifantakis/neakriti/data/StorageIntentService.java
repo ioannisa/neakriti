@@ -5,7 +5,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import java.util.Date;
 
@@ -30,14 +30,17 @@ public class StorageIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
+        assert intent != null;
         Bundle extras = intent.getExtras();
 
+        assert extras != null;
         if (extras.containsKey(COLLECTION)) {
             ArticlesCollection collection = extras.getParcelable(COLLECTION);
 
             // This type of persistence regards categories only.  This if statement acts as a line
             // of defence in case we accidentally initiate this service passing some other type
             // of articles like (Tags, Favorites, Zones, etc).
+            assert collection != null;
             if (collection.getListType() == ArticlesDBContract.DB_TYPE_CATEGORY){
                 deleteOldCollectionFromCategory(collection.getListId());
                 addNewCollectionToCategory(collection);

@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,12 +17,12 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
-import android.support.annotation.NonNull;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AppCompatCheckBox;
+import androidx.annotation.NonNull;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatCheckBox;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -157,6 +157,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
                              Bundle savedInstanceState) {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_article_detail, container, false);
+
         final View rootView = binding.getRoot();
         TextView detailTitle = binding.detailTitle;
         detailTitle.setText(mArticle.getTitle());
@@ -238,12 +239,12 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
                 super.onPageFinished(view, url);
 
                 // Once the article is done loading, load the comments section if we are in online mode
-                if (onlineMode){
+                //if (onlineMode){
                     // disabled for now... will re-enable comments functionality in future version
 
                     // TODO: RE-ENABLE FACEBOOK COMMENTS
                     //loadComments();
-                }
+                //}
             }
         });
 
@@ -498,7 +499,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         this.menu = menu;
         inflater.inflate(R.menu.detail_menu, menu);
 
@@ -795,7 +796,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
     }
 
     // <todo>
-    void footerFade(int animid){
+    private void footerFade(int animid){
         Animation myFadeInAnimation = AnimationUtils.loadAnimation(getContext() , animid);
         myFadeInAnimation.setDuration(500);
         footerlayout.startAnimation(myFadeInAnimation);
@@ -814,7 +815,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
         }
     }
 
-    int getValueInDIP(int pxValue){
+    private int getValueInDIP(int pxValue){
         Resources res = getResources();
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, pxValue, res.getDisplayMetrics());
     }

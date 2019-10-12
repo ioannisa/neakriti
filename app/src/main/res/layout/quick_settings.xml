@@ -27,7 +27,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.AppCompatCheckBox
+                <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/ckbox_linespace"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
                     android:textColor="#ddd"
                     app:buttonTint="#ddd" />
 
-                <android.support.v7.widget.AppCompatCheckBox
+                <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/ckbox_nightmode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -61,14 +61,14 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true">
 
-                    <android.support.v7.widget.AppCompatImageButton
+                    <androidx.appcompat.widget.AppCompatImageButton
                         android:id="@+id/btnzoomout"
                         style="?android:attr/buttonBarButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_zoom_out_24px" />
 
-                    <android.support.v7.widget.AppCompatImageButton
+                    <androidx.appcompat.widget.AppCompatImageButton
                         android:id="@+id/btnzoomin"
                         style="?android:attr/buttonBarButtonStyle"
                         android:layout_width="wrap_content"

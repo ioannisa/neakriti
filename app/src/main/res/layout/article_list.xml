@@ -11,14 +11,14 @@
             android:id="@+id/inc_live_panel"
             layout="@layout/live_panel" />
 
-        <android.support.v4.widget.SwipeRefreshLayout
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/main_layout_swipe"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             tools:context=".ArticleListActivity">
 
-            <android.support.v7.widget.RecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"
+            <androidx.recyclerview.widget.RecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/article_list"
                 android:name="eu.anifantakis.playground1.ArticleListFragment"
@@ -28,7 +28,7 @@
                 android:layout_marginRight="16dp"
                 tools:listitem="@layout/row_article_list" />
 
-        </android.support.v4.widget.SwipeRefreshLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 

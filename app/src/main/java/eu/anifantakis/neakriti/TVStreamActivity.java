@@ -8,11 +8,11 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.MediaRouteButton;
-import android.support.v7.view.ContextThemeWrapper;
+import androidx.annotation.NonNull;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.mediarouter.app.MediaRouteButton;
+import androidx.appcompat.view.ContextThemeWrapper;
 import android.util.Log;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -195,13 +195,13 @@ public class TVStreamActivity extends AppCompatActivity {
         });
 
         // Stylize Chromecast icon
-        Context castContext = new ContextThemeWrapper(this, android.support.v7.mediarouter.R.style.Theme_MediaRouter);
+        Context castContext = new ContextThemeWrapper(this, androidx.mediarouter.R.style.Theme_MediaRouter);
 
         Drawable castDrawable = null;
         TypedArray a = castContext.obtainStyledAttributes(null,
-                android.support.v7.mediarouter.R.styleable.MediaRouteButton, android.support.v7.mediarouter.R.attr.mediaRouteButtonStyle, 0);
+                androidx.mediarouter.R.styleable.MediaRouteButton, androidx.mediarouter.R.attr.mediaRouteButtonStyle, 0);
         castDrawable = a.getDrawable(
-                android.support.v7.mediarouter.R.styleable.MediaRouteButton_externalRouteEnabledDrawable);
+                androidx.mediarouter.R.styleable.MediaRouteButton_externalRouteEnabledDrawable);
         a.recycle();
 
         assert castDrawable != null;

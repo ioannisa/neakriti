@@ -73,7 +73,7 @@
             android:layout_height="match_parent"
             android:focusableInTouchMode="true">
 
-            <android.support.v4.widget.NestedScrollView
+            <androidx.core.widget.NestedScrollView
                 android:id="@+id/article_nested_scroll_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -120,8 +120,7 @@
                     </FrameLayout>
 
                 </LinearLayout>
-            </android.support.v4.widget.NestedScrollView>
-
+            </androidx.core.widget.NestedScrollView>
             <!--
             https://developers.google.com/admob/android/banner
 
