@@ -123,8 +123,8 @@ public final class AppUtils {
 
 
         //DateFormat formatter2 = new SimpleDateFormat("dd/MM/yyyy - HH:mm", Locale.ENGLISH);
-        DateFormat formatterΑ = new SimpleDateFormat("dd-", Locale.ENGLISH);
-        DateFormat formatterΒ = new SimpleDateFormat("-yyyy,  HH:mm", Locale.ENGLISH);
+        DateFormat formatterA = new SimpleDateFormat("dd-", Locale.ENGLISH);
+        DateFormat formatterB = new SimpleDateFormat("-yyyy,  HH:mm", Locale.ENGLISH);
         DateFormat formatterMonth = new SimpleDateFormat("MM", Locale.ENGLISH);
 
         try {
@@ -146,7 +146,7 @@ public final class AppUtils {
                 case 12: monthStr="Δεκ"; break;
             }
 
-            dateStr = formatterΑ.format(date)+monthStr+formatterΒ.format(date);
+            dateStr = formatterA.format(date)+monthStr+formatterB.format(date);
         } catch (ParseException e1) {
             e1.printStackTrace();
         }

@@ -48,19 +48,16 @@ public class ArticleDetailActivity extends AppCompatActivity {
         ImageView detailActivityImage = binding.detailActivityImage;
 
         AppCompatCheckBox ckboxNightMode = binding.incQuickSettings.ckboxNightmode;
-        ckboxNightMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (!initializatioin) {
-                    SharedPreferences.Editor editor1 = sharedPreferences.edit();
-                    editor1.putBoolean(getString(R.string.pref_night_reading_key), isChecked);
-                    editor1.apply();
+        ckboxNightMode.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            if (!initializatioin) {
+                SharedPreferences.Editor editor1 = sharedPreferences.edit();
+                editor1.putBoolean(getString(R.string.pref_night_reading_key), isChecked);
+                editor1.apply();
 
-                    isNightMode = isChecked;
+                isNightMode = isChecked;
 
-                    recreated = true;
-                    recreate();
-                }
+                recreated = true;
+                recreate();
             }
         });
 
@@ -156,18 +153,15 @@ public class ArticleDetailActivity extends AppCompatActivity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home: {
-                if (startedByNotification) {
-                    startMainActivity();
-                }
-                else {
-                    supportFinishAfterTransition();
-                }
-                ArticleListActivity.shouldreload = startedByNotification;
-                super.onBackPressed();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            if (startedByNotification) {
+                startMainActivity();
+            } else {
+                supportFinishAfterTransition();
             }
+            ArticleListActivity.shouldreload = startedByNotification;
+            super.onBackPressed();
+            return true;
         }
         /*
         if (id == android.R.id.home) {

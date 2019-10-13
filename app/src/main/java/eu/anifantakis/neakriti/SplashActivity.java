@@ -2,14 +2,11 @@ package eu.anifantakis.neakriti;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
@@ -42,10 +39,10 @@ public class SplashActivity extends AppCompatActivity {
     private void initFirebaseRemoteConfig(){
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .setMinimumFetchIntervalInSeconds(3600L)
                 .build();
-        mFirebaseRemoteConfig.setConfigSettings(configSettings);
-        mFirebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
+        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
+        mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
     }
 
     private String getFireBaseString(String field){
@@ -75,22 +72,21 @@ public class SplashActivity extends AppCompatActivity {
      */
     private void fetchFirebaseRemoteConfigFromCloud(){
         long cacheExpiration = 3600L;
-        if (mFirebaseRemoteConfig.getInfo().getConfigSettings().isDeveloperModeEnabled())
-            cacheExpiration = 0L;
+
+        // method isDeveloperModeEnabled() is deprecated
+        //if (mFirebaseRemoteConfig.getInfo().getConfigSettings().isDeveloperModeEnabled())
+        //    cacheExpiration = 0L;
 
         mFirebaseRemoteConfig.fetch(cacheExpiration)
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            mFirebaseRemoteConfig.activateFetched();
-                        }
-                        applyFirebaseConfiguration();
-
-                        // Start home activity
-                        startActivity(new Intent(SplashActivity.this, ArticleListActivity.class));
-                        finish();
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        mFirebaseRemoteConfig.activate();
                     }
+                    applyFirebaseConfiguration();
+
+                    // Start home activity
+                    startActivity(new Intent(SplashActivity.this, ArticleListActivity.class));
+                    finish();
                 });
     }
 }

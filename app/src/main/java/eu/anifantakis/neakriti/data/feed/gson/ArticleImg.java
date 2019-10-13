@@ -34,7 +34,7 @@ public class ArticleImg implements Parcelable {
         }
     };
 
-    public ImgAttributes getAttributes() {
+    ImgAttributes getAttributes() {
         return attributes;
     }
 

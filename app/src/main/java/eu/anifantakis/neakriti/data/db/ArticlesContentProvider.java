@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import androidx.annotation.NonNull;
@@ -82,19 +83,15 @@ public class ArticlesContentProvider extends ContentProvider{
         int match = sUriMatcher.match(uri);
         Uri retUri;
 
-        switch (match){
-            case ARTICLES:
-                long id = db.insert(TABLE_NAME, null, contentValues);
-                if (id>0){
-                    retUri = ContentUris.withAppendedId(ArticlesDBContract.ArticleEntry.CONTENT_URI, id);
-                }
-                else{
-                    throw new android.database.SQLException("Failed to insert row into " + uri);
-                }
-                break;
-
-            default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        if (match == ARTICLES) {
+            long id = db.insert(TABLE_NAME, null, contentValues);
+            if (id > 0) {
+                retUri = ContentUris.withAppendedId(ArticlesDBContract.ArticleEntry.CONTENT_URI, id);
+            } else {
+                throw new SQLException("Failed to insert row into " + uri);
+            }
+        } else {
+            throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
         return retUri;

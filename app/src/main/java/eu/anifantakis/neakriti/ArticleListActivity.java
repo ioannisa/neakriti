@@ -158,53 +158,50 @@ public class ArticleListActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
         //toolbar.setTitle(getTitle());
 
-        binding.masterView.listLogo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                counter++;
+        binding.masterView.listLogo.setOnClickListener(view -> {
+            counter++;
 
-                // do not accept taps if they are longer than 1 second appart from each other
-                // in that case reset the counter to 1
-                if (counter==1){
-                    previousTapMilis = System.currentTimeMillis();
-                } else{
-                    if (previousTapMilis+1000 < System.currentTimeMillis()){
-                        previousTapMilis=System.currentTimeMillis();
-                        counter=1;
-                        return;
-                    }
+            // do not accept taps if they are longer than 1 second appart from each other
+            // in that case reset the counter to 1
+            if (counter==1){
+                previousTapMilis = System.currentTimeMillis();
+            } else{
+                if (previousTapMilis+1000 < System.currentTimeMillis()){
                     previousTapMilis=System.currentTimeMillis();
-                }
-
-                if (counter>10)
+                    counter=1;
                     return;
-
-                if (counter==10) {
-                    TEST_MODE=!TEST_MODE;
-
-                    if (TEST_MODE)
-                        Toast.makeText(getApplicationContext(), getString(R.string.debug_enabled), Toast.LENGTH_LONG).show();
-                    else
-                        Toast.makeText(getApplicationContext(), getString(R.string.debug_disabled), Toast.LENGTH_LONG).show();
-
-
-                    SharedPreferences.Editor editor1 = sharedPreferences.edit();
-                    editor1.putBoolean(getString(R.string.pref_test_mode_key), TEST_MODE);
-                    editor1.putBoolean(getString(R.string.pref_fcm_test_key), TEST_MODE);
-                    editor1.apply();
-
-                    if (sharedPreferences.getBoolean(getString(R.string.pref_fcm_key), true)) {
-                        FirebaseMessaging.getInstance().subscribeToTopic(NEAKRITI_NEWS_TEST_TOPIC);
-                    } else {
-                        FirebaseMessaging.getInstance().unsubscribeFromTopic(NEAKRITI_NEWS_TEST_TOPIC);
-                    }
                 }
-                else if (counter>6)
-                    if (counter==9)
-                        Toast.makeText(getApplicationContext(), Integer.toString(10-counter) + " "+getString(R.string.debug_step) , Toast.LENGTH_SHORT).show();
-                    else
-                        Toast.makeText(getApplicationContext(), Integer.toString(10-counter) + " "+getString(R.string.debug_steps) , Toast.LENGTH_SHORT).show();
+                previousTapMilis=System.currentTimeMillis();
             }
+
+            if (counter>10)
+                return;
+
+            if (counter==10) {
+                TEST_MODE=!TEST_MODE;
+
+                if (TEST_MODE)
+                    Toast.makeText(getApplicationContext(), getString(R.string.debug_enabled), Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(getApplicationContext(), getString(R.string.debug_disabled), Toast.LENGTH_LONG).show();
+
+
+                SharedPreferences.Editor editor1 = sharedPreferences.edit();
+                editor1.putBoolean(getString(R.string.pref_test_mode_key), TEST_MODE);
+                editor1.putBoolean(getString(R.string.pref_fcm_test_key), TEST_MODE);
+                editor1.apply();
+
+                if (sharedPreferences.getBoolean(getString(R.string.pref_fcm_key), true)) {
+                    FirebaseMessaging.getInstance().subscribeToTopic(NEAKRITI_NEWS_TEST_TOPIC);
+                } else {
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(NEAKRITI_NEWS_TEST_TOPIC);
+                }
+            }
+            else if (counter>6)
+                if (counter==9)
+                    Toast.makeText(getApplicationContext(), (10 - counter) + " "+getString(R.string.debug_step) , Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(getApplicationContext(), (10 - counter) + " "+getString(R.string.debug_steps) , Toast.LENGTH_SHORT).show();
         });
 
         feedCategoryTitle = binding.masterView.articles.incLivePanel.feedCategoryTitle;
@@ -235,6 +232,7 @@ public class ArticleListActivity extends AppCompatActivity implements
             if (RESTART_REQUIRED){
                 Intent i = getBaseContext().getPackageManager().
                         getLaunchIntentForPackage(getBaseContext().getPackageName());
+                assert i != null;
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);

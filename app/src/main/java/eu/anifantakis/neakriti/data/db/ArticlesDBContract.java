@@ -14,11 +14,11 @@ public final class ArticlesDBContract {
     public static final int DB_TYPE_TAG = 3;
     public static final int DB_TYPE_FAVORITE = 4;
 
-    public static final String AUTHORITY = "eu.anifantakis.neakriti";
+    static final String AUTHORITY = "eu.anifantakis.neakriti";
     private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
-    public static final String PATH_ARTICLES = "articles";
-    public static final String PATH_CATEGORY = "category";
-    public static final String PATH_FAVORITE_ARTICLES = "favorite_articles";
+    static final String PATH_ARTICLES = "articles";
+    static final String PATH_CATEGORY = "category";
+    static final String PATH_FAVORITE_ARTICLES = "favorite_articles";
 
     public static class ArticleEntry implements BaseColumns{
         // Content URI for the Content Provider of a single article
@@ -27,7 +27,7 @@ public final class ArticlesDBContract {
         public static final Uri FAVORITE_CONTENT_URI    = BASE_CONTENT_URI.buildUpon().appendPath(PATH_FAVORITE_ARTICLES).build();
 
         // Fields regarding the table "articles" and its columns
-        public static final String TABLE_NAME = "article";
+        static final String TABLE_NAME = "article";
 
         // Types: 1=Category, 2=Zone, 3=Tag, 4=Favorite
         public static final String COL_TYPE = "type";
@@ -44,7 +44,7 @@ public final class ArticlesDBContract {
         public static final String COL_PUB_DATE_GRE = "pubDateGre";
         public static final String COL_IMG_THUMB = "img_thumb";
         public static final String COL_IMG_LARGE = "img_large";
-        public static final String COL_IMG_BLOB_THUMB = "img_blob_thumb";
-        public static final String COL_IMG_BLOB_LARGE = "img_blob_large";
+        static final String COL_IMG_BLOB_THUMB = "img_blob_thumb";
+        static final String COL_IMG_BLOB_LARGE = "img_blob_large";
     }
 }

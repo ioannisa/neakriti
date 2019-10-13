@@ -5,9 +5,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
-import androidx.annotation.NonNull;
-import androidx.multidex.MultiDex;
 import android.util.Log;
+
+import androidx.multidex.MultiDex;
 
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -17,12 +17,10 @@ import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Locale;
 
 import eu.anifantakis.neakriti.R;
 import okhttp3.Cache;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
@@ -119,18 +117,14 @@ public class NeaKritiApp extends Application {
         // Source: https://gist.github.com/iamtodor/eb7f02fc9571cc705774408a474d5dcb
         OkHttpClient okHttpClient1 = new OkHttpClient.Builder()
 
-                .addInterceptor(new Interceptor() {
-                    @NonNull
-                    @Override
-                    public Response intercept(@NonNull Chain chain) throws IOException {
-                        Response originalResponse = chain.proceed(chain.request());
+                .addInterceptor(chain -> {
+                    Response originalResponse = chain.proceed(chain.request());
 
-                        int days=2;
-                        long cacheTime = 60 * 60 * 24 * days;
+                    int days=2;
+                    long cacheTime = 60 * 60 * 24 * days;
 
-                        return originalResponse.newBuilder().header("Cache-Control", "max-age=" + (cacheTime))
-                                .build();
-                    }
+                    return originalResponse.newBuilder().header("Cache-Control", "max-age=" + (cacheTime))
+                            .build();
                 })
                 .cache(new Cache(getCacheDir(), Integer.MAX_VALUE))
                 .build();

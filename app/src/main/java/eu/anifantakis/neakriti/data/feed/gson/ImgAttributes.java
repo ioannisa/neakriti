@@ -26,7 +26,7 @@ public class ImgAttributes implements Parcelable{
         }
     };
 
-    public String getUrl(){
+    String getUrl(){
         if (url == null)
             url = "";
 

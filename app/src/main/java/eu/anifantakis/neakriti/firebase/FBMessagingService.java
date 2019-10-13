@@ -69,7 +69,7 @@ public class FBMessagingService extends FirebaseMessagingService {
     }
 
     @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
+    public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         boolean allowedToNotify = true;
 
         try {
@@ -253,6 +253,7 @@ public class FBMessagingService extends FirebaseMessagingService {
             @Override
             public void onResponse(@NonNull Call<Feed> call, @NonNull Response<Feed> response) {
                 Log.d("RETROFIT FCM", "DATA FETCHED");
+                assert response.body() != null;
                 Article article = response.body().getChannel().getItems().get(0);
                 Log.d("FCM ARTICLE TITLE", article.getTitle());
 
@@ -374,13 +375,13 @@ public class FBMessagingService extends FirebaseMessagingService {
     }
 
     @Override
-    public void onMessageSent(String msgID) {
+    public void onMessageSent(@NonNull String msgID) {
         Log.e("wouter", "##########onMessageSent: " + msgID );
         super.onMessageSent(msgID);
     }
 
     @Override
-    public void onSendError(String msgID, Exception exception) {
+    public void onSendError(@NonNull String msgID, @NonNull Exception exception) {
         Log.e("wouter", "onSendError ", exception );
         super.onSendError(msgID, exception);
     }

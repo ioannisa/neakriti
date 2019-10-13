@@ -206,7 +206,7 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
                 }
             });
 
-        }catch (Exception e){}
+        }catch (Exception ignored){}
 
         // comments section
         mWebViewComments = binding.commentsView;
