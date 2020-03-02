@@ -18,6 +18,11 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -87,6 +92,7 @@ public class TVStreamActivity extends AppCompatActivity {
         scaleGestureDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.SimpleOnScaleGestureListener());
 
         videoView = findViewById(R.id.video_view);
+        fadeOutAndHideImage(findViewById(R.id.pinch_image));
 
         // https://github.com/championswimmer/SimpleFingerGestures_Android_Library
         // Use pinch/unpinch gestures to zoom in/out video
@@ -325,5 +331,29 @@ public class TVStreamActivity extends AppCompatActivity {
             mExoPlayer.setPlayWhenReady(true);
             mExoPlayer.getPlaybackState();
         }
+    }
+
+    /**
+     * Fades out a view (imageview) and then sets its visibility to "gone".
+     * Source: https://stackoverflow.com/questions/20782260/making-a-smooth-fade-out-for-imageview-in-android
+     * @param img the image view to fade out
+     */
+    private void fadeOutAndHideImage(final ImageView img)
+    {
+        Animation fadeOut = new AlphaAnimation(1, 0);
+        fadeOut.setInterpolator(new AccelerateInterpolator());
+        fadeOut.setDuration(4000);
+
+        fadeOut.setAnimationListener(new Animation.AnimationListener()
+        {
+            public void onAnimationEnd(Animation animation)
+            {
+                img.setVisibility(View.GONE);
+            }
+            public void onAnimationRepeat(Animation animation) {}
+            public void onAnimationStart(Animation animation) {}
+        });
+
+        img.startAnimation(fadeOut);
     }
 }

@@ -94,4 +94,6 @@
     <string name="chromecast_unavailable">Αδυναμία μετάδοσης σε Chromecast ή Android TV</string>
 
     <string name="radio_notifier_content_text">Ζωντανή μετάδοση προγράμματος…</string>
+
+    <string name="pinch_to_zoom">Τσίμπημα για μεγένθυση</string>
 </resources>

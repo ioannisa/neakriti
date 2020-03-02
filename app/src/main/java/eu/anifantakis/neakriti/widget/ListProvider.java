@@ -147,7 +147,7 @@ public class ListProvider implements RemoteViewsFactory {
     }
 
     //new method to call it from broadcast receiver inside widgetprovider so to trigger populateListItem method
-    public static void setInfoData() {
+    static void setInfoData() {
         populateListItem();
     }
 }

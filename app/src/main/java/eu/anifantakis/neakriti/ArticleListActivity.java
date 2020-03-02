@@ -57,6 +57,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
 
@@ -244,7 +245,7 @@ public class ArticleListActivity extends AppCompatActivity implements
             // set default selected menu category the home category
             navigationView.setCheckedItem(R.id.nav_home);
             feedSrvid = getString(R.string.nav_home_id);
-            feedItems = 25;
+            feedItems = 45;
             feedName = getString(R.string.nav_home);
             feedType = ArticlesDBContract.DB_TYPE_CATEGORY;
             liveView.setVisibility(View.GONE);
@@ -633,7 +634,6 @@ public class ArticleListActivity extends AppCompatActivity implements
                         return null;
                     }
                     else {
-
                         ArticlesCollection result = new ArticlesCollection(feed.getChannel().getItems(), bundle.getString(LOADER_TITLE), ArticlesDBContract.DB_TYPE_CATEGORY, bundle.getString(LOADER_ID));
                         storeForOfflineUsageCollection(result);
                         return result;
@@ -691,7 +691,13 @@ public class ArticleListActivity extends AppCompatActivity implements
     private void storeForOfflineUsageCollection(ArticlesCollection collection){
         Intent intent = new Intent(ArticleListActivity.this, StorageIntentService.class);
         intent.putExtra(StorageIntentService.COLLECTION, collection);
-        startService(intent);
+
+        try {
+            startService(intent);
+        }
+        catch (Exception e){
+            // android.os.TransactionTooLargeException
+        }
     }
 
     @Override

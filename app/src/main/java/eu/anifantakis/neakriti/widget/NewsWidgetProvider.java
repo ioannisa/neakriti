@@ -1,6 +1,5 @@
 package eu.anifantakis.neakriti.widget;
 
-import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -9,13 +8,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.RemoteViews;
+
+import java.util.Objects;
 
 import eu.anifantakis.neakriti.ArticleDetailActivity;
 import eu.anifantakis.neakriti.R;
 import eu.anifantakis.neakriti.preferences.SetPrefs;
-import eu.anifantakis.neakriti.utils.AppUtils;
 
 public class NewsWidgetProvider extends AppWidgetProvider {
 
@@ -145,7 +144,7 @@ public class NewsWidgetProvider extends AppWidgetProvider {
 
         Log.d("WIDGET_RECEIVER", "ON RECEIVE");
 
-        if (intent.getAction().equals(APPWIDGET_UPDATE)) {
+        if (Objects.requireNonNull(intent.getAction()).equals(APPWIDGET_UPDATE)) {
             int appWidgetId = intent.getIntExtra(
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);

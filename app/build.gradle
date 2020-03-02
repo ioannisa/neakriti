@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.ioannisa.rssreadernk"
         minSdkVersion 16
-        targetSdkVersion 28
-        versionCode 95
-        versionName "3.0.16"
+        targetSdkVersion 29
+        versionCode 98
+        versionName "3.0.20"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -33,7 +33,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.myconfig
         }
@@ -41,7 +42,7 @@ android {
     dataBinding {
         enabled = true
     }
-    buildToolsVersion '29.0.1'
+    buildToolsVersion '30-rc1'
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -61,11 +62,11 @@ allprojects {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.exifinterface:exifinterface:1.0.0'
-    implementation 'androidx.browser:browser:1.0.0'
+    implementation 'androidx.exifinterface:exifinterface:1.1.0'
+    implementation 'androidx.browser:browser:1.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'com.google.android.material:material:1.1.0'
 
     implementation 'androidx.cardview:cardview:1.0.0'
 
@@ -84,15 +85,15 @@ dependencies {
     implementation 'com.google.android.exoplayer:extension-okhttp:2.9.6'
 
     implementation 'com.google.android.exoplayer:extension-cast:2.9.6'
-    implementation 'com.google.android.gms:play-services-cast-framework:17.1.0'
+    implementation 'com.google.android.gms:play-services-cast-framework:18.1.0'
     implementation 'androidx.mediarouter:mediarouter:1.1.0'
 
-    implementation 'com.google.android.gms:play-services-ads:18.2.0'
+    implementation 'com.google.android.gms:play-services-ads:18.3.0'
     implementation 'com.google.android.gms:play-services-analytics:17.0.0'
 
-    implementation 'com.google.firebase:firebase-core:17.2.0'
-    implementation 'com.google.firebase:firebase-messaging:20.0.0'
-    implementation 'com.google.firebase:firebase-config:19.0.2'
+    implementation 'com.google.firebase:firebase-core:17.2.3'
+    implementation 'com.google.firebase:firebase-messaging:20.1.1'
+    implementation 'com.google.firebase:firebase-config:19.1.2'
 
     implementation 'org.jsoup:jsoup:1.11.3'
 

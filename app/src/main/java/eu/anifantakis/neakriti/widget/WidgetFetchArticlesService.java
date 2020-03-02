@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 import eu.anifantakis.neakriti.R;
 import eu.anifantakis.neakriti.data.feed.RequestInterface;
@@ -177,7 +178,7 @@ public class WidgetFetchArticlesService extends Service {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         final String categoryId = sharedPreferences.getString(getString(R.string.prefs_widget_category_id), getString(R.string.nav_home_id));
         categoryTitle = sharedPreferences.getString(getString(R.string.prefs_widget_category_title), getString(R.string.nav_home));
-        final int items = Integer.parseInt(sharedPreferences.getString(getString(R.string.prefs_widget_category_items), "5"));
+        final int items = Integer.parseInt(Objects.requireNonNull(sharedPreferences.getString(getString(R.string.prefs_widget_category_items), "5")));
 
         RequestInterface request = retrofit.create(RequestInterface.class);
         Call<Feed> call = request.getFeedByCategory(categoryId, items);

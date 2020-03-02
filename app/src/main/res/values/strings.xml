@@ -55,14 +55,8 @@
     <!-- ca-app-pub-3940256099942544~6300978111 -->
     <!-- ca-app-pub-3940256099942544/6300978111 -->
 
-
     <string name="admob_appid"      translatable="false">ca-app-pub-3940256099942544~6300978111</string>
     <string name="admob_bannerid"   translatable="false">ca-app-pub-3940256099942544/6300978111</string>
-
-    <!--
-        <string name="admob_appid"      translatable="false">ca-app-pub-3940256099942544~6300978111</string>
-        <string name="admob_bannerid"   translatable="false">ca-app-pub-3940256099942544/6300978111</string>
-        -->
 
     <!-- Sharing Article -->
     <string name="share_the_article">neakriti.gr - Share this Article</string>
@@ -206,6 +200,8 @@
     <string name="row_type_list_id" translatable="false">1</string>
     <string name="row_type_list_details_id" translatable="false">2</string>
     <string name="row_type_card_id" translatable="false">3</string>
+
+    <string name="pinch_to_zoom">Pinch to zoom</string>
 
     <!-- Notification Channels -->
     <string name="notif_channel_news_id" translatable="false">news-channel</string>

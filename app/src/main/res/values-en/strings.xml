@@ -89,4 +89,6 @@
     <string name="chromecast_unavailable">Unable to stream on Chromecast or Android TV</string>
 
     <string name="radio_notifier_content_text">Live Streaming…</string>
+
+    <string name="pinch_to_zoom">Pinch to zoom</string>
 </resources>
