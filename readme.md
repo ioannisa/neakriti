@@ -1,5 +1,5 @@
-# NeaKriti News App (Capstone 2)
-## Udacity Android Advanced Nanodegree
+# NeaKriti News App
+## An advanced news reader
 *by Ioannis Anifantakis*
 
 NeaKriti Android News App is a news application based on the neakriti.gr news agency network.
@@ -13,21 +13,26 @@ The app is intended for the average greek news reader, giving him the ability to
 ## Features
 
 * Displays news Articles (html formatted) in a WebView via downloaded Feeds
-* Allows Users to save favorite news articles for later reading
-* Firebase Remote Configuration for various changes without the need to reinstall the app
-* Firebase push Messaging will enable notifications for
-* Important Articles opened directly on Application
-* Things other than articles that need to open on Browser instead
-* Important update notifications targeting specific problematic builds
-* Text to Speech on articles content to aid visually impaired people
-* Live Radio Stream of the “Radio984” radio station (part of the same enterprise as neakriti.gr)
-* Live TV Stream of CreteTV station (part of the same enterprise as neakriti.gr)
-* Day and Night themes
-* Preferences regarding text size, theme, article categories, etc
-* Targeting Phone and Tablets via fragments
+* Allows Users to **bookmark favorite news articles for later reading**
+* Supports **offline reading** with the topmost 20 articles from each category
+* **Firebase Remote Configuration** for various changes without the need to reinstall the app
+* **Firebase Cloud Messaging (FCM)** will enable push notifications for
+	* Important Articles opened directly on Application
+	* Things other than articles that need to open on Browser instead
+	* Important update notifications targeting specific problematic builds
+* **Text to Speech (TTS)** on articles content to aid visually impaired people
+* **Live Streaming Services** of neakriti subsidiary companies
+	* **Live Radio Stream** service of the “Radio984” radio station with **spotify-like notification system**
+	* **Live TV Stream** of CreteTV station with **pinch-to-zoom gestures** and **Chromecast support**
+* Day and Night **themes**
+* **Various article display types** (Articles List, Details List, Card View)
+* **Preferences** regarding text size, theme, article categories, etc
+* **Targeting Phone and Tablets** via fragments
 * Material Design principles
-* Home Screen Widget showing the top articles
-* At the end of each article there will be an AdMob horizontal banner
+* Home Screen **Widget** showing the top articles
+* More **Google Services** like Google Ads
+* **Article Sharing**
+* Allows for **multi-langual menus and in-app content** (Greek - English)
 
 
 ## Accessibility
