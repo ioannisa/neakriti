@@ -47,6 +47,9 @@ public final class AppUtils {
     public static String URL_BASE = "https://radio984.gr";
     public static final String RSSFEED_BASE = "/_anifan/articles-json.php";
 
+    public static long ALLOW_ADS = 1;
+    public static long ADV_PROB = 100;
+
     public static int MAIN_1_CAT_POS = -1;
     public static String MAIN_1_CAT_NAME = "";
     public static int MAIN_2_CAT_POS = -1;

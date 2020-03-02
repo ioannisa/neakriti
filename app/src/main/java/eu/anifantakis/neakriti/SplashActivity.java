@@ -59,6 +59,8 @@ public class SplashActivity extends AppCompatActivity {
         AppUtils.RADIO_STATION_URL = getFireBaseString("RADIO_STATION_URL");
         AppUtils.TV_STATION_URL = getFireBaseString("TV_STATION_URL");
         AppUtils.CHROMECAST_TV_DRAWABLE_URL = getFireBaseString("CHROMECAST_TV_DRAWABLE_URL");
+        AppUtils.ALLOW_ADS = mFirebaseRemoteConfig.getLong("ALLOW_ADS");
+        AppUtils.ADV_PROB = mFirebaseRemoteConfig.getLong("ADV_PROB"); // should be between 0 and 100 - default 100
 
         try {AppUtils.MAIN_1_CAT_POS = Integer.parseInt(mFirebaseRemoteConfig.getString("MAIN_1_CAT_POS")); AppUtils.MAIN_1_CAT_NAME = mFirebaseRemoteConfig.getString("MAIN_1_CAT_NAME"); }catch(Exception e){ AppUtils.MAIN_1_CAT_POS = -1; AppUtils.MAIN_1_CAT_NAME = ""; }
         try {AppUtils.MAIN_2_CAT_POS = Integer.parseInt(mFirebaseRemoteConfig.getString("MAIN_2_CAT_POS")); AppUtils.MAIN_2_CAT_NAME = mFirebaseRemoteConfig.getString("MAIN_2_CAT_NAME"); }catch(Exception e){ AppUtils.MAIN_2_CAT_POS = -1; AppUtils.MAIN_2_CAT_NAME = ""; }

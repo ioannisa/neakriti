@@ -56,6 +56,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Random;
 
 import eu.anifantakis.neakriti.data.db.ArticlesDBContract;
 import eu.anifantakis.neakriti.data.facebook_comments.Feed;
@@ -353,9 +354,18 @@ public class ArticleDetailFragment extends Fragment implements TextToSpeech.OnIn
 
     private void displayAdverts(){
         // show adverts if we are online
-        if (onlineMode) {
-            AdRequest adRequest = new AdRequest.Builder().build();
-            adView.loadAd(adRequest);
+
+        boolean canDisplayAdv =  (new Random().nextInt(100)+1) >= 100-AppUtils.ADV_PROB;
+
+        if (onlineMode && canDisplayAdv) {
+            if (AppUtils.ALLOW_ADS == 1){
+                // Google Ads
+                AdRequest adRequest = new AdRequest.Builder().build();
+                adView.loadAd(adRequest);
+            }
+            else if (AppUtils.ALLOW_ADS == 2){
+                // TODO: FACEBOOK ADS
+            }
         }
     }
 

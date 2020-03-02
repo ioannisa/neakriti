@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <defaultsMap>
     <entry>
+        <key>ALLOW_ADS</key>
+        <value>1</value> <!-- 0 No Ads, 1 Google Ads, 2 Facebook Ads -->
+    </entry>
+    <entry>
+        <key>ADV_PROB</key>
+        <value>100</value> <!-- How much likely is it to display an advert inside an article (default 100%) -->
+    </entry>
+
+    <entry>
         <key>URL_BASE_V2</key>
         <value>https://radio984.gr</value> <!-- The domain that serves the JSON articles: Don't confuse it for the radio stream -->
     </entry>
@@ -80,6 +89,4 @@
         <key>TEST_5</key>
         <value>5</value>
     </entry>
-
-
 </defaultsMap>
