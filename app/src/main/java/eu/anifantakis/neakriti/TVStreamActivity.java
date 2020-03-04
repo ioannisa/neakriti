@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.mediarouter.app.MediaRouteButton;
 import androidx.appcompat.view.ContextThemeWrapper;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.Window;
@@ -55,7 +56,6 @@ import com.google.android.gms.cast.framework.CastStateListener;
 import com.google.android.gms.common.images.WebImage;
 
 import eu.anifantakis.neakriti.utils.AppUtils;
-import in.championswimmer.sfg.lib.SimpleFingerGestures;
 
 import static eu.anifantakis.neakriti.utils.AppUtils.TV_STATION_URL;
 
@@ -63,6 +63,10 @@ public class TVStreamActivity extends AppCompatActivity {
 
     private SimpleExoPlayer mExoPlayer;
     private PlayerView videoView;
+
+    private final int ZOOM_OUT = 0;
+    private final int ZOOM_IN = 1;
+
 
     private MediaRouteButton mMediaRouteButton;
 
@@ -89,53 +93,17 @@ public class TVStreamActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_tvstream);
 
-        scaleGestureDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.SimpleOnScaleGestureListener());
-
         videoView = findViewById(R.id.video_view);
-        fadeOutAndHideImage(findViewById(R.id.pinch_image));
+        fadeOutAndHideImage(findViewById(R.id.pinch_image), 3000);
 
-        // https://github.com/championswimmer/SimpleFingerGestures_Android_Library
-        // Use pinch/unpinch gestures to zoom in/out video
-        SimpleFingerGestures mySfg = new SimpleFingerGestures();
-        mySfg.setOnFingerGestureListener(new SimpleFingerGestures.OnFingerGestureListener() {
+        scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
+        videoView.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onSwipeUp(int i, long l, double v) {
-                return false;
-            }
-
-            @Override
-            public boolean onSwipeDown(int i, long l, double v) {
-                return false;
-            }
-
-            @Override
-            public boolean onSwipeLeft(int i, long l, double v) {
-                return false;
-            }
-
-            @Override
-            public boolean onSwipeRight(int i, long l, double v) {
-                return false;
-            }
-
-            @Override
-            public boolean onPinch(int i, long l, double v) {
-                videoView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
-                return false;
-            }
-
-            @Override
-            public boolean onUnpinch(int i, long l, double v) {
-                videoView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
-                return false;
-            }
-
-            @Override
-            public boolean onDoubleTap(int i) {
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                scaleGestureDetector.onTouchEvent(motionEvent);
                 return false;
             }
         });
-        videoView.setOnTouchListener(mySfg);
 
         if (savedInstanceState != null){
             position = savedInstanceState.getLong(SELECTED_POSITION, C.TIME_UNSET);
@@ -144,6 +112,45 @@ public class TVStreamActivity extends AppCompatActivity {
 
         initPlayer();
         initChromecast();
+    }
+
+    private int actualSize = ZOOM_OUT;
+    private void rearrange(int size){
+        if (actualSize == ZOOM_OUT)
+            // Unpinch (Zoom in)
+            videoView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_ZOOM);
+        else
+            // Pinch (Zoom out)
+            videoView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
+
+        actualSize = size;
+        //Toast.makeText(this, "SIZE: "+actualSize, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Manages Scaling for pinch and unpinch to zoom in/out video
+     * A really nice source is here:
+     * https://medium.com/quick-code/pinch-to-zoom-with-multi-touch-gestures-in-android-d6392e4bf52d
+     */
+    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector scaleGestureDetector){
+            float scaleFactor = scaleGestureDetector.getScaleFactor();
+            //Log.d("SCALE", String.valueOf(scaleFactor));
+
+            if (scaleFactor > 1){
+                if (actualSize == ZOOM_OUT) {
+                    rearrange(ZOOM_IN);
+                }
+            }
+            else if (scaleFactor < 1){
+                if (actualSize == ZOOM_IN) {
+                    rearrange(ZOOM_OUT);
+                }
+            }
+
+            return true;
+        }
     }
 
     /**
@@ -338,11 +345,11 @@ public class TVStreamActivity extends AppCompatActivity {
      * Source: https://stackoverflow.com/questions/20782260/making-a-smooth-fade-out-for-imageview-in-android
      * @param img the image view to fade out
      */
-    private void fadeOutAndHideImage(final ImageView img)
+    private void fadeOutAndHideImage(final ImageView img, long duration)
     {
         Animation fadeOut = new AlphaAnimation(1, 0);
         fadeOut.setInterpolator(new AccelerateInterpolator());
-        fadeOut.setDuration(4000);
+        fadeOut.setDuration(duration);
 
         fadeOut.setAnimationListener(new Animation.AnimationListener()
         {
